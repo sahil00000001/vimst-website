@@ -1,0 +1,31 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# build output
+.next/
+out/
+build/
+dist/
+
+# environment — never commit real credentials
+.env
+.env*.local
+.env.production
+
+# generated
+next-env.d.ts
+*.tsbuildinfo
+
+# tooling
+.vercel
+.mongodb-binaries/
+shots/
+coverage/
+
+# editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

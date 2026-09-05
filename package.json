@@ -1,0 +1,41 @@
+{
+  "name": "mgimst",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "content": "node scripts/assets.mjs && node scripts/images.mjs && node scripts/extract.mjs && node scripts/build-content.mjs",
+    "audit": "node scripts/audit.mjs",
+    "seed:admin": "node scripts/seed-admin.mjs",
+    "e2e": "node scripts/e2e.mjs"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "exceljs": "^4.4.0",
+    "framer-motion": "^13.2.0",
+    "jose": "^6.2.12",
+    "mongodb": "^7.6.0",
+    "next": "^16.3.4",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^26.4.1",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "mongodb-memory-server": "^11.2.0",
+    "node-html-parser": "^9.0.3",
+    "postcss": "^8.5.28",
+    "puppeteer-core": "^25.10.0",
+    "sharp": "^0.35.4",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^7.0.2"
+  },
+  "overrides": {
+    "uuid": "^11.1.1"
+  }
+}

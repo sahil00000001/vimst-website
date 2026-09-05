@@ -1,0 +1,287 @@
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------
+   MGIMST design tokens
+
+   A white / off-white system: pages sit on paper white, sections step
+   through progressively warmer off-whites, and the institute's crimson
+   appears only as an accent -- rules, small labels, hover states -- never
+   as a field colour.
+   ------------------------------------------------------------------ */
+
+@theme {
+  --color-paper: #ffffff;
+  --color-shell: #faf9f7;
+  --color-linen: #f5f3ef;
+  --color-sand: #efece5;
+  --color-parchment: #e9e5db;
+
+  --color-ink: #16151a;
+  --color-graphite: #3f3d47;
+  --color-slate: #6c6a74;
+  --color-mist: #9b98a3;
+
+  --color-rule: #e7e3da;
+  --color-rule-soft: #f0ede6;
+
+  --color-crimson: #b01029;
+  --color-crimson-deep: #8a0c20;
+  --color-crimson-soft: #f7e8ea;
+
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
+    sans-serif;
+  --font-display: var(--font-display), ui-serif, Georgia, 'Times New Roman', serif;
+
+  /* Fluid type scale. Each step interpolates between a comfortable phone size
+     and its desktop size across the 380px-1400px range, so nothing needs a
+     breakpoint to stay readable. */
+  --text-2xs: clamp(0.66rem, 0.63rem + 0.13vw, 0.72rem);
+  --text-xs: clamp(0.75rem, 0.72rem + 0.14vw, 0.82rem);
+  --text-sm: clamp(0.84rem, 0.81rem + 0.16vw, 0.92rem);
+  --text-base: clamp(0.95rem, 0.91rem + 0.2vw, 1.05rem);
+  --text-lg: clamp(1.05rem, 0.99rem + 0.28vw, 1.19rem);
+  --text-xl: clamp(1.16rem, 1.06rem + 0.44vw, 1.4rem);
+  --text-2xl: clamp(1.35rem, 1.16rem + 0.82vw, 1.8rem);
+  --text-3xl: clamp(1.6rem, 1.28rem + 1.4vw, 2.4rem);
+  --text-4xl: clamp(1.95rem, 1.42rem + 2.3vw, 3.2rem);
+  --text-5xl: clamp(2.3rem, 1.4rem + 3.9vw, 4.4rem);
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --shadow-lift: 0 28px 60px -38px rgba(22, 21, 26, 0.4);
+  --shadow-card: 0 2px 4px -2px rgba(22, 21, 26, 0.05);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-rule);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    /* Leave room under the sticky header when jumping to an anchor. */
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    background-color: var(--color-shell);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.018em;
+    line-height: 1.12;
+    color: var(--color-ink);
+    text-wrap: balance;
+  }
+
+  h1 {
+    letter-spacing: -0.028em;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  img,
+  video {
+    max-width: 100%;
+  }
+
+  ::selection {
+    background: var(--color-crimson);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-crimson);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+}
+
+@layer components {
+  /* Eyebrow label above a section heading. */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-crimson);
+  }
+
+  .eyebrow::before {
+    content: '';
+    width: 1.75rem;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.55;
+    /* Draws itself in when the surrounding section reveals. */
+    animation: mg-rule-in 0.9s var(--ease-out-soft) both;
+  }
+
+  /* Long-form editorial copy, held to a comfortable measure. */
+  .prose-mg p {
+    color: var(--color-graphite);
+    margin-bottom: 1.15em;
+    font-size: var(--text-lg);
+    line-height: 1.78;
+    max-width: 68ch;
+  }
+
+  .prose-mg p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Section container. Padding grows with the viewport rather than stepping. */
+  .shell {
+    margin-inline: auto;
+    max-width: 1400px;
+    padding-inline: clamp(1.15rem, 3.2vw, 2.5rem);
+  }
+
+  .section-y {
+    padding-block: clamp(3.5rem, 7vw, 7rem);
+  }
+}
+
+/* ------------------------------------------------------------------
+   Keyframes
+   ------------------------------------------------------------------ */
+
+@keyframes mg-rule-in {
+  from {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  to {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+/* Vertical marquee for the notice board. */
+@keyframes mg-marquee {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+.mg-marquee {
+  animation: mg-marquee 44s linear infinite;
+}
+
+/* Horizontal marquee for the recruiter strip. */
+@keyframes mg-marquee-x {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.mg-marquee-x {
+  animation: mg-marquee-x var(--marquee-duration, 60s) linear infinite;
+}
+
+.mg-marquee:hover,
+.mg-marquee:focus-within,
+.mg-marquee-x:hover,
+.mg-marquee-x:focus-within {
+  animation-play-state: paused;
+}
+
+/* Underline that draws in on hover. */
+.mg-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: background-size 0.45s var(--ease-out-soft);
+}
+
+.mg-underline:hover,
+.mg-underline:focus-visible {
+  background-size: 100% 1px;
+}
+
+/* Soft sheen that crosses a card on hover. */
+.mg-sheen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.55) 50%,
+    transparent 65%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.9s var(--ease-out-soft);
+  pointer-events: none;
+}
+
+.mg-sheen:hover::after {
+  transform: translateX(120%);
+}
+
+/* Thin, unobtrusive scrollbars inside scrolling panels. */
+.mg-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-parchment) transparent;
+}
+
+.mg-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.mg-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-parchment);
+  border-radius: 99px;
+}
+
+/* Fades the ends of a scrolling strip. */
+.mg-fade-x {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+@media print {
+  header,
+  footer,
+  .print\:hidden {
+    display: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

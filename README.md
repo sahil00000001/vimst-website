@@ -1,0 +1,268 @@
+# MGIMST
+
+A rebuild of [sahil00000001/MGIMST](https://github.com/sahil00000001/MGIMST) — 70 hand-written
+static HTML pages — as a Next.js App Router site, plus an admin portal that publishes semester
+results from a MongoDB database.
+
+```bash
+npm install
+cp .env.example .env.local     # then fill in MONGODB_URI and ADMIN_SESSION_SECRET
+npm run content                # optimise assets + extract content from ../source (once)
+npm run seed:admin             # create the first admin account
+npm run dev                    # http://localhost:3000
+```
+
+---
+
+## 1. Setup
+
+### Environment
+
+Everything the app needs is listed in [`.env.example`](.env.example). The two required values:
+
+```bash
+MONGODB_URI="mongodb+srv://USER:PASSWORD@cluster.mongodb.net/?retryWrites=true&w=majority"
+ADMIN_SESSION_SECRET="<64 hex characters>"
+```
+
+Generate the session secret with:
+
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+
+> URL-encode special characters in the Mongo password — `@` becomes `%40`, `#` becomes `%23`.
+> An un-encoded `@` is the single most common reason a connection string fails.
+
+### First admin account
+
+```bash
+npm run seed:admin                                  # username "admin", generated password
+npm run seed:admin -- --username principal --name "Dr. Principal"
+```
+
+The script creates the account, prints the password **once**, and builds the database indexes.
+Sign in at `/admin/login`.
+
+---
+
+## 2. Deploying to Vercel
+
+1. Push this `web/` directory to a Git repository.
+2. In Vercel: **New Project → Import**. It detects Next.js on its own; `vercel.json` pins the
+   region to `bom1` (Mumbai) and gives the bulk-upload function a 60-second budget.
+3. Add the environment variables under **Settings → Environment Variables**, for Production,
+   Preview and Development:
+
+   | Variable | Required | Notes |
+   | --- | --- | --- |
+   | `MONGODB_URI` | yes | Atlas connection string |
+   | `MONGODB_DB` | no | defaults to `mgimst` |
+   | `ADMIN_SESSION_SECRET` | yes | 32+ characters |
+   | `NEXT_PUBLIC_SITE_URL` | recommended | your live URL, used by sitemap and metadata |
+   | `RESEND_API_KEY`, `ENQUIRY_TO`, `ENQUIRY_FROM` | no | server-side enquiry email |
+   | `NEXT_PUBLIC_SOCIAL_*` | no | footer social links |
+
+4. **In MongoDB Atlas → Network Access, allow `0.0.0.0/0`.** Vercel's functions do not have
+   fixed outbound IPs, so an IP allowlist will block them. Restrict access with a strong
+   database password and a least-privilege database user instead.
+5. Deploy, then run `npm run seed:admin` locally with the production `MONGODB_URI` to create the
+   admin account in the live database.
+
+Serverless functions are recycled constantly, so the Mongo client is cached on the global object
+(`src/lib/db.ts`) — without that, each invocation opens a new connection pool and Atlas runs out
+of connections.
+
+---
+
+## 3. The admin portal
+
+`/admin` — protected by `src/middleware.ts`, which verifies the session at the edge so an
+unauthenticated request never reaches a page that would query the database.
+
+| Screen | What it does |
+| --- | --- |
+| **Dashboard** | Counts, results per semester, recently updated records |
+| **Students** | Search, add, edit and delete the student register. Deleting a student deletes their results too |
+| **Results** | Enter marks per subject, with totals and pass/fail computed live. Publish or withhold a semester |
+| **Bulk upload** | Upload an Excel workbook covering many students and results at once |
+
+Sessions are a signed JWT in an httpOnly cookie, valid for eight hours. Passwords are bcrypt
+hashed (cost 12). Login answers the same message for an unknown username and a wrong password, so
+the form cannot be used to discover valid accounts.
+
+### Bulk upload
+
+**Admin → Bulk upload → Download template** gives you a workbook with the columns already set up.
+
+```
+Sheet "Students"   rollNo | name | fatherName | dob | batch | class | branch
+Sheet "Marks"      rollNo | semester | subjectCode | subject | totalMarks | obtainedMarks
+```
+
+Marks are in **long form** — one row per subject, repeating the roll number and semester. That is
+what a spreadsheet exported from an examination system actually looks like, and it lets a semester
+carry any number of subjects without reshaping columns. Rows are grouped by
+`(rollNo, semester)` into one result each.
+
+The importer is deliberately forgiving about input and strict about output:
+
+- `dob` accepts `YYYY-MM-DD`, `DD/MM/YYYY` or a real Excel date cell
+- `semester` accepts `I`–`VIII`, `1`–`8`, or `Sem 3`
+- roll numbers are matched case-insensitively and stored uppercase
+- totals, percentage and pass/fail are **calculated**, never read from the file
+- a subject scoring under 35% fails that semester
+
+**Review always runs before anything is written.** The preview reports how many records are new
+versus updated, and lists every row it could not read with the sheet name and row number. Bad rows
+are skipped; the rest still upload. Re-uploading a corrected sheet **updates** records rather than
+duplicating them, because writes are upserts keyed on `rollNo` and `(rollNo, semester)`.
+
+Results whose roll number has no student record are skipped and reported rather than written as
+orphans.
+
+### Result verification
+
+`/enrollment-verification` reads from this database. A lookup must match on roll number, date of
+birth **and** name, so a roll number alone cannot pull up somebody else's marks. Results marked
+hidden are never served.
+
+> The original page called a third-party API directly from the browser, and its JavaScript read a
+> `name` field its own form did not have — so every lookup threw. The rebuilt page works.
+
+---
+
+## 4. How the public content got here
+
+Nothing was copy-pasted. `npm run content` runs four scripts, each writing into `content/`:
+
+| Script | Does | Writes |
+| --- | --- | --- |
+| `assets.mjs` | Copies images/PDFs out of `../source`, renaming to URL-safe slugs | `public/media/**`, `asset-map.json` |
+| `images.mjs` | Caps oversized rasters, re-encodes, measures, builds blur placeholders | rewrites `public/media/**`, `image-meta.json` |
+| `extract.mjs` | Parses all 70 source pages, strips chrome, pulls out headings, prose and tables | `raw-pages.json` |
+| `build-content.mjs` | Maps raw pages onto the course catalogue and editorial pages | `site.json` |
+
+`scripts/catalog.mjs` is the single source of truth for which source file backs which route. It
+exists because the original repo ships duplicate and mislabelled files — both
+`pgd chemical-engineering.html` and `pgd-chemical-engineering.html` hold the same content, and
+`diploma-chemical-engineering.html` actually contains PG Diploma copy.
+
+Two quirks of the source markup shaped the extractor:
+
+- **Line breaks.** Prose is wrapped with literal newlines inside `<p>` (which HTML collapses)
+  *and* uses `<br>` for real breaks. Splitting on both shreds sentences, so only `<br>` and block
+  ends count as breaks, and a fragment not ending on sentence punctuation joins the next one.
+- **Truncated headings.** Several pages finish a heading in CSS: `.card-title:after { content:
+  " (BCA)" }`. Those arrive as `Bachelor in` and are repaired from the catalogue title.
+
+### Authored content
+
+Five pages exist in the source repo and are linked from its menus but contain **only** nav and
+footer — no body copy at all: `MCA.html`, `bachelor-EEE.html`, `diploma-EEE.html`,
+`master-EEE.html`, `master-computer-engineering.html`.
+
+Rather than ship dead links, `scripts/authored.mjs` supplies copy for those five routes, written
+in the shape of their sibling programmes. **Every block in that file is new text and should be
+reviewed by the institute before going live.** Everything else on the site is extracted.
+
+---
+
+## 5. Design
+
+### Colour
+
+A white / off-white field: pages sit on paper white, sections step through warmer off-whites.
+Colour has to earn its place, so it appears only at small scale.
+
+**Crimson is reserved for the institute** — brand marks, primary actions, the About and Admission
+menus. It is never used for a subject family, so "this is MGIMST" and "this is Mechanical
+Engineering" never look alike.
+
+Each academic family then gets one muted accent (`src/lib/accents.ts`), used for a mega-menu column
+heading, a hairline rule, a level badge, a card's hover glow:
+
+| Family | Accent | | Family | Accent |
+| --- | --- | --- | --- | --- |
+| Diploma | teal `#14615f` | | Management | ochre `#8a5a12` |
+| Bachelor | indigo `#40428f` | | Computer Applications | ocean `#1f5a8a` |
+| PG Diploma | plum `#6b2d6b` | | Science | emerald `#1d6b45` |
+| Master | forest `#2c5f3a` | | Commerce | bronze `#7a4a22` |
+| | | | Arts | rose `#94304f` |
+
+Engineering reads by **level** and everything else by **stream**, because that matches how the
+menus are organised: a reader in the Programmes menu is choosing a level first. Every value clears
+4.5:1 on white and on the off-whites.
+
+### Type and layout
+
+A fluid scale (`--text-2xs` … `--text-5xl`) where each step interpolates between a phone size and a
+desktop size across 380–1400px, so no heading needs a breakpoint to stay readable. Prose is held to
+68ch. Layout uses two utilities: `.shell` (centred, fluid gutters) and `.section-y` (fluid vertical
+rhythm).
+
+### Motion
+
+`src/components/Motion.tsx` — one easing curve, one set of behaviours:
+
+`Reveal` / `Stagger` (entrance on scroll) · `WordReveal` (headline words rising from a mask) ·
+`Parallax` / `ParallaxPlate` (scroll-linked, spring-smoothed) · `ScrollProgress` ·
+`Magnetic` (buttons leaning toward the pointer) · `Counter` (figures counting up on arrival)
+
+Parallax runs on the hero (copy, plate and image at three different rates), every page banner, and
+inside the director and campus-life image frames. Course cards tilt toward the pointer with a glow
+in their family accent.
+
+`MotionProvider` wraps the tree in `MotionConfig reducedMotion="user"`, so the OS setting
+neutralises movement globally. That matters for correctness as well as taste: branching on
+`useReducedMotion()` during render produces different markup on the server and the client, which is
+a hydration error.
+
+---
+
+## 6. Verification
+
+```bash
+npm run build
+npm start &
+npm run audit     # every route, both widths
+npm run e2e       # the whole backend against a throwaway MongoDB
+```
+
+**`scripts/audit.mjs`** walks all 69 routes at 1440px and 390px and checks console errors, failed
+requests, broken images, horizontal overflow, heading structure, dead internal links — and every
+interactive element: links with no destination, buttons and fields with no accessible name, and
+tap targets under 40px on a phone. Current state: **5041 interactive elements, no issues.**
+
+**`scripts/e2e.mjs`** boots an in-memory MongoDB, starts the production server against it and
+drives the real HTTP API — sign in, bulk upload a workbook containing deliberately malformed rows,
+re-upload to prove idempotency, read back through the admin endpoints, then look a result up the
+way a student would, including the cases that must be refused. **37 assertions, all passing.**
+
+Both need Chrome at the path set at the top of the file.
+
+---
+
+## 7. Project layout
+
+```
+src/
+  app/
+    (site)/          public pages — the route group keeps admin out of this chrome
+    admin/           the portal; guarded by src/middleware.ts
+    api/
+      admin/         login, students, results, import, template, stats
+      verify-enrollment/   public result lookup
+      enquiry/       contact form
+  components/
+    admin/           portal UI
+    Motion.tsx       shared animation primitives
+  lib/
+    db.ts            Mongo connection, documents, normalisation
+    auth.ts          sessions
+    import.ts        workbook parsing and template generation
+    accents.ts       the colour system
+    content.ts       typed access to the generated site content
+scripts/             content pipeline, seeding, audit, e2e
+content/             generated JSON (committed, so builds need no source repo)
+```

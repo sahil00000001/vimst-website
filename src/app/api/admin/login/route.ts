@@ -1,0 +1,85 @@
+import { NextResponse } from 'next/server';
+import bcrypt from 'bcryptjs';
+import { admins, isDatabaseConfigured } from '@/lib/db';
+import {
+  SESSION_COOKIE,
+  createSessionToken,
+  isAuthConfigured,
+  sessionCookieOptions,
+} from '@/lib/auth';
+
+export const runtime = 'nodejs';
+
+/**
+ * Admin sign-in.
+ *
+ * Credentials live in the `admins` collection (seeded by `npm run seed:admin`).
+ * The same generic message is returned for an unknown user and a wrong
+ * password, so the form cannot be used to discover valid usernames.
+ */
+export async function POST(request: Request) {
+  if (!isAuthConfigured()) {
+    return NextResponse.json(
+      { ok: false, error: 'ADMIN_SESSION_SECRET is not configured on the server.' },
+      { status: 503 }
+    );
+  }
+  if (!isDatabaseConfigured()) {
+    return NextResponse.json(
+      { ok: false, error: 'MONGODB_URI is not configured on the server.' },
+      { status: 503 }
+    );
+  }
+
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ ok: false, error: 'Invalid request.' }, { status: 400 });
+  }
+
+  const { username, password } = (body ?? {}) as Record<string, unknown>;
+  const user = String(username ?? '').trim().toLowerCase();
+  const pass = String(password ?? '');
+
+  if (!user || !pass) {
+    return NextResponse.json(
+      { ok: false, error: 'Enter your username and password.' },
+      { status: 422 }
+    );
+  }
+
+  const INVALID = { ok: false, error: 'Those credentials were not recognised.' };
+
+  try {
+    const collection = await admins();
+    const admin = await collection.findOne({ username: user });
+
+    // Hash a throwaway value when the user is unknown, so both paths take a
+    // comparable amount of time.
+    const hash = admin?.passwordHash ?? '$2a$12$invalidinvalidinvalidinvalidinvalidinvalidinvalidinv';
+    const valid = await bcrypt.compare(pass, hash);
+
+    if (!admin || !valid) return NextResponse.json(INVALID, { status: 401 });
+
+    const token = await createSessionToken({ username: admin.username, name: admin.name });
+
+    await collection.updateOne(
+      { username: admin.username },
+      { $set: { lastLoginAt: new Date() } }
+    );
+
+    const response = NextResponse.json({
+      ok: true,
+      admin: { username: admin.username, name: admin.name },
+    });
+    response.cookies.set(SESSION_COOKIE, token, sessionCookieOptions);
+    return response;
+  } catch (error) {
+    console.error('Admin login failed:', error);
+    return NextResponse.json(
+      { ok: false, error: 'Could not reach the database. Please try again.' },
+      { status: 502 }
+    );
+  }
+}

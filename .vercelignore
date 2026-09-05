@@ -1,0 +1,7 @@
+../source
+shots/
+scripts/e2e.mjs
+scripts/audit.mjs
+scripts/shots.mjs
+scripts/mobile.mjs
+scripts/restyle.mjs
