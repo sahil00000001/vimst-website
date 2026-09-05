@@ -2,11 +2,11 @@
 
 A rebuild of [sahil00000001/MGIMST](https://github.com/sahil00000001/MGIMST) — 70 hand-written
 static HTML pages — as a Next.js App Router site, plus an admin portal that publishes semester
-results from a MongoDB database.
+results from a PostgreSQL (Supabase) database.
 
 ```bash
 npm install
-cp .env.example .env.local     # then fill in MONGODB_URI and ADMIN_SESSION_SECRET
+cp .env.example .env.local     # then fill in DATABASE_URL and ADMIN_SESSION_SECRET
 npm run content                # optimise assets + extract content from ../source (once)
 npm run seed:admin             # create the first admin account
 npm run dev                    # http://localhost:3000
@@ -21,7 +21,7 @@ npm run dev                    # http://localhost:3000
 Everything the app needs is listed in [`.env.example`](.env.example). The two required values:
 
 ```bash
-MONGODB_URI="mongodb+srv://USER:PASSWORD@cluster.mongodb.net/?retryWrites=true&w=majority"
+DATABASE_URL="postgresql://postgres.<ref>:<password>@aws-0-<region>.pooler.supabase.com:6543/postgres"
 ADMIN_SESSION_SECRET="<64 hex characters>"
 ```
 
@@ -31,8 +31,12 @@ Generate the session secret with:
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
 
-> URL-encode special characters in the Mongo password — `@` becomes `%40`, `#` becomes `%23`.
-> An un-encoded `@` is the single most common reason a connection string fails.
+> **Use the transaction pooler host**, from Supabase → Connect → *Transaction pooler*. The
+> direct `db.<ref>.supabase.co` host resolves to IPv6 only and is unreachable from Vercel and
+> from most networks.
+>
+> URL-encode special characters in the password — `@` becomes `%40`, `#` becomes `%23`. An
+> un-encoded `@` is the single most common reason a connection string fails.
 
 ### First admin account
 
@@ -50,28 +54,33 @@ Sign in at `/admin/login`.
 
 1. Push this `web/` directory to a Git repository.
 2. In Vercel: **New Project → Import**. It detects Next.js on its own; `vercel.json` pins the
-   region to `bom1` (Mumbai) and gives the bulk-upload function a 60-second budget.
+   region to `hnd1` (Tokyo, beside the database) and gives bulk upload a 60-second budget.
 3. Add the environment variables under **Settings → Environment Variables**, for Production,
    Preview and Development:
 
    | Variable | Required | Notes |
    | --- | --- | --- |
-   | `MONGODB_URI` | yes | Atlas connection string |
-   | `MONGODB_DB` | no | defaults to `mgimst` |
+   | `DATABASE_URL` | yes | Supabase **transaction pooler** connection string |
+   | `DATABASE_SCHEMA` | no | defaults to `public` |
    | `ADMIN_SESSION_SECRET` | yes | 32+ characters |
    | `NEXT_PUBLIC_SITE_URL` | recommended | your live URL, used by sitemap and metadata |
    | `RESEND_API_KEY`, `ENQUIRY_TO`, `ENQUIRY_FROM` | no | server-side enquiry email |
    | `NEXT_PUBLIC_SOCIAL_*` | no | footer social links |
 
-4. **In MongoDB Atlas → Network Access, allow `0.0.0.0/0`.** Vercel's functions do not have
-   fixed outbound IPs, so an IP allowlist will block them. Restrict access with a strong
-   database password and a least-privilege database user instead.
-5. Deploy, then run `npm run seed:admin` locally with the production `MONGODB_URI` to create the
-   admin account in the live database.
+4. Deploy, then run `npm run seed:admin` locally with the production `DATABASE_URL` to create the
+   schema and the admin account.
 
-Serverless functions are recycled constantly, so the Mongo client is cached on the global object
-(`src/lib/db.ts`) — without that, each invocation opens a new connection pool and Atlas runs out
-of connections.
+Three things about pooled Postgres shaped `src/lib/db.ts`, all of them the kind that only show up
+under load or in production:
+
+- The client is cached on the global object. Serverless functions are recycled constantly, and
+  without the cache each invocation opens a new pool until the database refuses connections.
+- `prepare: false`. Transaction pooling does not support prepared statements.
+- **Every query names its schema explicitly.** The pooler ignores the `search_path` startup
+  parameter and can hand back a backend whose search path was set by an unrelated session, so
+  relying on it silently breaks. `DATABASE_SCHEMA` feeds that qualification.
+- Queries within a request run **sequentially**, never `Promise.all`. Pipelining independent
+  queries down one pooled connection stalls.
 
 ---
 
@@ -226,7 +235,7 @@ a hydration error.
 npm run build
 npm start &
 npm run audit     # every route, both widths
-npm run e2e       # the whole backend against a throwaway MongoDB
+npm run e2e       # the whole backend against a throwaway schema in the real database
 ```
 
 **`scripts/audit.mjs`** walks all 69 routes at 1440px and 390px and checks console errors, failed
@@ -234,10 +243,12 @@ requests, broken images, horizontal overflow, heading structure, dead internal l
 interactive element: links with no destination, buttons and fields with no accessible name, and
 tap targets under 40px on a phone. Current state: **5041 interactive elements, no issues.**
 
-**`scripts/e2e.mjs`** boots an in-memory MongoDB, starts the production server against it and
-drives the real HTTP API — sign in, bulk upload a workbook containing deliberately malformed rows,
-re-upload to prove idempotency, read back through the admin endpoints, then look a result up the
-way a student would, including the cases that must be refused. **37 assertions, all passing.**
+**`scripts/e2e.mjs`** creates a throwaway schema in the real database, starts the production
+server against it and drives the real HTTP API — sign in, bulk upload a workbook containing
+deliberately malformed rows, re-upload to prove idempotency, read back through the admin
+endpoints, then look a result up the way a student would, including the cases that must be
+refused. The schema is dropped afterwards, so live student data is never touched.
+**40 assertions, all passing.**
 
 Both need Chrome at the path set at the top of the file.
 
@@ -258,7 +269,7 @@ src/
     admin/           portal UI
     Motion.tsx       shared animation primitives
   lib/
-    db.ts            Mongo connection, documents, normalisation
+    db.ts            Postgres connection, schema, row mapping, normalisation
     auth.ts          sessions
     import.ts        workbook parsing and template generation
     accents.ts       the colour system

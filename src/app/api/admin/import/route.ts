@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { requireSession } from '@/lib/auth';
-import { ensureIndexes, results, students } from '@/lib/db';
+import { asPool, db, ensureSchema, tables } from '@/lib/db';
 import { parseWorkbook } from '@/lib/import';
 
 export const runtime = 'nodejs';
@@ -12,11 +12,12 @@ const MAX_BYTES = 8 * 1024 * 1024;
 /**
  * Bulk upload.
  *
- * Posting with `mode=preview` parses and validates without writing anything, so
- * the operator sees exactly what will change and which rows were rejected
- * before committing. `mode=commit` performs the writes as bulk upserts, keyed
- * on rollNo and (rollNo, semester) so re-uploading a corrected sheet updates
- * records rather than duplicating them.
+ * `mode=preview` parses and validates without writing anything, so the operator
+ * sees exactly what will change and which rows were rejected before committing.
+ * `mode=commit` writes inside a single transaction — either the whole upload
+ * lands or none of it does — using upserts keyed on roll number and
+ * (roll number, semester), so re-uploading a corrected sheet updates records
+ * rather than duplicating them.
  */
 export async function POST(request: Request) {
   const guard = await requireSession();
@@ -76,26 +77,27 @@ export async function POST(request: Request) {
     });
   }
 
+  const sql = db();
+  const t = tables(sql);
+
+  const rollNos = [
+    ...new Set([...parsed.students.map((x) => x.rollNo), ...parsed.results.map((x) => x.rollNo)]),
+  ];
+
   if (mode === 'preview') {
     try {
-      const s = await students();
-      const rollNos = [
-        ...new Set([
-          ...parsed.students.map((x) => x.rollNo),
-          ...parsed.results.map((x) => x.rollNo),
-        ]),
-      ];
-      const known = await s.find({ rollNo: { $in: rollNos } }, { projection: { rollNo: 1 } }).toArray();
-      const knownSet = new Set(known.map((k) => k.rollNo));
-
+      await ensureSchema();
+      const known = await sql<{ roll_no: string }[]>`
+        select roll_no from ${t.students} where roll_no = any(${rollNos})
+      `;
+      const knownSet = new Set(known.map((k) => k.roll_no));
       const incoming = new Set(parsed.students.map((x) => x.rollNo));
+
       // A result whose student is neither in the file nor already stored has
       // nothing to attach to; flag it rather than writing an orphan.
       const orphans = [
         ...new Set(
-          parsed.results
-            .map((r) => r.rollNo)
-            .filter((r) => !incoming.has(r) && !knownSet.has(r))
+          parsed.results.map((r) => r.rollNo).filter((r) => !incoming.has(r) && !knownSet.has(r))
         ),
       ];
 
@@ -132,59 +134,71 @@ export async function POST(request: Request) {
   /* ---------------- commit ---------------- */
 
   try {
-    await ensureIndexes();
-    const [s, r] = await Promise.all([students(), results()]);
-    const now = new Date();
+    await ensureSchema();
 
-    let studentsWritten = 0;
-    if (parsed.students.length > 0) {
-      const res = await s.bulkWrite(
-        parsed.students.map((student) => ({
-          updateOne: {
-            filter: { rollNo: student.rollNo },
-            update: { $set: { ...student, updatedAt: now }, $setOnInsert: { createdAt: now } },
-            upsert: true,
-          },
-        })),
-        { ordered: false }
-      );
-      studentsWritten = res.upsertedCount + res.modifiedCount;
-    }
+    const outcome = await sql.begin(async (tx) => {
+      const tt = tables(asPool(tx));
+      let studentsWritten = 0;
 
-    // Skip results whose student does not exist after the student writes.
-    const resultRolls = [...new Set(parsed.results.map((x) => x.rollNo))];
-    const existing = await s
-      .find({ rollNo: { $in: resultRolls } }, { projection: { rollNo: 1 } })
-      .toArray();
-    const valid = new Set(existing.map((e) => e.rollNo));
+      for (const s of parsed.students) {
+        const written = await tx`
+          insert into ${tt.students} (roll_no, name, father_name, dob, batch, class_name, branch)
+          values (${s.rollNo}, ${s.name}, ${s.fatherName}, ${s.dob}, ${s.batch}, ${s.className}, ${s.branch})
+          on conflict (roll_no) do update set
+            name        = excluded.name,
+            father_name = excluded.father_name,
+            dob         = excluded.dob,
+            batch       = excluded.batch,
+            class_name  = excluded.class_name,
+            branch      = excluded.branch,
+            updated_at  = now()
+          returning roll_no
+        `;
+        studentsWritten += written.length;
+      }
 
-    const writable = parsed.results.filter((x) => valid.has(x.rollNo));
-    const skipped = parsed.results.filter((x) => !valid.has(x.rollNo));
+      // Skip results whose student does not exist after the student writes.
+      const existing = await tx<{ roll_no: string }[]>`
+        select roll_no from ${tt.students} where roll_no = any(${rollNos})
+      `;
+      const valid = new Set(existing.map((e) => e.roll_no));
 
-    let resultsWritten = 0;
-    if (writable.length > 0) {
-      const res = await r.bulkWrite(
-        writable.map((result) => ({
-          updateOne: {
-            filter: { rollNo: result.rollNo, semester: result.semester },
-            update: { $set: { ...result, updatedAt: now }, $setOnInsert: { createdAt: now } },
-            upsert: true,
-          },
-        })),
-        { ordered: false }
-      );
-      resultsWritten = res.upsertedCount + res.modifiedCount;
-    }
+      const writable = parsed.results.filter((x) => valid.has(x.rollNo));
+      const skipped = parsed.results.filter((x) => !valid.has(x.rollNo));
+
+      let resultsWritten = 0;
+      for (const r of writable) {
+        const written = await tx`
+          insert into ${tt.results} (roll_no, semester, subjects, total_marks, obtained_marks, percentage, final_result, published)
+          values (
+            ${r.rollNo}, ${r.semester}, ${tx.json(r.subjects as never)},
+            ${r.totalMarks}, ${r.obtainedMarks}, ${r.percentage}, ${r.finalResult}, ${r.published}
+          )
+          on conflict (roll_no, semester) do update set
+            subjects       = excluded.subjects,
+            total_marks    = excluded.total_marks,
+            obtained_marks = excluded.obtained_marks,
+            percentage     = excluded.percentage,
+            final_result   = excluded.final_result,
+            published      = excluded.published,
+            updated_at     = now()
+          returning id
+        `;
+        resultsWritten += written.length;
+      }
+
+      return { studentsWritten, resultsWritten, skipped };
+    });
 
     return NextResponse.json({
       ok: true,
       mode: 'commit',
       summary: {
-        studentsWritten,
+        studentsWritten: outcome.studentsWritten,
         studentsInFile: parsed.students.length,
-        resultsWritten,
+        resultsWritten: outcome.resultsWritten,
         resultsInFile: parsed.results.length,
-        skippedResults: skipped.map((x) => `${x.rollNo} (semester ${x.semester})`),
+        skippedResults: outcome.skipped.map((x) => `${x.rollNo} (semester ${x.semester})`),
       },
       issues: parsed.issues,
     });

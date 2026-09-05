@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
 import { requireSession } from '@/lib/auth';
 import {
+  db,
   normaliseRollNo,
   normaliseSemester,
-  results,
-  students,
   summarise,
+  tables,
+  toResult,
   type Result,
   type SubjectMark,
 } from '@/lib/db';
@@ -18,9 +19,7 @@ const PAGE_SIZE = 25;
 /** Validates a result payload and recomputes the totals from its subject rows. */
 export function parseResult(
   body: unknown
-):
-  | { ok: true; data: Omit<Result, 'createdAt' | 'updatedAt'> }
-  | { ok: false; error: string } {
+): { ok: true; data: Omit<Result, 'createdAt' | 'updatedAt' | 'id'> } | { ok: false; error: string } {
   const b = (body ?? {}) as Record<string, unknown>;
 
   const rollNo = normaliseRollNo(b.rollNo);
@@ -61,19 +60,11 @@ export function parseResult(
     });
   }
 
-  if (subjects.length === 0) {
-    return { ok: false, error: 'Add at least one subject.' };
-  }
+  if (subjects.length === 0) return { ok: false, error: 'Add at least one subject.' };
 
   return {
     ok: true,
-    data: {
-      rollNo,
-      semester,
-      subjects,
-      ...summarise(subjects),
-      published: b.published !== false,
-    },
+    data: { rollNo, semester, subjects, ...summarise(subjects), published: b.published !== false },
   };
 }
 
@@ -85,39 +76,35 @@ export async function GET(request: Request) {
   const q = searchParams.get('q')?.trim() ?? '';
   const semester = normaliseSemester(searchParams.get('semester'));
   const page = Math.max(1, Number(searchParams.get('page') ?? 1) || 1);
-
-  const filter: Record<string, unknown> = {};
-  if (q) {
-    const safe = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    filter.rollNo = { $regex: safe, $options: 'i' };
-  }
-  if (semester) filter.semester = semester;
+  const offset = (page - 1) * PAGE_SIZE;
 
   try {
-    const [r, s] = await Promise.all([results(), students()]);
-    const [items, total] = await Promise.all([
-      r
-        .find(filter, {
-          sort: { updatedAt: -1 },
-          skip: (page - 1) * PAGE_SIZE,
-          limit: PAGE_SIZE,
-        })
-        .toArray(),
-      r.countDocuments(filter),
-    ]);
+    const sql = db();
+    const t = tables(sql);
+    const like = `%${q}%`;
 
-    // Attach the student name so the table is readable without a second lookup.
-    const rollNos = [...new Set(items.map((i) => i.rollNo))];
-    const named = await s.find({ rollNo: { $in: rollNos } }).toArray();
-    const nameByRoll = new Map(named.map((n) => [n.rollNo, n.name]));
+    const where = sql`
+      where (${q === ''} or r.roll_no ilike ${like})
+        and (${semester === null} or r.semester = ${semester ?? ''})
+    `;
+
+    // Sequential, not Promise.all: the transaction pooler does not reliably
+    // serve pipelined independent queries on one connection.
+    const rows = await sql`
+      select r.*, s.name as student_name
+      from ${t.results} r
+      left join ${t.students} s on s.roll_no = r.roll_no
+      ${where}
+      order by r.updated_at desc
+      limit ${PAGE_SIZE} offset ${offset}
+    `;
+    const [{ count }] = await sql`select count(*)::int as count from ${t.results} r ${where}`;
+
+    const total = Number(count);
 
     return NextResponse.json({
       ok: true,
-      items: items.map((i) => ({
-        ...i,
-        _id: String(i._id),
-        studentName: nameByRoll.get(i.rollNo) ?? null,
-      })),
+      items: rows.map((r) => ({ ...toResult(r as never), _id: String(r.id) })),
       total,
       page,
       pageSize: PAGE_SIZE,
@@ -143,28 +130,37 @@ export async function POST(request: Request) {
   const parsed = parseResult(body);
   if (!parsed.ok) return NextResponse.json({ ok: false, error: parsed.error }, { status: 422 });
 
-  try {
-    const [r, s] = await Promise.all([results(), students()]);
+  const r = parsed.data;
 
-    const student = await s.findOne({ rollNo: parsed.data.rollNo });
+  try {
+    const sql = db();
+    const t = tables(sql);
+
+    const [student] = await sql`select roll_no from ${t.students} where roll_no = ${r.rollNo}`;
     if (!student) {
       return NextResponse.json(
-        {
-          ok: false,
-          error: `No student with roll number ${parsed.data.rollNo}. Add the student first.`,
-        },
+        { ok: false, error: `No student with roll number ${r.rollNo}. Add the student first.` },
         { status: 422 }
       );
     }
 
-    const now = new Date();
-    await r.updateOne(
-      { rollNo: parsed.data.rollNo, semester: parsed.data.semester },
-      { $set: { ...parsed.data, updatedAt: now }, $setOnInsert: { createdAt: now } },
-      { upsert: true }
-    );
+    await sql`
+      insert into ${t.results} (roll_no, semester, subjects, total_marks, obtained_marks, percentage, final_result, published)
+      values (
+        ${r.rollNo}, ${r.semester}, ${sql.json(r.subjects as never)},
+        ${r.totalMarks}, ${r.obtainedMarks}, ${r.percentage}, ${r.finalResult}, ${r.published}
+      )
+      on conflict (roll_no, semester) do update set
+        subjects       = excluded.subjects,
+        total_marks    = excluded.total_marks,
+        obtained_marks = excluded.obtained_marks,
+        percentage     = excluded.percentage,
+        final_result   = excluded.final_result,
+        published      = excluded.published,
+        updated_at     = now()
+    `;
 
-    return NextResponse.json({ ok: true, result: parsed.data }, { status: 201 });
+    return NextResponse.json({ ok: true, result: r }, { status: 201 });
   } catch (error) {
     console.error('Save result failed:', error);
     return NextResponse.json({ ok: false, error: 'Could not save the result.' }, { status: 502 });

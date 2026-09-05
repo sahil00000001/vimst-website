@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { requireSession } from '@/lib/auth';
-import { normaliseRollNo, results, students } from '@/lib/db';
+import { db, normaliseRollNo, tables, toResult, toStudent } from '@/lib/db';
 import { parseStudent } from '../route';
 
 export const runtime = 'nodejs';
@@ -15,17 +15,21 @@ export async function GET(_request: Request, { params }: Params) {
   const rollNo = normaliseRollNo(decodeURIComponent((await params).rollNo));
 
   try {
-    const [s, r] = await Promise.all([students(), results()]);
-    const student = await s.findOne({ rollNo });
+    const sql = db();
+    const t = tables(sql);
+    const [student] = await sql`select * from ${t.students} where roll_no = ${rollNo}`;
     if (!student) {
       return NextResponse.json({ ok: false, error: 'Student not found.' }, { status: 404 });
     }
-    const studentResults = await r.find({ rollNo }, { sort: { semester: 1 } }).toArray();
+
+    const results = await sql`
+      select * from ${t.results} where roll_no = ${rollNo} order by semester
+    `;
 
     return NextResponse.json({
       ok: true,
-      student: { ...student, _id: String(student._id) },
-      results: studentResults.map((x) => ({ ...x, _id: String(x._id) })),
+      student: { ...toStudent(student as never), _id: rollNo },
+      results: results.map((r) => ({ ...toResult(r as never), _id: String(r.id) })),
     });
   } catch (error) {
     console.error('Get student failed:', error);
@@ -49,24 +53,39 @@ export async function PUT(request: Request, { params }: Params) {
   const parsed = parseStudent({ ...(body as object), rollNo });
   if (!parsed.ok) return NextResponse.json({ ok: false, error: parsed.error }, { status: 422 });
 
-  try {
-    const collection = await students();
-    const update = await collection.updateOne(
-      { rollNo },
-      { $set: { ...parsed.data, updatedAt: new Date() } }
-    );
+  const s = parsed.data;
 
-    if (update.matchedCount === 0) {
+  try {
+    const sql = db();
+    const t = tables(sql);
+    const updated = await sql`
+      update ${t.students} set
+        name        = ${s.name},
+        father_name = ${s.fatherName},
+        dob         = ${s.dob},
+        batch       = ${s.batch},
+        class_name  = ${s.className},
+        branch      = ${s.branch},
+        course_slug = ${s.courseSlug ?? null},
+        updated_at  = now()
+      where roll_no = ${rollNo}
+      returning roll_no
+    `;
+
+    if (updated.length === 0) {
       return NextResponse.json({ ok: false, error: 'Student not found.' }, { status: 404 });
     }
-    return NextResponse.json({ ok: true, student: parsed.data });
+    return NextResponse.json({ ok: true, student: s });
   } catch (error) {
     console.error('Update student failed:', error);
     return NextResponse.json({ ok: false, error: 'Could not save the student.' }, { status: 502 });
   }
 }
 
-/** Deleting a student also removes their results, so nothing is orphaned. */
+/**
+ * Deleting a student removes their results too. That is enforced by the
+ * `on delete cascade` on results.roll_no, so it cannot be half-done.
+ */
 export async function DELETE(_request: Request, { params }: Params) {
   const guard = await requireSession();
   if (!guard.ok) return guard.response;
@@ -74,14 +93,18 @@ export async function DELETE(_request: Request, { params }: Params) {
   const rollNo = normaliseRollNo(decodeURIComponent((await params).rollNo));
 
   try {
-    const [s, r] = await Promise.all([students(), results()]);
-    const deleted = await s.deleteOne({ rollNo });
-    if (deleted.deletedCount === 0) {
+    const sql = db();
+    const t = tables(sql);
+    const [{ count } = { count: 0 }] = await sql`
+      select count(*)::int as count from ${t.results} where roll_no = ${rollNo}
+    `;
+    const deleted = await sql`delete from ${t.students} where roll_no = ${rollNo} returning roll_no`;
+
+    if (deleted.length === 0) {
       return NextResponse.json({ ok: false, error: 'Student not found.' }, { status: 404 });
     }
-    const removedResults = await r.deleteMany({ rollNo });
 
-    return NextResponse.json({ ok: true, removedResults: removedResults.deletedCount });
+    return NextResponse.json({ ok: true, removedResults: Number(count) });
   } catch (error) {
     console.error('Delete student failed:', error);
     return NextResponse.json(

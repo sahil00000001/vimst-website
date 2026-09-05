@@ -1,12 +1,13 @@
 import { NextResponse } from 'next/server';
 import {
+  db,
   isDatabaseConfigured,
   normaliseDob,
   normaliseRollNo,
   normaliseSemester,
   numberToWords,
-  results,
-  students,
+  tables,
+  type SubjectMark,
 } from '@/lib/db';
 
 export const runtime = 'nodejs';
@@ -68,10 +69,7 @@ export async function GET(request: Request) {
   const semester = normaliseSemester(searchParams.get('semester'));
 
   if (!name || !rollNo || !dob || !semester) {
-    return NextResponse.json(
-      { ok: false, error: 'Please fill in every field.' },
-      { status: 422 }
-    );
+    return NextResponse.json({ ok: false, error: 'Please fill in every field.' }, { status: 422 });
   }
 
   if (!isDatabaseConfigured()) {
@@ -85,45 +83,43 @@ export async function GET(request: Request) {
   }
 
   try {
-    const [s, r] = await Promise.all([students(), results()]);
+    const sql = db();
+    const t = tables(sql);
 
-    const student = await s.findOne({ rollNo, dob });
+    const [student] = await sql`
+      select * from ${t.students} where roll_no = ${rollNo} and dob = ${dob}
+    `;
     if (!student) return NextResponse.json(NOT_FOUND, { status: 404 });
 
     if (canonicalName(student.name) !== canonicalName(name)) {
       return NextResponse.json(NOT_FOUND, { status: 404 });
     }
 
-    const record = await r.findOne({ rollNo, semester });
-    if (!record) {
+    const [record] = await sql`
+      select * from ${t.results} where roll_no = ${rollNo} and semester = ${semester}
+    `;
+    if (!record || !record.published) {
       return NextResponse.json(
-        {
-          ok: false,
-          error: `No result has been published for semester ${semester} yet.`,
-        },
-        { status: 404 }
-      );
-    }
-    if (!record.published) {
-      return NextResponse.json(
-        { ok: false, error: `The semester ${semester} result has not been published yet.` },
+        { ok: false, error: `No result has been published for semester ${semester} yet.` },
         { status: 404 }
       );
     }
 
+    const subjects: SubjectMark[] = record.subjects ?? [];
+
     const payload: StudentResult = {
       name: student.name,
       dob: student.dob,
-      fatherName: student.fatherName,
+      fatherName: student.father_name,
       batch: student.batch,
       semester: record.semester,
-      rollNo: student.rollNo,
-      class: student.className,
+      rollNo: student.roll_no,
+      class: student.class_name,
       branch: student.branch,
-      totalMarksInWord: numberToWords(record.obtainedMarks),
-      percentage: `${record.percentage}%`,
-      finalResult: record.finalResult,
-      result: record.subjects.map((subject) => ({
+      totalMarksInWord: numberToWords(Number(record.obtained_marks)),
+      percentage: `${Number(record.percentage)}%`,
+      finalResult: record.final_result,
+      result: subjects.map((subject) => ({
         subjectCode: subject.subjectCode,
         subject: subject.subject,
         totalMarks: String(subject.totalMarks),

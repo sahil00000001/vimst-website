@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { admins, isDatabaseConfigured } from '@/lib/db';
+import { db, isDatabaseConfigured, tables } from '@/lib/db';
 import {
   SESSION_COOKIE,
   createSessionToken,
@@ -13,7 +13,7 @@ export const runtime = 'nodejs';
 /**
  * Admin sign-in.
  *
- * Credentials live in the `admins` collection (seeded by `npm run seed:admin`).
+ * Credentials live in the `admins` table (seeded by `npm run seed:admin`).
  * The same generic message is returned for an unknown user and a wrong
  * password, so the form cannot be used to discover valid usernames.
  */
@@ -26,7 +26,7 @@ export async function POST(request: Request) {
   }
   if (!isDatabaseConfigured()) {
     return NextResponse.json(
-      { ok: false, error: 'MONGODB_URI is not configured on the server.' },
+      { ok: false, error: 'DATABASE_URL is not configured on the server.' },
       { status: 503 }
     );
   }
@@ -52,22 +52,22 @@ export async function POST(request: Request) {
   const INVALID = { ok: false, error: 'Those credentials were not recognised.' };
 
   try {
-    const collection = await admins();
-    const admin = await collection.findOne({ username: user });
+    const sql = db();
+    const t = tables(sql);
+    const [admin] = await sql`
+      select username, name, password_hash from ${t.admins} where username = ${user}
+    `;
 
     // Hash a throwaway value when the user is unknown, so both paths take a
     // comparable amount of time.
-    const hash = admin?.passwordHash ?? '$2a$12$invalidinvalidinvalidinvalidinvalidinvalidinvalidinv';
+    const hash = admin?.password_hash ?? '$2a$12$invalidinvalidinvalidinvalidinvalidinvalidinvalidinv';
     const valid = await bcrypt.compare(pass, hash);
 
     if (!admin || !valid) return NextResponse.json(INVALID, { status: 401 });
 
     const token = await createSessionToken({ username: admin.username, name: admin.name });
 
-    await collection.updateOne(
-      { username: admin.username },
-      { $set: { lastLoginAt: new Date() } }
-    );
+    await sql`update ${t.admins} set last_login_at = now() where username = ${admin.username}`;
 
     const response = NextResponse.json({
       ok: true,

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { requireSession } from '@/lib/auth';
-import { results, students } from '@/lib/db';
+import { db, tables } from '@/lib/db';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -11,35 +11,45 @@ export async function GET() {
   if (!guard.ok) return guard.response;
 
   try {
-    const [s, r] = await Promise.all([students(), results()]);
+    const sql = db();
+    const t = tables(sql);
 
-    const [studentCount, resultCount, publishedCount, batches, bySemester, recent] =
-      await Promise.all([
-        s.countDocuments(),
-        r.countDocuments(),
-        r.countDocuments({ published: true }),
-        s.distinct('batch'),
-        r
-          .aggregate([{ $group: { _id: '$semester', count: { $sum: 1 } } }, { $sort: { _id: 1 } }])
-          .toArray(),
-        r.find({}, { sort: { updatedAt: -1 }, limit: 8 }).toArray(),
-      ]);
+    // Sequential, not Promise.all: the transaction pooler does not reliably
+    // serve pipelined independent queries on one connection.
+    const [counts] = await sql`
+      select
+        (select count(*)::int from ${t.students})                  as student_count,
+        (select count(*)::int from ${t.results})                   as result_count,
+        (select count(*)::int from ${t.results} where published)   as published_count,
+        (select count(distinct batch)::int from ${t.students}
+           where batch <> '')                                 as batch_count
+    `;
+
+    const bySemester = await sql`
+      select semester, count(*)::int as count
+      from ${t.results} group by semester order by semester
+    `;
+
+    const recent = await sql`
+      select roll_no, semester, percentage, final_result, published, updated_at
+      from ${t.results} order by updated_at desc limit 8
+    `;
 
     return NextResponse.json({
       ok: true,
       stats: {
-        studentCount,
-        resultCount,
-        publishedCount,
-        batchCount: batches.filter(Boolean).length,
-        bySemester: bySemester.map((b) => ({ semester: b._id, count: b.count })),
+        studentCount: Number(counts.student_count),
+        resultCount: Number(counts.result_count),
+        publishedCount: Number(counts.published_count),
+        batchCount: Number(counts.batch_count),
+        bySemester: bySemester.map((b) => ({ semester: b.semester, count: Number(b.count) })),
         recent: recent.map((x) => ({
-          rollNo: x.rollNo,
+          rollNo: x.roll_no,
           semester: x.semester,
-          percentage: x.percentage,
-          finalResult: x.finalResult,
+          percentage: Number(x.percentage),
+          finalResult: x.final_result,
           published: x.published,
-          updatedAt: x.updatedAt,
+          updatedAt: x.updated_at,
         })),
       },
     });

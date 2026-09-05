@@ -1,70 +1,162 @@
-import { MongoClient, type Db, type Collection } from 'mongodb';
+import postgres from 'postgres';
 
 /**
- * MongoDB connection.
+ * PostgreSQL (Supabase) connection.
  *
  * Serverless functions are recycled constantly, so the client is cached on the
- * global object: without that, every invocation opens a fresh connection pool
- * and the cluster runs out of connections under any real load.
+ * global object: without it, every invocation opens a fresh pool and the
+ * database runs out of connections under any real load.
+ *
+ * The connection string must point at Supabase's **transaction pooler**
+ * (`...pooler.supabase.com:6543`), not the direct `db.<ref>.supabase.co` host —
+ * that one resolves to IPv6 only, which Vercel's functions cannot reach.
+ * Transaction pooling does not support prepared statements, hence
+ * `prepare: false`.
  */
 
-const URI = process.env.MONGODB_URI;
-const DB_NAME = process.env.MONGODB_DB ?? 'mgimst';
+const URL = process.env.DATABASE_URL;
 
 declare global {
   // eslint-disable-next-line no-var
-  var _mgimstMongo: { client: MongoClient; promise: Promise<MongoClient> } | undefined;
+  var _mgimstSql: ReturnType<typeof postgres> | undefined;
 }
 
 export class DatabaseNotConfiguredError extends Error {
   constructor() {
     super(
-      'MONGODB_URI is not set. Add it to .env.local (or the Vercel project settings) to enable the database.'
+      'DATABASE_URL is not set. Add it to .env.local (or the Vercel project settings) to enable the database.'
     );
     this.name = 'DatabaseNotConfiguredError';
   }
 }
 
 export function isDatabaseConfigured() {
-  return Boolean(URI);
+  return Boolean(URL);
 }
 
-function getClientPromise(): Promise<MongoClient> {
-  if (!URI) throw new DatabaseNotConfiguredError();
+export function db() {
+  if (!URL) throw new DatabaseNotConfiguredError();
 
-  if (!global._mgimstMongo) {
-    const client = new MongoClient(URI, {
-      maxPoolSize: 10,
-      serverSelectionTimeoutMS: 8000,
-      retryWrites: true,
+  if (!global._mgimstSql) {
+    global._mgimstSql = postgres(URL, {
+      // One connection per function instance; the pooler multiplexes the rest.
+      max: 1,
+      idle_timeout: 20,
+      connect_timeout: 15,
+      prepare: false,
+      ssl: 'require',
+      onnotice: () => {},
     });
-    global._mgimstMongo = { client, promise: client.connect() };
   }
-  return global._mgimstMongo.promise;
+  return global._mgimstSql;
 }
 
-export async function getDb(): Promise<Db> {
-  const client = await getClientPromise();
-  return client.db(DB_NAME);
+/**
+ * Schema-qualified table references.
+ *
+ * The connection pooler ignores the `search_path` startup parameter and can
+ * hand back a backend whose search path was set by an unrelated session, so
+ * relying on it is not safe. Every query names its schema explicitly instead.
+ * `DATABASE_SCHEMA` lets the test suite point the same code at a throwaway
+ * schema without changing a single query.
+ */
+export const SCHEMA = process.env.DATABASE_SCHEMA ?? 'public';
+
+export type Pool = ReturnType<typeof postgres>;
+
+/**
+ * A transaction handle builds queries exactly like the pool does, but
+ * postgres.js types `TransactionSql` as its own interface rather than a
+ * subtype of `Sql`. Inside a transaction, pass `asPool(tx)`.
+ */
+export const asPool = (tx: unknown) => tx as Pool;
+
+export function tables(sql: Pool) {
+  return {
+    students: sql`${sql(SCHEMA)}.students`,
+    results: sql`${sql(SCHEMA)}.results`,
+    admins: sql`${sql(SCHEMA)}.admins`,
+  };
 }
 
 /* ------------------------------------------------------------------
-   Documents
+   Schema
+   ------------------------------------------------------------------ */
+
+/**
+ * Creates the tables and indexes the app relies on. Safe to run repeatedly.
+ *
+ * `dob` is text rather than `date` deliberately: it is only ever compared for
+ * exact equality against what a student types, and keeping it as a normalised
+ * 'YYYY-MM-DD' string removes every timezone conversion between the browser,
+ * the server and the database.
+ */
+export async function ensureSchema() {
+  const sql = db();
+  const t = tables(sql);
+
+  await sql`
+    create table if not exists ${t.students} (
+      roll_no      text primary key,
+      name         text not null,
+      father_name  text not null default '',
+      dob          text not null,
+      batch        text not null default '',
+      class_name   text not null default '',
+      branch       text not null default '',
+      course_slug  text,
+      created_at   timestamptz not null default now(),
+      updated_at   timestamptz not null default now()
+    )
+  `;
+
+  await sql`
+    create table if not exists ${t.results} (
+      id             bigint generated always as identity primary key,
+      roll_no        text not null references ${t.students}(roll_no) on delete cascade,
+      semester       text not null,
+      subjects       jsonb not null default '[]'::jsonb,
+      total_marks    integer not null default 0,
+      obtained_marks integer not null default 0,
+      percentage     numeric(5,2) not null default 0,
+      final_result   text not null default 'FAIL',
+      published      boolean not null default true,
+      created_at     timestamptz not null default now(),
+      updated_at     timestamptz not null default now(),
+      unique (roll_no, semester)
+    )
+  `;
+
+  await sql`
+    create table if not exists ${t.admins} (
+      username      text primary key,
+      password_hash text not null,
+      name          text not null,
+      created_at    timestamptz not null default now(),
+      last_login_at timestamptz
+    )
+  `;
+
+  await sql`create index if not exists students_batch_idx on ${t.students} (batch)`;
+  await sql`create index if not exists students_name_idx on ${t.students} (lower(name))`;
+  await sql`create index if not exists results_roll_idx on ${t.results} (roll_no)`;
+}
+
+/* ------------------------------------------------------------------
+   Row types
    ------------------------------------------------------------------ */
 
 export type Student = {
   rollNo: string;
   name: string;
   fatherName: string;
-  /** Stored as YYYY-MM-DD so it compares and sorts as a plain string. */
   dob: string;
   batch: string;
   className: string;
   branch: string;
-  /** Optional link to a course slug in the site catalogue. */
-  courseSlug?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  courseSlug?: string | null;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 export type SubjectMark = {
@@ -75,6 +167,7 @@ export type SubjectMark = {
 };
 
 export type Result = {
+  id?: string;
   rollNo: string;
   semester: string;
   subjects: SubjectMark[];
@@ -83,45 +176,74 @@ export type Result = {
   percentage: number;
   finalResult: string;
   published: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 export type Admin = {
   username: string;
   passwordHash: string;
   name: string;
-  createdAt: Date;
-  lastLoginAt?: Date;
 };
 
-export async function students(): Promise<Collection<Student>> {
-  return (await getDb()).collection<Student>('students');
-}
+/* snake_case in the database, camelCase in the app. */
 
-export async function results(): Promise<Collection<Result>> {
-  return (await getDb()).collection<Result>('results');
-}
+type StudentRow = {
+  roll_no: string;
+  name: string;
+  father_name: string;
+  dob: string;
+  batch: string;
+  class_name: string;
+  branch: string;
+  course_slug: string | null;
+  created_at?: Date;
+  updated_at?: Date;
+};
 
-export async function admins(): Promise<Collection<Admin>> {
-  return (await getDb()).collection<Admin>('admins');
-}
+export const toStudent = (r: StudentRow): Student => ({
+  rollNo: r.roll_no,
+  name: r.name,
+  fatherName: r.father_name,
+  dob: r.dob,
+  batch: r.batch,
+  className: r.class_name,
+  branch: r.branch,
+  courseSlug: r.course_slug,
+  createdAt: r.created_at,
+  updatedAt: r.updated_at,
+});
 
-/**
- * Creates the indexes the app relies on. Safe to call repeatedly -- Mongo
- * ignores a createIndex for an index that already exists.
- */
-export async function ensureIndexes() {
-  const [s, r, a] = await Promise.all([students(), results(), admins()]);
-  await Promise.all([
-    s.createIndex({ rollNo: 1 }, { unique: true }),
-    s.createIndex({ name: 'text', rollNo: 'text' }),
-    s.createIndex({ batch: 1 }),
-    r.createIndex({ rollNo: 1, semester: 1 }, { unique: true }),
-    r.createIndex({ rollNo: 1 }),
-    a.createIndex({ username: 1 }, { unique: true }),
-  ]);
-}
+type ResultRow = {
+  id: string;
+  roll_no: string;
+  semester: string;
+  subjects: SubjectMark[];
+  total_marks: number;
+  obtained_marks: number;
+  percentage: string | number;
+  final_result: string;
+  published: boolean;
+  created_at?: Date;
+  updated_at?: Date;
+  student_name?: string | null;
+};
+
+export const toResult = (r: ResultRow): Result & { studentName?: string | null } => ({
+  id: String(r.id),
+  rollNo: r.roll_no,
+  semester: r.semester,
+  subjects: r.subjects ?? [],
+  totalMarks: Number(r.total_marks),
+  obtainedMarks: Number(r.obtained_marks),
+  // numeric() comes back as a string, so it keeps its precision in transit.
+  percentage: Number(r.percentage),
+  finalResult: r.final_result,
+  published: r.published,
+  createdAt: r.created_at,
+  updatedAt: r.updated_at,
+  ...(r.student_name !== undefined ? { studentName: r.student_name } : {}),
+});
 
 /* ------------------------------------------------------------------
    Shared helpers
@@ -178,26 +300,9 @@ export function normaliseSemester(value: unknown): string | null {
 }
 
 const ONES = [
-  '',
-  'One',
-  'Two',
-  'Three',
-  'Four',
-  'Five',
-  'Six',
-  'Seven',
-  'Eight',
-  'Nine',
-  'Ten',
-  'Eleven',
-  'Twelve',
-  'Thirteen',
-  'Fourteen',
-  'Fifteen',
-  'Sixteen',
-  'Seventeen',
-  'Eighteen',
-  'Nineteen',
+  '', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten',
+  'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen',
+  'Eighteen', 'Nineteen',
 ];
 const TENS = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
 
@@ -235,9 +340,7 @@ export function summarise(subjects: SubjectMark[]) {
   const percentage = totalMarks > 0 ? Math.round((obtainedMarks / totalMarks) * 10000) / 100 : 0;
 
   // A subject scoring under 35% fails the semester.
-  const failed = subjects.some(
-    (s) => s.totalMarks > 0 && s.obtainedMarks / s.totalMarks < 0.35
-  );
+  const failed = subjects.some((s) => s.totalMarks > 0 && s.obtainedMarks / s.totalMarks < 0.35);
 
   return {
     totalMarks,
