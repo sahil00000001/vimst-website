@@ -4,11 +4,14 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { ROLE_LABEL, type Role } from '@/lib/roles';
 import { Media } from '../Media';
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-const NAV = [
+type NavEntry = { href: string; label: string; d: string; management?: boolean };
+
+const NAV: NavEntry[] = [
   {
     href: '/admin',
     label: 'Dashboard',
@@ -29,13 +32,19 @@ const NAV = [
     label: 'Bulk upload',
     d: 'M10 13.5V3.5m0 0L6.5 7M10 3.5 13.5 7M3.5 13v3a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-3',
   },
+  {
+    href: '/admin/staff',
+    label: 'Staff',
+    management: true,
+    d: 'M7.5 9.5a2.75 2.75 0 1 0 0-5.5 2.75 2.75 0 0 0 0 5.5Zm6 0a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5ZM2 17c0-2.8 2.5-4.5 5.5-4.5S13 14.2 13 17m2-4.4c1.8.4 3 1.6 3 3.4',
+  },
 ];
 
 export function AdminShell({
   admin,
   children,
 }: {
-  admin: { username: string; name: string };
+  admin: { username: string; name: string; role: Role };
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
@@ -73,7 +82,7 @@ export function AdminShell({
       </div>
 
       <nav className="flex-1 space-y-1 p-4" aria-label="Admin sections">
-        {NAV.map((item) => {
+        {NAV.filter((item) => !item.management || admin.role === 'management').map((item) => {
           const active = isActive(item.href);
           return (
             <Link
@@ -122,7 +131,9 @@ export function AdminShell({
             <p className="truncate text-[length:var(--text-sm)] font-medium text-ink">
               {admin.name}
             </p>
-            <p className="truncate text-[length:var(--text-2xs)] text-mist">{admin.username}</p>
+            <p className="truncate text-[length:var(--text-2xs)] text-mist">
+              {ROLE_LABEL[admin.role]} · {admin.username}
+            </p>
           </div>
         </div>
         <div className="grid gap-2">

@@ -149,12 +149,15 @@ try {
     );
     create table ${SCHEMA}.admins (
       username text primary key, password_hash text not null, name text not null,
+      role text not null default 'teacher',
       created_at timestamptz not null default now(), last_login_at timestamptz
     );
   `);
+  const hash = await bcrypt.hash('correct-horse', 12);
   await admin.unsafe(
-    `insert into ${SCHEMA}.admins (username, name, password_hash) values ($1, $2, $3)`,
-    ['tester', 'Tester', await bcrypt.hash('correct-horse', 12)]
+    `insert into ${SCHEMA}.admins (username, name, role, password_hash) values
+       ($1, $2, 'management', $3), ($4, $5, 'teacher', $3)`,
+    ['tester', 'Tester', hash, 'teachertester', 'Teacher Tester']
   );
 
   console.log('Starting the production server…');
@@ -273,30 +276,56 @@ try {
     check('the student name is joined onto the result', json.items?.[0]?.studentName === 'Imran Khan');
   }
 
-  console.log('\nPUBLIC VERIFICATION');
+  console.log('\nPUBLIC LOOKUP');
   const lookup = (params) =>
     fetch(`${BASE}/api/verify-enrollment?${new URLSearchParams(params)}`);
+  const ID = { rollNo: 'MG2024001', dob: '2004-03-08' };
   {
-    const res = await lookup({ name: 'Asha Rao', rollNo: 'MG2024001', dob: '2004-03-08', semester: 'I' });
-    const json = await res.json();
-    check('a student can look up their own result', json.ok === true, json.error);
-    check('the marksheet lists all 3 subjects', json.data?.result?.length === 3);
-    check('the percentage is computed', json.data?.percentage === '75%', json.data?.percentage);
-    check('marks are spelled out in words', json.data?.totalMarksInWord === 'Two Hundred and Twenty Five', json.data?.totalMarksInWord);
+    // No semester: the student, plus everything published for them.
+    const json = await (await lookup(ID)).json();
+    check('enrollment number + date of birth finds the student', json.ok === true, json.error);
+    check('the student name comes back', json.student?.name === 'Asha Rao');
+    check(
+      'published semesters are listed',
+      json.semesters?.length === 1 && json.semesters[0].semester === 'I',
+      JSON.stringify(json.semesters)
+    );
+  }
+  {
+    const json = await (await lookup({ ...ID, semester: 'I' })).json();
+    check('a student can open a semester marksheet', json.ok === true, json.error);
+    check('the marksheet lists all 3 subjects', json.data?.subjects?.length === 3);
+    check('the percentage is computed', json.data?.percentage === 75, String(json.data?.percentage));
+    check(
+      'marks are spelled out in words',
+      json.data?.totalMarksInWord === 'Two Hundred and Twenty Five',
+      json.data?.totalMarksInWord
+    );
     check('the final result is PASS', json.data?.finalResult === 'PASS');
   }
-  check(
-    'a mismatched name is refused',
-    (await lookup({ name: 'Imran Khan', rollNo: 'MG2024001', dob: '2004-03-08', semester: 'I' })).status === 404
-  );
-  check(
-    'a wrong date of birth is refused',
-    (await lookup({ name: 'Asha Rao', rollNo: 'MG2024001', dob: '1999-01-01', semester: 'I' })).status === 404
-  );
+  check('a wrong date of birth is refused', (await lookup({ rollNo: 'MG2024001', dob: '1999-01-01' })).status === 404);
+  check('an unknown enrollment number is refused', (await lookup({ rollNo: 'NOPE', dob: '2004-03-08' })).status === 404);
   {
-    const res = await lookup({ name: 'Asha Rao', rollNo: 'MG2024001', dob: '2004-03-08', semester: 'VIII' });
+    const res = await lookup({ ...ID, semester: 'VIII' });
     const json = await res.json();
     check('a semester with nothing published says so', res.status === 404 && /published/i.test(json.error ?? ''), json.error);
+  }
+
+  console.log('\nPDF MARKSHEET');
+  {
+    const res = await fetch(`${BASE}/api/result-pdf?${new URLSearchParams({ ...ID, semester: 'I' })}`);
+    const buf = Buffer.from(await res.arrayBuffer());
+    check('the PDF downloads', res.ok && buf.length > 2000, `${res.status}, ${buf.length} bytes`);
+    check('it really is a PDF', buf.subarray(0, 5).toString() === '%PDF-', buf.subarray(0, 8).toString());
+    check(
+      'it is sent as an attachment named for the student',
+      (res.headers.get('content-disposition') ?? '').includes('MGIMST-marksheet-MG2024001-semester-I.pdf'),
+      res.headers.get('content-disposition')
+    );
+    const wrong = await fetch(
+      `${BASE}/api/result-pdf?${new URLSearchParams({ rollNo: 'MG2024001', dob: '1999-01-01', semester: 'I' })}`
+    );
+    check('the PDF endpoint refuses a wrong date of birth', wrong.status === 404);
   }
 
   console.log('\nHIDDEN RESULTS');
@@ -311,8 +340,118 @@ try {
     check('a result can be marked hidden', (await put.json()).ok === true);
     check(
       'a hidden result is not served publicly',
-      (await lookup({ name: 'Asha Rao', rollNo: 'MG2024001', dob: '2004-03-08', semester: 'I' })).status === 404
+      (await lookup({ rollNo: 'MG2024001', dob: '2004-03-08', semester: 'I' })).status === 404
     );
+    check(
+      'a hidden result is not downloadable either',
+      (
+        await fetch(
+          `${BASE}/api/result-pdf?${new URLSearchParams({ rollNo: 'MG2024001', dob: '2004-03-08', semester: 'I' })}`
+        )
+      ).status === 404
+    );
+    // Publish it again so the cascade check below still has a result to remove.
+    const back = await call(`/api/admin/results/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ rollNo: 'MG2024001', semester: 'I', published: true, subjects: list.items[0].subjects }),
+    });
+    check('it can be published again', (await back.json()).ok === true);
+  }
+
+  console.log('\nROLES');
+  {
+    const json = await (await call('/api/admin/staff')).json();
+    check('management can list staff', json.ok === true, json.error);
+    check('both seeded accounts are listed', json.items?.length === 2, JSON.stringify(json.items?.map((i) => i.username)));
+  }
+  {
+    const res = await call('/api/admin/staff', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: 'newteacher', name: 'New Teacher', role: 'teacher' }),
+    });
+    const json = await res.json();
+    check('management can create a teacher', json.ok === true, json.error);
+    check('a password is generated and returned once', typeof json.password === 'string' && json.password.length >= 8);
+  }
+  {
+    const res = await call('/api/admin/staff/tester', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: 'Tester', role: 'teacher' }),
+    });
+    check('the last management account cannot be demoted', res.status === 409, `got ${res.status}`);
+  }
+  check(
+    'you cannot delete the account you are signed in with',
+    (await call('/api/admin/staff/tester', { method: 'DELETE' })).status === 409
+  );
+
+  console.log('\nTEACHER PERMISSIONS');
+  {
+    const managementCookie = cookie;
+    cookie = '';
+    const login = await call('/api/admin/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: 'teachertester', password: 'correct-horse' }),
+    });
+    check('a teacher can sign in', (await login.json()).ok === true);
+    check('a teacher can read students', (await call('/api/admin/students')).status === 200);
+    check('a teacher can read results', (await call('/api/admin/results')).status === 200);
+    check('a teacher can export', (await call('/api/admin/export')).status === 200);
+    check('a teacher cannot list staff', (await call('/api/admin/staff')).status === 403);
+    check(
+      'a teacher cannot create an account',
+      (
+        await call('/api/admin/staff', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: 'sneaky', name: 'Sneaky', role: 'management' }),
+        })
+      ).status === 403
+    );
+    check(
+      'a teacher cannot delete a student',
+      (await call('/api/admin/students/MG2024002', { method: 'DELETE' })).status === 403
+    );
+    cookie = managementCookie;
+  }
+
+  console.log('\nEXPORT');
+  {
+    const res = await call('/api/admin/export');
+    const buf = Buffer.from(await res.arrayBuffer());
+    const wb = new ExcelJS.Workbook();
+    await wb.xlsx.load(buf);
+    check('the export downloads as a workbook', res.ok && buf.length > 1000);
+    check(
+      'it round-trips the upload format plus a summary',
+      Boolean(wb.getWorksheet('Students') && wb.getWorksheet('Marks') && wb.getWorksheet('Summary'))
+    );
+    check(
+      'the export contains the students',
+      wb.getWorksheet("Students").rowCount === 3,
+      `rows ${wb.getWorksheet('Students')?.rowCount}`
+    );
+  }
+
+  console.log('\nBULK PUBLISH');
+  {
+    const res = await call('/api/admin/results/publish', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ semester: 'II', publish: false }),
+    });
+    const json = await res.json();
+    check('a semester can be withheld in bulk', json.ok === true && json.changed === 1, JSON.stringify(json));
+    const blank = await call('/api/admin/results/publish', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ publish: true }),
+    });
+    check('publishing needs a scope', blank.status === 422, `got ${blank.status}`);
   }
 
   console.log('\nCASCADE');

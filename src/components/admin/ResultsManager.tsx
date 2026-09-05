@@ -66,6 +66,8 @@ export function ResultsManager() {
   const [formError, setFormError] = useState<string | null>(null);
   const [deleting, setDeleting] = useState<Result | null>(null);
   const [deleteBusy, setDeleteBusy] = useState(false);
+  const [publishing, setPublishing] = useState<{ publish: boolean } | null>(null);
+  const [publishBusy, setPublishBusy] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -198,6 +200,38 @@ export function ResultsManager() {
     }
   }
 
+  async function applyPublish() {
+    if (!publishing || !semester) return;
+    setPublishBusy(true);
+    try {
+      const res = await fetch('/api/admin/results/publish', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ semester, publish: publishing.publish }),
+      });
+      const json = await res.json();
+      if (json.ok) {
+        setNotice(
+          json.changed === 0
+            ? `Semester ${semester} was already ${publishing.publish ? 'published' : 'withheld'}.`
+            : `${json.changed} result${json.changed === 1 ? '' : 's'} ${
+                publishing.publish ? 'published' : 'withheld'
+              }.`
+        );
+        setPublishing(null);
+        load();
+      } else {
+        setError(json.error ?? 'Could not update.');
+        setPublishing(null);
+      }
+    } catch {
+      setError('Could not reach the server.');
+      setPublishing(null);
+    } finally {
+      setPublishBusy(false);
+    }
+  }
+
   const updateSubject = (index: number, patch: Partial<Subject>) =>
     setSubjects((rows) => rows.map((r, i) => (i === index ? { ...r, ...patch } : r)));
 
@@ -207,9 +241,26 @@ export function ResultsManager() {
         title="Results"
         description="Semester marks. Anything not published stays hidden from the public verification page."
         action={
-          <Button type="button" onClick={openCreate}>
-            Add result
-          </Button>
+          <div className="flex flex-wrap gap-2.5">
+            <a
+              href={`/api/admin/export${semester ? `?semester=${semester}` : ''}`}
+              className="inline-flex items-center gap-2 rounded-lg border border-rule bg-paper px-4 py-2.5 text-[length:var(--text-sm)] font-medium text-ink transition-colors hover:border-ink"
+            >
+              <svg width="15" height="15" viewBox="0 0 20 20" fill="none" aria-hidden>
+                <path
+                  d="M10 3v10m0 0 3.5-3.5M10 13 6.5 9.5M3.5 14v2.5a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V14"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              Export
+            </a>
+            <Button type="button" onClick={openCreate}>
+              Add result
+            </Button>
+          </div>
         }
       />
 
@@ -270,6 +321,30 @@ export function ResultsManager() {
         <p className="text-[length:var(--text-xs)] tabular-nums text-slate" aria-live="polite">
           {total} result{total === 1 ? '' : 's'}
         </p>
+
+        {/* Results are entered over days and announced at once, so the useful
+            action is releasing a whole semester. */}
+        {semester && total > 0 && (
+          <div className="flex items-center gap-2">
+            <Button
+              variant="secondary"
+              type="button"
+              className="px-3 py-1.5"
+              loading={publishBusy === true}
+              onClick={() => setPublishing({ publish: true })}
+            >
+              Publish semester {semester}
+            </Button>
+            <Button
+              variant="ghost"
+              type="button"
+              className="px-3 py-1.5"
+              onClick={() => setPublishing({ publish: false })}
+            >
+              Withhold
+            </Button>
+          </div>
+        )}
       </div>
 
       {loading ? (
@@ -555,6 +630,20 @@ export function ResultsManager() {
           </div>
         </div>
       </Modal>
+
+      <ConfirmModal
+        open={Boolean(publishing)}
+        onClose={() => setPublishing(null)}
+        onConfirm={applyPublish}
+        loading={publishBusy}
+        confirmLabel={publishing?.publish ? 'Publish' : 'Withhold'}
+        title={publishing?.publish ? 'Publish semester' : 'Withhold semester'}
+        body={
+          publishing?.publish
+            ? `Publish every semester ${semester} result? Students will be able to see and download them immediately.`
+            : `Withhold every semester ${semester} result? They disappear from the public result page until published again.`
+        }
+      />
 
       <ConfirmModal
         open={Boolean(deleting)}

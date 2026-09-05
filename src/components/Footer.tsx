@@ -17,7 +17,7 @@ const ADMISSION = [
   { label: 'Specializations', href: '/specializations' },
   { label: 'Fee Structure', href: '/fee-structure' },
   { label: 'Payment Modes', href: '/payment-modes' },
-  { label: 'Enrollment Verification', href: '/enrollment-verification' },
+  { label: 'Check Your Result', href: '/enrollment-verification' },
   { label: 'Placements', href: '/placement' },
 ];
 

@@ -12,11 +12,13 @@
     "e2e": "node scripts/e2e.mjs"
   },
   "dependencies": {
+    "@pdf-lib/fontkit": "^1.1.1",
     "bcryptjs": "^3.0.3",
     "exceljs": "^4.4.0",
     "framer-motion": "^13.2.0",
     "jose": "^6.2.12",
     "next": "^16.3.4",
+    "pdf-lib": "^1.17.1",
     "postgres": "^3.4.9",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"

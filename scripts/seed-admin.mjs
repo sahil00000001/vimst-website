@@ -51,6 +51,8 @@ if (!URL_STRING) {
 
 const username = (arg('username') ?? 'admin').trim().toLowerCase();
 const name = arg('name') ?? 'Administrator';
+// Seeded accounts are management: this is the account that then creates the rest.
+const role = arg('role') === 'teacher' ? 'teacher' : 'management';
 const generated = !arg('password');
 const password = arg('password') ?? randomBytes(9).toString('base64url');
 
@@ -103,10 +105,12 @@ try {
       username      text primary key,
       password_hash text not null,
       name          text not null,
+      role          text not null default 'teacher',
       created_at    timestamptz not null default now(),
       last_login_at timestamptz
     )
   `;
+  await sql`alter table admins add column if not exists role text not null default 'teacher'`;
   await sql`create index if not exists students_batch_idx on students (batch)`;
   await sql`create index if not exists students_name_idx on students (lower(name))`;
   await sql`create index if not exists results_roll_idx on results (roll_no)`;
@@ -129,15 +133,17 @@ try {
 
   const passwordHash = await bcrypt.hash(password, 12);
   await sql`
-    insert into admins (username, name, password_hash)
-    values (${username}, ${name}, ${passwordHash})
+    insert into admins (username, name, role, password_hash)
+    values (${username}, ${name}, ${role}, ${passwordHash})
     on conflict (username) do update set
       name = excluded.name,
+      role = excluded.role,
       password_hash = excluded.password_hash
   `;
 
   console.log(`\n  Admin portal:  /admin/login`);
   console.log(`  Username:      ${username}`);
+  console.log(`  Role:          ${role}`);
   console.log(`  Password:      ${password}`);
   if (generated) console.log('\n  This password is shown once. Store it somewhere safe.');
 

@@ -3,9 +3,9 @@ import { EnrollmentVerification } from '@/components/EnrollmentVerification';
 import { PageBanner } from '@/components/PageBanner';
 
 export const metadata: Metadata = {
-  title: 'Enrollment Verification',
+  title: 'Check Your Result',
   description:
-    'Verify your MGIMST enrollment and retrieve your semester statement of marks using your roll number and date of birth.',
+    'Check your MGIMST semester result with your enrollment number and date of birth, and download the statement of marks as a PDF.',
   robots: { index: true, follow: false },
 };
 
@@ -14,10 +14,10 @@ export default function EnrollmentVerificationPage() {
     <>
       <PageBanner
         eyebrow="Students"
-        title="Enrollment Verification"
-        intro="Look up your enrollment record and semester result. Enter the details exactly as they appear on your enrollment paperwork."
+        title="Check Your Result"
+        intro="Enter your enrollment number and date of birth to see every semester published for you — view it on screen, or download the statement of marks as a PDF."
         image="/media/images/banner/banner-message.jpg"
-        crumbs={[{ label: 'Enrollment Verification' }]}
+        crumbs={[{ label: 'Check Your Result' }]}
         wide
       />
 

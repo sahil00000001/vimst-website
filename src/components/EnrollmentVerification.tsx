@@ -2,38 +2,44 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState, type FormEvent } from 'react';
-import type { StudentResult } from '@/app/api/verify-enrollment/route';
+import type { MarksheetData } from '@/lib/marksheet-pdf';
+import type { SemesterSummary, StudentSummary } from '@/lib/results';
 
 const EASE = [0.22, 1, 0.36, 1] as const;
-
-const SEMESTERS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
 
 type State =
   | { phase: 'idle' }
   | { phase: 'loading' }
   | { phase: 'error'; message: string }
-  | { phase: 'result'; data: StudentResult };
+  | { phase: 'chooser'; student: StudentSummary; semesters: SemesterSummary[] }
+  | { phase: 'marksheet'; data: MarksheetData };
+
+type Identity = { rollNo: string; dob: string };
+
+const inputClass =
+  'w-full rounded-lg border border-rule bg-shell px-4 py-3 text-[length:var(--text-base)] text-ink transition-all duration-300 focus:border-crimson focus:bg-paper focus:outline-none';
 
 export function EnrollmentVerification() {
   const [state, setState] = useState<State>({ phase: 'idle' });
+  const [identity, setIdentity] = useState<Identity>({ rollNo: '', dob: '' });
 
-  async function onSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const form = new FormData(event.currentTarget);
-    const params = new URLSearchParams({
-      name: String(form.get('name') ?? ''),
-      dob: String(form.get('dob') ?? ''),
-      rollNo: String(form.get('rollNo') ?? ''),
-      semester: String(form.get('semester') ?? ''),
-    });
-
+  async function lookup(next: Identity, semester?: string) {
+    setIdentity(next);
     setState({ phase: 'loading' });
+
+    const params = new URLSearchParams({ rollNo: next.rollNo, dob: next.dob });
+    if (semester) params.set('semester', semester);
 
     try {
       const res = await fetch(`/api/verify-enrollment?${params}`);
       const json = await res.json();
-      if (json.ok) setState({ phase: 'result', data: json.data });
-      else setState({ phase: 'error', message: json.error ?? 'Lookup failed.' });
+
+      if (!json.ok) {
+        setState({ phase: 'error', message: json.error ?? 'Lookup failed.' });
+        return;
+      }
+      if (semester) setState({ phase: 'marksheet', data: json.data });
+      else setState({ phase: 'chooser', student: json.student, semesters: json.semesters });
     } catch {
       setState({
         phase: 'error',
@@ -42,55 +48,91 @@ export function EnrollmentVerification() {
     }
   }
 
-  if (state.phase === 'result') {
-    return <Marksheet data={state.data} onBack={() => setState({ phase: 'idle' })} />;
+  function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    lookup({
+      rollNo: String(form.get('rollNo') ?? '').trim(),
+      dob: String(form.get('dob') ?? ''),
+    });
+  }
+
+  const pdfHref = (semester: string) =>
+    `/api/result-pdf?${new URLSearchParams({ ...identity, semester })}`;
+
+  if (state.phase === 'marksheet') {
+    return (
+      <Marksheet
+        data={state.data}
+        pdfHref={pdfHref(state.data.semester)}
+        onBack={() => lookup(identity)}
+      />
+    );
+  }
+
+  if (state.phase === 'chooser') {
+    return (
+      <SemesterChooser
+        student={state.student}
+        semesters={state.semesters}
+        onOpen={(s) => lookup(identity, s)}
+        pdfHref={pdfHref}
+        onReset={() => setState({ phase: 'idle' })}
+      />
+    );
   }
 
   return (
-    <div className="mx-auto max-w-xl">
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: EASE }}
+      className="mx-auto max-w-xl"
+    >
       <form onSubmit={onSubmit} className="rounded-2xl border border-rule bg-paper p-7 sm:p-9">
         <p className="eyebrow mb-3">Students</p>
-        <h2 className="mb-2 text-[length:var(--text-2xl)]">Verify your enrollment</h2>
+        <h2 className="mb-2 text-[length:var(--text-2xl)]">Check your result</h2>
         <p className="mb-8 text-[length:var(--text-base)] leading-relaxed text-slate">
-          Enter your details exactly as they appear on your enrollment record to retrieve
-          your semester result.
+          Enter your enrollment number and date of birth. You will see every semester published
+          for you, and can download any of them as a PDF.
         </p>
 
-        <div className="grid gap-5 sm:grid-cols-2">
-          <div className="sm:col-span-2">
-            <Label htmlFor="name">Student name</Label>
+        <div className="space-y-4">
+          <div>
+            <label
+              htmlFor="rollNo"
+              className="mb-2 block text-[length:var(--text-xs)] font-medium uppercase tracking-[0.1em] text-slate"
+            >
+              Enrollment number<span className="ml-1 text-crimson">*</span>
+            </label>
             <input
-              id="name"
-              name="name"
+              id="rollNo"
+              name="rollNo"
               type="text"
               required
-              autoComplete="name"
-              className={inputClass}
+              autoFocus
+              autoComplete="off"
+              placeholder="e.g. MG2024001"
+              defaultValue={identity.rollNo}
+              className={`${inputClass} font-medium tracking-wide placeholder:font-normal placeholder:tracking-normal placeholder:text-mist`}
             />
           </div>
 
           <div>
-            <Label htmlFor="rollNo">Roll number</Label>
-            <input id="rollNo" name="rollNo" type="text" required className={inputClass} />
-          </div>
-
-          <div>
-            <Label htmlFor="semester">Semester</Label>
-            <select id="semester" name="semester" required defaultValue="" className={inputClass}>
-              <option value="" disabled>
-                Select semester
-              </option>
-              {SEMESTERS.map((s) => (
-                <option key={s} value={s}>
-                  Semester {s}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="sm:col-span-2">
-            <Label htmlFor="dob">Date of birth</Label>
-            <input id="dob" name="dob" type="date" required className={inputClass} />
+            <label
+              htmlFor="dob"
+              className="mb-2 block text-[length:var(--text-xs)] font-medium uppercase tracking-[0.1em] text-slate"
+            >
+              Date of birth<span className="ml-1 text-crimson">*</span>
+            </label>
+            <input
+              id="dob"
+              name="dob"
+              type="date"
+              required
+              defaultValue={identity.dob}
+              className={inputClass}
+            />
           </div>
         </div>
 
@@ -119,7 +161,7 @@ export function EnrollmentVerification() {
               Checking records
             </>
           ) : (
-            'Verify enrollment'
+            'Check result'
           )}
         </button>
 
@@ -133,36 +175,150 @@ export function EnrollmentVerification() {
           </a>
         </p>
       </form>
-    </div>
+    </motion.div>
   );
 }
 
-const inputClass =
-  'w-full rounded-lg border border-rule bg-shell px-4 py-3 text-[length:var(--text-base)] text-ink transition-all duration-300 focus:border-crimson focus:bg-paper focus:outline-none';
+/* ------------------------------------------------------------------
+   Semester chooser
+   ------------------------------------------------------------------ */
 
-function Label({ htmlFor, children }: { htmlFor: string; children: React.ReactNode }) {
+function SemesterChooser({
+  student,
+  semesters,
+  onOpen,
+  pdfHref,
+  onReset,
+}: {
+  student: StudentSummary;
+  semesters: SemesterSummary[];
+  onOpen: (semester: string) => void;
+  pdfHref: (semester: string) => string;
+  onReset: () => void;
+}) {
   return (
-    <label
-      htmlFor={htmlFor}
-      className="mb-2 block text-[length:var(--text-xs)] font-medium uppercase tracking-[0.1em] text-slate"
+    <motion.div
+      initial={{ opacity: 0, y: 18 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: EASE }}
+      className="mx-auto max-w-3xl"
     >
-      {children}
-    </label>
+      <div className="overflow-hidden rounded-2xl border border-rule bg-paper">
+        <div className="border-b border-rule bg-linen px-6 py-6 sm:px-8">
+          <p className="eyebrow mb-3">Record found</p>
+          <h2 className="font-display text-[length:var(--text-2xl)]">{student.name}</h2>
+          <dl className="mt-4 flex flex-wrap gap-x-8 gap-y-2 text-[length:var(--text-sm)]">
+            {[
+              ['Enrollment no.', student.rollNo],
+              ['Class', student.className],
+              ['Branch', student.branch],
+              ['Batch', student.batch],
+            ]
+              .filter(([, v]) => v)
+              .map(([label, value]) => (
+                <div key={label}>
+                  <dt className="text-[length:var(--text-2xs)] uppercase tracking-[0.12em] text-mist">
+                    {label}
+                  </dt>
+                  <dd className="mt-0.5 text-graphite">{value}</dd>
+                </div>
+              ))}
+          </dl>
+        </div>
+
+        {semesters.length === 0 ? (
+          <div className="px-6 py-14 text-center sm:px-8">
+            <h3 className="font-display text-[length:var(--text-xl)]">
+              No results published yet
+            </h3>
+            <p className="mx-auto mt-3 max-w-sm text-[length:var(--text-sm)] text-slate">
+              Your record exists, but no semester has been published for you so far. Please check
+              again after the results are announced.
+            </p>
+          </div>
+        ) : (
+          <ul className="divide-y divide-rule-soft">
+            {semesters.map((s, i) => (
+              <motion.li
+                key={s.semester}
+                initial={{ opacity: 0, x: -12 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, delay: 0.06 + i * 0.05, ease: EASE }}
+                className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 transition-colors hover:bg-shell sm:px-8"
+              >
+                <div className="min-w-0">
+                  <p className="font-display text-[length:var(--text-lg)] text-ink">
+                    Semester {s.semester}
+                  </p>
+                  <p className="mt-0.5 text-[length:var(--text-xs)] text-mist">
+                    {s.subjectCount} subject{s.subjectCount === 1 ? '' : 's'} · {s.percentage}%
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2.5">
+                  <span
+                    className={`rounded-full px-3 py-1 text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.1em] ${
+                      s.finalResult === 'PASS'
+                        ? 'bg-[#e9f4ec] text-[#1d6b38]'
+                        : 'bg-crimson-soft text-crimson-deep'
+                    }`}
+                  >
+                    {s.finalResult}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => onOpen(s.semester)}
+                    className="rounded-full bg-ink px-5 py-2.5 text-[length:var(--text-xs)] font-medium text-paper transition-colors hover:bg-crimson"
+                  >
+                    View
+                  </button>
+                  <a
+                    href={pdfHref(s.semester)}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-rule px-5 py-2.5 text-[length:var(--text-xs)] font-medium text-ink transition-colors hover:border-ink"
+                  >
+                    <DownloadIcon />
+                    PDF
+                  </a>
+                </div>
+              </motion.li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      <button
+        type="button"
+        onClick={onReset}
+        className="mx-auto mt-6 block text-[length:var(--text-sm)] font-medium text-graphite transition-colors hover:text-crimson"
+      >
+        ← Check a different enrollment number
+      </button>
+    </motion.div>
   );
 }
 
-/* ------------------------------------------------------------------ */
+/* ------------------------------------------------------------------
+   Marksheet
+   ------------------------------------------------------------------ */
 
-function Marksheet({ data, onBack }: { data: StudentResult; onBack: () => void }) {
+function Marksheet({
+  data,
+  pdfHref,
+  onBack,
+}: {
+  data: MarksheetData;
+  pdfHref: string;
+  onBack: () => void;
+}) {
   const details: [string, string][] = [
     ['Name of the student', data.name],
+    ['Enrollment no.', data.rollNo],
+    ["Father's name", data.fatherName || '—'],
     ['Date of birth', data.dob],
-    ["Father's name", data.fatherName],
-    ['Batch', data.batch],
+    ['Class', data.className || '—'],
+    ['Batch', data.batch || '—'],
+    ['Branch', data.branch || '—'],
     ['Semester', data.semester],
-    ['Roll no.', data.rollNo],
-    ['Class', data.class],
-    ['Branch', data.branch],
   ];
 
   return (
@@ -188,15 +344,25 @@ function Marksheet({ data, onBack }: { data: StudentResult; onBack: () => void }
               className="transition-transform duration-300 group-hover:-translate-x-1"
             />
           </svg>
-          Check another record
+          All semesters
         </button>
-        <button
-          type="button"
-          onClick={() => window.print()}
-          className="rounded-full border border-rule bg-paper px-5 py-2.5 text-[length:var(--text-sm)] font-medium text-ink transition-colors hover:border-ink"
-        >
-          Print marksheet
-        </button>
+
+        <div className="flex flex-wrap gap-2.5">
+          <button
+            type="button"
+            onClick={() => window.print()}
+            className="rounded-full border border-rule bg-paper px-5 py-2.5 text-[length:var(--text-sm)] font-medium text-ink transition-colors hover:border-ink"
+          >
+            Print
+          </button>
+          <a
+            href={pdfHref}
+            className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-[length:var(--text-sm)] font-medium text-paper transition-colors hover:bg-crimson"
+          >
+            <DownloadIcon />
+            Download PDF
+          </a>
+        </div>
       </div>
 
       <article className="overflow-hidden rounded-2xl border border-rule bg-paper print:border-0">
@@ -218,45 +384,76 @@ function Marksheet({ data, onBack }: { data: StudentResult; onBack: () => void }
               <dt className="text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.14em] text-mist">
                 {label}
               </dt>
-              <dd className="mt-1 text-[length:var(--text-base)] text-ink">{value || '—'}</dd>
+              <dd className="mt-1 text-[length:var(--text-base)] text-ink">{value}</dd>
             </div>
           ))}
         </dl>
 
-        {data.result.length > 0 && (
+        {data.subjects.length > 0 && (
           <div className="mg-scroll overflow-x-auto">
-            <table className="w-full min-w-[640px] border-collapse text-left">
+            <table className="w-full min-w-[620px] border-collapse text-left">
               <thead>
                 <tr className="bg-linen">
-                  {['Subject code', 'Subject', 'Total marks', 'Obtained', 'Marks in words'].map(
-                    (h) => (
-                      <th
-                        key={h}
-                        className="border-b border-rule px-5 py-3 text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.12em] text-slate"
-                      >
-                        {h}
-                      </th>
-                    )
-                  )}
+                  {['Code', 'Subject', 'Max', 'Obtained', 'Result'].map((h, i) => (
+                    <th
+                      key={h}
+                      className={`border-b border-rule px-5 py-3 text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.12em] text-slate ${
+                        i > 1 ? 'text-right' : ''
+                      }`}
+                    >
+                      {h}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
-                {data.result.map((row, i) => (
-                  <tr key={`${row.subjectCode}-${i}`} className="border-b border-rule-soft last:border-0">
-                    <td className="px-5 py-3 text-[length:var(--text-sm)] tabular-nums text-slate">
-                      {row.subjectCode}
-                    </td>
-                    <td className="px-5 py-3 text-[length:var(--text-base)] text-ink">{row.subject}</td>
-                    <td className="px-5 py-3 text-[length:var(--text-sm)] tabular-nums text-graphite">
-                      {row.totalMarks}
-                    </td>
-                    <td className="px-5 py-3 text-[length:var(--text-sm)] font-medium tabular-nums text-ink">
-                      {row.obtainedMarks}
-                    </td>
-                    <td className="px-5 py-3 text-[length:var(--text-sm)] text-slate">{row.marksInWord}</td>
-                  </tr>
-                ))}
+                {data.subjects.map((row, i) => {
+                  const ratio = row.totalMarks > 0 ? row.obtainedMarks / row.totalMarks : 0;
+                  return (
+                    <tr
+                      key={`${row.subjectCode}-${i}`}
+                      className="border-b border-rule-soft last:border-0"
+                    >
+                      <td className="px-5 py-3 text-[length:var(--text-sm)] tabular-nums text-slate">
+                        {row.subjectCode || '—'}
+                      </td>
+                      <td className="px-5 py-3 text-[length:var(--text-base)] text-ink">
+                        {row.subject}
+                      </td>
+                      <td className="px-5 py-3 text-right text-[length:var(--text-sm)] tabular-nums text-graphite">
+                        {row.totalMarks}
+                      </td>
+                      <td className="px-5 py-3 text-right text-[length:var(--text-sm)] font-medium tabular-nums text-ink">
+                        {row.obtainedMarks}
+                      </td>
+                      <td
+                        className={`px-5 py-3 text-right text-[length:var(--text-xs)] font-medium ${
+                          ratio >= 0.35 ? 'text-[#1d6b38]' : 'text-crimson'
+                        }`}
+                      >
+                        {ratio >= 0.35 ? 'Pass' : 'Fail'}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
+              <tfoot>
+                <tr className="bg-linen font-medium">
+                  <td className="px-5 py-3" />
+                  <td className="px-5 py-3 text-[length:var(--text-sm)] uppercase tracking-[0.1em] text-slate">
+                    Total
+                  </td>
+                  <td className="px-5 py-3 text-right text-[length:var(--text-sm)] tabular-nums text-ink">
+                    {data.totalMarks}
+                  </td>
+                  <td className="px-5 py-3 text-right text-[length:var(--text-sm)] tabular-nums text-ink">
+                    {data.obtainedMarks}
+                  </td>
+                  <td className="px-5 py-3 text-right text-[length:var(--text-sm)] tabular-nums text-ink">
+                    {data.percentage}%
+                  </td>
+                </tr>
+              </tfoot>
             </table>
           </div>
         )}
@@ -264,14 +461,22 @@ function Marksheet({ data, onBack }: { data: StudentResult; onBack: () => void }
         <div className="grid gap-px border-t border-rule bg-rule sm:grid-cols-3">
           {[
             ['Total marks in words', data.totalMarksInWord],
-            ['Percentage', data.percentage],
+            ['Percentage', `${data.percentage}%`],
             ['Final result', data.finalResult],
           ].map(([label, value]) => (
             <div key={label} className="bg-shell px-6 py-5">
               <p className="text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.14em] text-mist">
                 {label}
               </p>
-              <p className="mt-1.5 font-display text-[length:var(--text-lg)] text-ink">{value || '—'}</p>
+              <p
+                className={`mt-1.5 font-display text-[length:var(--text-lg)] ${
+                  label === 'Final result' && data.finalResult !== 'PASS'
+                    ? 'text-crimson'
+                    : 'text-ink'
+                }`}
+              >
+                {value}
+              </p>
             </div>
           ))}
         </div>
@@ -283,5 +488,19 @@ function Marksheet({ data, onBack }: { data: StudentResult; onBack: () => void }
         </footer>
       </article>
     </motion.div>
+  );
+}
+
+function DownloadIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 20 20" fill="none" aria-hidden className="shrink-0">
+      <path
+        d="M10 3v10m0 0 3.5-3.5M10 13 6.5 9.5M3.5 14v2.5a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V14"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }

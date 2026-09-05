@@ -1,4 +1,5 @@
 import postgres from 'postgres';
+import type { Role } from './roles';
 
 /**
  * PostgreSQL (Supabase) connection.
@@ -132,10 +133,14 @@ export async function ensureSchema() {
       username      text primary key,
       password_hash text not null,
       name          text not null,
+      role          text not null default 'teacher',
       created_at    timestamptz not null default now(),
       last_login_at timestamptz
     )
   `;
+
+  // Existing installations predate the role column.
+  await sql`alter table ${t.admins} add column if not exists role text not null default 'teacher'`;
 
   await sql`create index if not exists students_batch_idx on ${t.students} (batch)`;
   await sql`create index if not exists students_name_idx on ${t.students} (lower(name))`;
@@ -184,6 +189,7 @@ export type Admin = {
   username: string;
   passwordHash: string;
   name: string;
+  role: Role;
 };
 
 /* snake_case in the database, camelCase in the app. */

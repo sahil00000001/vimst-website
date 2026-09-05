@@ -1,5 +1,6 @@
 import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
+import { isRole, type Role } from './roles';
 
 /**
  * Admin sessions.
@@ -15,6 +16,7 @@ const MAX_AGE_SECONDS = 60 * 60 * 8; // one working day
 export type SessionPayload = {
   username: string;
   name: string;
+  role: Role;
 };
 
 function secretKey(): Uint8Array {
@@ -44,7 +46,12 @@ export async function verifySessionToken(token: string): Promise<SessionPayload 
   try {
     const { payload } = await jwtVerify(token, secretKey());
     if (typeof payload.username !== 'string') return null;
-    return { username: payload.username, name: String(payload.name ?? payload.username) };
+    return {
+      username: payload.username,
+      name: String(payload.name ?? payload.username),
+      // Sessions issued before roles existed default to the lesser privilege.
+      role: isRole(payload.role) ? payload.role : 'teacher',
+    };
   } catch {
     return null;
   }
@@ -77,4 +84,26 @@ export async function requireSession(): Promise<
     };
   }
   return { ok: true, session };
+}
+
+/**
+ * Guard for endpoints only the office may use — staff accounts, deleting a
+ * student record. A teacher gets a 403 rather than a 401, because they are
+ * signed in; they simply may not do this.
+ */
+export async function requireManagement(): Promise<
+  { ok: true; session: SessionPayload } | { ok: false; response: Response }
+> {
+  const guard = await requireSession();
+  if (!guard.ok) return guard;
+  if (guard.session.role !== 'management') {
+    return {
+      ok: false,
+      response: Response.json(
+        { ok: false, error: 'That action is restricted to management accounts.' },
+        { status: 403 }
+      ),
+    };
+  }
+  return guard;
 }

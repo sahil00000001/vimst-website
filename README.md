@@ -91,14 +91,35 @@ unauthenticated request never reaches a page that would query the database.
 
 | Screen | What it does |
 | --- | --- |
-| **Dashboard** | Counts, results per semester, recently updated records |
+| **Dashboard** | Counts, results per semester, recently updated records, quick actions |
 | **Students** | Search, add, edit and delete the student register. Deleting a student deletes their results too |
-| **Results** | Enter marks per subject, with totals and pass/fail computed live. Publish or withhold a semester |
+| **Results** | Enter marks per subject with totals and pass/fail computed live; publish or withhold a whole semester in one action; export |
 | **Bulk upload** | Upload an Excel workbook covering many students and results at once |
+| **Staff** | Create and manage accounts and roles. Management only |
+
+### Roles
+
+Two roles, because there are two jobs:
+
+| | Management | Teacher |
+| --- | --- | --- |
+| View students and results | yes | yes |
+| Add and edit students and results | yes | yes |
+| Bulk upload, publish a semester, export | yes | yes |
+| **Delete a student record** | yes | no |
+| **Staff accounts** | yes | no |
+
+The destructive and administrative actions stay with the office. A teacher who tries one gets a
+403, not a 401 — they are signed in, they simply may not do it. Enforced in the API by
+`requireManagement()`, not only hidden in the UI.
+
+The last management account cannot be demoted or deleted, and nobody can delete the account they
+are signed in with — otherwise the portal could be locked shut with no way back in.
 
 Sessions are a signed JWT in an httpOnly cookie, valid for eight hours. Passwords are bcrypt
 hashed (cost 12). Login answers the same message for an unknown username and a wrong password, so
-the form cannot be used to discover valid accounts.
+the form cannot be used to discover valid accounts. New and reset passwords are shown **once**
+and never stored in readable form.
 
 ### Bulk upload
 
@@ -130,11 +151,28 @@ duplicating them, because writes are upserts keyed on `rollNo` and `(rollNo, sem
 Results whose roll number has no student record are skipped and reported rather than written as
 orphans.
 
-### Result verification
+### Export
 
-`/enrollment-verification` reads from this database. A lookup must match on roll number, date of
-birth **and** name, so a roll number alone cannot pull up somebody else's marks. Results marked
-hidden are never served.
+**Results → Export** downloads the register as a workbook whose sheets match the bulk-upload
+template exactly — so an export can be edited and uploaded straight back. That is the practical
+way to correct a batch of marks, and it means the office is never locked out of its own data.
+
+---
+
+## 3a. Students checking results
+
+`/enrollment-verification` — a student enters their **enrollment number and date of birth**, and
+sees every semester published for them. Each one can be opened on screen or downloaded as a PDF.
+
+Identity is those two facts together: an enrollment number is often printed on a noticeboard and a
+date of birth is not tied to anyone, but the pair keeps a curious classmate out without asking a
+student to type their own name exactly as the office recorded it. Results marked hidden are never
+served — not on the page, and not through the PDF endpoint.
+
+The PDF is drawn with `pdf-lib` (`src/lib/marksheet-pdf.ts`) rather than rendered from HTML: there
+is no headless browser on a serverless function, and a marksheet is a fixed ruled document that is
+easier to control by drawing than by fighting print CSS. It comes out as a single A4 page with the
+institute mark embedded.
 
 > The original page called a third-party API directly from the browser, and its JavaScript read a
 > `name` field its own form did not have — so every lookup threw. The rebuilt page works.
@@ -247,8 +285,8 @@ tap targets under 40px on a phone. Current state: **5041 interactive elements, n
 server against it and drives the real HTTP API — sign in, bulk upload a workbook containing
 deliberately malformed rows, re-upload to prove idempotency, read back through the admin
 endpoints, then look a result up the way a student would, including the cases that must be
-refused. The schema is dropped afterwards, so live student data is never touched.
-**40 assertions, all passing.**
+refused. It also covers role permissions, the PDF, the export and bulk publishing. The schema is
+dropped afterwards, so live student data is never touched. **67 assertions, all passing.**
 
 Both need Chrome at the path set at the top of the file.
 
@@ -270,6 +308,9 @@ src/
     Motion.tsx       shared animation primitives
   lib/
     db.ts            Postgres connection, schema, row mapping, normalisation
+    roles.ts         roles; separate from db.ts so Edge middleware can import it
+    results.ts       the student-facing lookup, shared by the page and the PDF
+    marksheet-pdf.ts the printed statement of marks
     auth.ts          sessions
     import.ts        workbook parsing and template generation
     accents.ts       the colour system

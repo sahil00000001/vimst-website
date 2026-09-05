@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { db, isDatabaseConfigured, tables } from '@/lib/db';
+import { isRole } from '@/lib/roles';
 import {
   SESSION_COOKIE,
   createSessionToken,
@@ -55,7 +56,7 @@ export async function POST(request: Request) {
     const sql = db();
     const t = tables(sql);
     const [admin] = await sql`
-      select username, name, password_hash from ${t.admins} where username = ${user}
+      select username, name, password_hash, role from ${t.admins} where username = ${user}
     `;
 
     // Hash a throwaway value when the user is unknown, so both paths take a
@@ -65,13 +66,17 @@ export async function POST(request: Request) {
 
     if (!admin || !valid) return NextResponse.json(INVALID, { status: 401 });
 
-    const token = await createSessionToken({ username: admin.username, name: admin.name });
+    const token = await createSessionToken({
+      username: admin.username,
+      name: admin.name,
+      role: isRole(admin.role) ? admin.role : 'teacher',
+    });
 
     await sql`update ${t.admins} set last_login_at = now() where username = ${admin.username}`;
 
     const response = NextResponse.json({
       ok: true,
-      admin: { username: admin.username, name: admin.name },
+      admin: { username: admin.username, name: admin.name, role: admin.role },
     });
     response.cookies.set(SESSION_COOKIE, token, sessionCookieOptions);
     return response;

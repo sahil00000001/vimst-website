@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { requireSession } from '@/lib/auth';
+import { requireManagement, requireSession } from '@/lib/auth';
 import { db, normaliseRollNo, tables, toResult, toStudent } from '@/lib/db';
 import { parseStudent } from '../route';
 
@@ -87,7 +87,7 @@ export async function PUT(request: Request, { params }: Params) {
  * `on delete cascade` on results.roll_no, so it cannot be half-done.
  */
 export async function DELETE(_request: Request, { params }: Params) {
-  const guard = await requireSession();
+  const guard = await requireManagement();
   if (!guard.ok) return guard.response;
 
   const rollNo = normaliseRollNo(decodeURIComponent((await params).rollNo));

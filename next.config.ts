@@ -25,7 +25,7 @@ const nextConfig: NextConfig = {
 
   // `exceljs` is only used inside route handlers; keeping it external stops it
   // being traced into the client bundle.
-  serverExternalPackages: ['exceljs', 'postgres', 'bcryptjs'],
+  serverExternalPackages: ['exceljs', 'postgres', 'bcryptjs', 'pdf-lib'],
 
   poweredByHeader: false,
 

@@ -51,14 +51,15 @@ const QUICK_LINKS = [
     body: 'Upload an Excel workbook to add or update many students and results at once.',
   },
   {
-    href: '/admin/students',
-    title: 'Students',
-    body: 'Add, edit and search the student register.',
+    href: '/admin/results',
+    title: 'Publish a semester',
+    body: 'Enter marks, then release a whole semester to students in one action.',
   },
   {
-    href: '/admin/results',
-    title: 'Results',
-    body: 'Enter marks for a single student and publish or withhold a semester.',
+    href: '/api/admin/export',
+    title: 'Export everything',
+    body: 'Download the register as a workbook — the same shape the importer reads back.',
+    external: true,
   },
 ];
 
@@ -84,11 +85,19 @@ export function Dashboard() {
     };
   }, []);
 
-  const tiles = stats
+  const tiles: { label: string; value: number; href: string; note?: string }[] = stats
     ? [
         { label: 'Students', value: stats.studentCount, href: '/admin/students' },
         { label: 'Results', value: stats.resultCount, href: '/admin/results' },
-        { label: 'Published', value: stats.publishedCount, href: '/admin/results' },
+        {
+          label: 'Published',
+          value: stats.publishedCount,
+          href: '/admin/results',
+          note:
+            stats.resultCount > stats.publishedCount
+              ? `${stats.resultCount - stats.publishedCount} still withheld`
+              : undefined,
+        },
         { label: 'Batches', value: stats.batchCount, href: '/admin/students' },
       ]
     : [];
@@ -131,6 +140,9 @@ export function Dashboard() {
                     <p className="mt-3 font-display text-[length:var(--text-4xl)] leading-none text-ink transition-colors group-hover:text-crimson">
                       <Counter value={tile.value} />
                     </p>
+                    {tile.note && (
+                      <p className="mt-2 text-[length:var(--text-2xs)] text-crimson">{tile.note}</p>
+                    )}
                   </Link>
                 </motion.div>
               ))}
@@ -230,8 +242,10 @@ export function Dashboard() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.24 + i * 0.06, ease: EASE }}
                 >
+                  {/* The export is a file download, so it stays a plain anchor. */}
                   <Link
                     href={q.href}
+                    prefetch={q.external ? false : undefined}
                     className="group flex h-full flex-col rounded-xl border border-rule bg-paper p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lift"
                   >
                     <h3 className="font-display text-[length:var(--text-lg)] text-ink transition-colors group-hover:text-crimson">
@@ -241,7 +255,7 @@ export function Dashboard() {
                       {q.body}
                     </p>
                     <span className="mt-4 inline-flex items-center gap-1.5 text-[length:var(--text-xs)] font-medium text-ink">
-                      Open
+                      {q.external ? 'Download' : 'Open'}
                       <svg width="12" height="9" viewBox="0 0 13 10" fill="none" aria-hidden>
                         <path
                           d="M1 5h10M7.5 1.5L11 5l-3.5 3.5"
