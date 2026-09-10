@@ -9,7 +9,8 @@
     "content": "node scripts/assets.mjs && node scripts/images.mjs && node scripts/extract.mjs && node scripts/build-content.mjs",
     "audit": "node scripts/audit.mjs",
     "seed:admin": "node scripts/seed-admin.mjs",
-    "e2e": "node scripts/e2e.mjs"
+    "e2e": "node scripts/e2e.mjs",
+    "logo": "node scripts/logo.mjs"
   },
   "dependencies": {
     "@pdf-lib/fontkit": "^1.1.1",

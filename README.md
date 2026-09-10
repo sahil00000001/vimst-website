@@ -188,7 +188,22 @@ Nothing was copy-pasted. `npm run content` runs four scripts, each writing into 
 | `assets.mjs` | Copies images/PDFs out of `../source`, renaming to URL-safe slugs | `public/media/**`, `asset-map.json` |
 | `images.mjs` | Caps oversized rasters, re-encodes, measures, builds blur placeholders | rewrites `public/media/**`, `image-meta.json` |
 | `extract.mjs` | Parses all 70 source pages, strips chrome, pulls out headings, prose and tables | `raw-pages.json` |
-| `build-content.mjs` | Maps raw pages onto the course catalogue and editorial pages | `site.json` |
+| `build-content.mjs` | Maps raw pages onto the course catalogue and editorial pages, and applies the institute rename | `site.json` |
+
+### The rename
+
+The institute was renamed from Mahatma Gandhi Institute of Management Science & Technology to
+**Vivekananda Institute of Management Science and Technology**. Two things about how that was done:
+
+- **The rename lives in `build-content.mjs`, not in the generated JSON.** The source HTML still
+  carries the old name throughout, so editing `site.json` by hand would be undone the next time
+  anyone ran `npm run content`. `content/raw-pages.json` keeps the old name on purpose — it is the
+  faithful extraction of the original site, and the rename is applied where source becomes content.
+- **The logo is generated, not edited.** `npm run logo` renders the wordmark, crest and favicon
+  through headless Chrome (`scripts/logo.mjs`). The old assets were images that read "MAHATMA
+  GANDHI" and carried a portrait, so no text substitution could reach them. The replacement is
+  lettering only — a crest with a portrait is something an institute commissions, and inventing one
+  would be worse than type set carefully. **Replace it when the real artwork exists.**
 
 `scripts/catalog.mjs` is the single source of truth for which source file backs which route. It
 exists because the original repo ships duplicate and mislabelled files — both
