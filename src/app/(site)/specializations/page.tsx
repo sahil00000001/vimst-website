@@ -8,7 +8,7 @@ import { page } from '@/lib/content';
 export const metadata: Metadata = {
   title: 'Specializations',
   description:
-    'The full list of specializations available alongside MGIMST programmes, from Advertising Management to Fire Safety Management.',
+    'The full list of specializations available alongside VIMST programmes, from Advertising Management to Fire Safety Management.',
 };
 
 /**

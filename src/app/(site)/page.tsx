@@ -46,8 +46,8 @@ export default function HomePage() {
             <Reveal from="up">
               <p className="eyebrow mb-5">Welcome</p>
               <h2 className="max-w-[18ch] text-[length:var(--text-3xl)]">
-                Mahatma Gandhi Institute of{' '}
-                <em className="not-italic text-crimson">Management Science &amp; Technology</em>
+                Vivekananda Institute of{' '}
+                <em className="not-italic text-crimson">Management Science and Technology</em>
               </h2>
             </Reveal>
             <Reveal from="up" delay={0.12} className="prose-mg mt-7">
@@ -86,7 +86,7 @@ export default function HomePage() {
                   <ParallaxPlate speed={0.12}>
                     <Media
                       src={home.director.image}
-                      alt="Director of MGIMST"
+                      alt="Director of VIMST"
                       fill
                       sizes="(max-width: 1024px) 100vw, 34vw"
                       className="object-cover object-top"
@@ -315,9 +315,9 @@ export default function HomePage() {
 
             <dl className="mt-9 grid gap-x-8 gap-y-5 sm:grid-cols-2">
               {[
-                { t: 'General enquiries', v: 'info@mgimst.org' },
-                { t: 'Verification', v: 'verification@mgimst.org' },
-                { t: 'Administration', v: 'admin@mgimst.org' },
+                { t: 'General enquiries', v: 'info@vimst.org' },
+                { t: 'Verification', v: 'verification@vimst.org' },
+                { t: 'Administration', v: 'admin@vimst.org' },
                 { t: 'Location', v: 'Andhra Pradesh, India' },
               ].map((x) => (
                 <div key={x.t} className="border-t border-rule pt-4">

@@ -3,7 +3,7 @@ import { EditorialPage } from '@/components/EditorialPage';
 
 export const metadata: Metadata = {
   title: "About Us",
-  description: "Mahatma Gandhi Institute of Management Science & Technology is a top ranking institute in engineering and management, offering undergraduate and postgraduate programmes through distance learning.",
+  description: "Vivekananda Institute of Management Science and Technology is a top ranking institute in engineering and management, offering undergraduate and postgraduate programmes through distance learning.",
 };
 
 export default function Page() {

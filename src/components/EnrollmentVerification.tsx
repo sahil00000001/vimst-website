@@ -112,7 +112,7 @@ export function EnrollmentVerification() {
               required
               autoFocus
               autoComplete="off"
-              placeholder="e.g. MG2024001"
+              placeholder="e.g. VIM2024001"
               defaultValue={identity.rollNo}
               className={`${inputClass} font-medium tracking-wide placeholder:font-normal placeholder:tracking-normal placeholder:text-mist`}
             />
@@ -168,10 +168,10 @@ export function EnrollmentVerification() {
         <p className="mt-4 text-center text-[length:var(--text-xs)] text-mist">
           Problems with your record? Email{' '}
           <a
-            href="mailto:verification@mgimst.org"
+            href="mailto:verification@vimst.org"
             className="text-slate underline underline-offset-2 hover:text-crimson"
           >
-            verification@mgimst.org
+            verification@vimst.org
           </a>
         </p>
       </form>
@@ -368,10 +368,10 @@ function Marksheet({
       <article className="overflow-hidden rounded-2xl border border-rule bg-paper print:border-0">
         <header className="border-b border-rule bg-linen px-6 py-8 text-center sm:px-10">
           <h2 className="font-display text-[length:var(--text-2xl)] text-crimson">
-            Mahatma Gandhi
+            Vivekananda
           </h2>
           <p className="mt-1 text-[length:var(--text-xs)] uppercase tracking-[0.18em] text-graphite">
-            Institute of Management Science &amp; Technology
+            Institute of Management Science and Technology
           </p>
           <p className="mt-4 inline-block rounded-full bg-paper px-4 py-1 text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.16em] text-crimson">
             Statement of marks

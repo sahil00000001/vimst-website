@@ -11,7 +11,7 @@ import { NextResponse } from 'next/server';
  *
  * To enable server-side delivery, set in `.env.local`:
  *   RESEND_API_KEY=...
- *   ENQUIRY_TO=info@mgimst.org
+ *   ENQUIRY_TO=info@vimst.org
  *   ENQUIRY_FROM=website@your-verified-domain.org
  */
 
@@ -64,7 +64,7 @@ export async function POST(request: Request) {
   }
 
   const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.ENQUIRY_TO ?? 'info@mgimst.org';
+  const to = process.env.ENQUIRY_TO ?? 'info@vimst.org';
   const from = process.env.ENQUIRY_FROM;
 
   if (!apiKey || !from) {

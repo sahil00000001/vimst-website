@@ -3,7 +3,7 @@ import { EditorialPage } from '@/components/EditorialPage';
 
 export const metadata: Metadata = {
   title: "Our Vision",
-  description: "The vision that guides Mahatma Gandhi Institute of Management Science & Technology.",
+  description: "The vision that guides Vivekananda Institute of Management Science and Technology.",
 };
 
 export default function Page() {

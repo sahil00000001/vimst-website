@@ -70,9 +70,9 @@ function fit(text: string, font: PDFFont, size: number, maxWidth: number) {
 export async function buildMarksheetPdf(data: MarksheetData): Promise<Uint8Array> {
   const pdf = await PDFDocument.create();
   pdf.setTitle(`Statement of Marks — ${data.rollNo} — Semester ${data.semester}`);
-  pdf.setAuthor('Mahatma Gandhi Institute of Management Science & Technology');
+  pdf.setAuthor('Vivekananda Institute of Management Science and Technology');
   pdf.setSubject('Statement of Marks');
-  pdf.setProducer('MGIMST');
+  pdf.setProducer('VIMST');
   pdf.setCreationDate(new Date());
 
   const body = await pdf.embedFont(StandardFonts.Helvetica);
@@ -108,7 +108,7 @@ export async function buildMarksheetPdf(data: MarksheetData): Promise<Uint8Array
     });
     y -= scaled.height + 14;
   } else {
-    const title = 'MAHATMA GANDHI';
+    const title = 'VIVEKANANDA';
     const size = 20;
     page.drawText(title, {
       x: (PAGE.width - serif.widthOfTextAtSize(title, size)) / 2,
@@ -120,7 +120,7 @@ export async function buildMarksheetPdf(data: MarksheetData): Promise<Uint8Array
     y -= size + 16;
   }
 
-  const subtitle = 'INSTITUTE OF MANAGEMENT SCIENCE & TECHNOLOGY';
+  const subtitle = 'INSTITUTE OF MANAGEMENT SCIENCE AND TECHNOLOGY';
   page.drawText(subtitle, {
     x: (PAGE.width - body.widthOfTextAtSize(subtitle, 8)) / 2,
     y,

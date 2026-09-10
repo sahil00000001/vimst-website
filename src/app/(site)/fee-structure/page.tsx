@@ -9,7 +9,7 @@ import { Media } from '@/components/Media';
 export const metadata: Metadata = {
   title: 'Fee Structure',
   description:
-    'The published fee structure for MGIMST programmes across engineering, management, science, commerce and arts.',
+    'The published fee structure for VIMST programmes across engineering, management, science, commerce and arts.',
 };
 
 export default function FeeStructurePage() {
@@ -36,7 +36,7 @@ export default function FeeStructurePage() {
                   <div className="min-w-[720px]">
                     <Media
                       src={sheet.src}
-                      alt="MGIMST fee structure"
+                      alt="VIMST fee structure"
                       width={1600}
                       height={2200}
                       sizes="(max-width: 1024px) 100vw, 70vw"

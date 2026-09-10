@@ -163,4 +163,4 @@ export async function lookupMarksheet(
 
 /** Filename for a downloaded marksheet. */
 export const marksheetFilename = (rollNo: string, semester: string) =>
-  `MGIMST-marksheet-${rollNo}-semester-${semester}.pdf`;
+  `VIMST-marksheet-${rollNo}-semester-${semester}.pdf`;

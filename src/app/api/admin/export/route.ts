@@ -41,7 +41,7 @@ export async function GET(request: Request) {
     `;
 
     const wb = new ExcelJS.Workbook();
-    wb.creator = 'MGIMST Admin';
+    wb.creator = 'VIMST Admin';
     wb.created = new Date();
 
     const styleHeader = (sheet: ExcelJS.Worksheet) => {
@@ -137,7 +137,7 @@ export async function GET(request: Request) {
       headers: {
         'Content-Type':
           'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        'Content-Disposition': `attachment; filename="mgimst-export${
+        'Content-Disposition': `attachment; filename="vimst-export${
           scope ? `-${scope}` : ''
         }-${stamp}.xlsx"`,
         'Cache-Control': 'no-store',

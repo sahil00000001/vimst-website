@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { courses } from '@/lib/content';
 
-const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.mgimst.org';
+const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.vimst.org';
 
 /** Every public page. The admin area is deliberately absent. */
 export default function sitemap(): MetadataRoute.Sitemap {

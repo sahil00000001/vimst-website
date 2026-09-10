@@ -7,7 +7,7 @@ import { page } from '@/lib/content';
 export const metadata: Metadata = {
   title: 'Photo Gallery',
   description:
-    'Photographs from campus life, events and ceremonies at Mahatma Gandhi Institute of Management Science & Technology.',
+    'Photographs from campus life, events and ceremonies at Vivekananda Institute of Management Science and Technology.',
 };
 
 export default function PhotoGalleryPage() {
@@ -18,7 +18,7 @@ export default function PhotoGalleryPage() {
       <PageBanner
         eyebrow="Campus life"
         title="Photo Gallery"
-        intro="Moments from the campus — ceremonies, classrooms and the people who make up MGIMST."
+        intro="Moments from the campus — ceremonies, classrooms and the people who make up VIMST."
         image={data.banner}
         crumbs={[{ label: 'Photo Gallery' }]}
         wide

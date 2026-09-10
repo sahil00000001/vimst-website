@@ -15,7 +15,7 @@ export async function GET() {
     headers: {
       'Content-Type':
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      'Content-Disposition': 'attachment; filename="mgimst-bulk-upload-template.xlsx"',
+      'Content-Disposition': 'attachment; filename="vimst-bulk-upload-template.xlsx"',
       'Cache-Control': 'no-store',
     },
   });

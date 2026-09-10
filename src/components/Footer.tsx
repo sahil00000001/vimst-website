@@ -33,13 +33,13 @@ export function Footer() {
           <Reveal className="lg:col-span-4" from="up">
             <Media
               src="/media/logo-wordmark.png"
-              alt="Mahatma Gandhi Institute of Management Science &amp; Technology"
+              alt="Vivekananda Institute of Management Science and Technology"
               width={900}
               height={191}
               className="h-12 w-auto"
             />
             <p className="mt-5 max-w-sm text-[length:var(--text-base)] leading-relaxed text-slate">
-              Mahatma Gandhi Institute of Management Science &amp; Technology stands as a
+              Vivekananda Institute of Management Science and Technology stands as a
               prestigious beacon of excellence in education, committed to fostering
               innovation and leadership.
             </p>
@@ -51,7 +51,7 @@ export function Footer() {
                     href={s.href}
                     target="_blank"
                     rel="noreferrer"
-                    aria-label={`MGIMST on ${s.label}`}
+                    aria-label={`VIMST on ${s.label}`}
                     className="flex h-11 w-11 items-center justify-center rounded-full border border-rule text-slate transition-all duration-300 hover:-translate-y-0.5 hover:border-crimson hover:bg-crimson hover:text-paper"
                   >
                     <svg width="17" height="17" viewBox="0 0 18 18" fill="currentColor" aria-hidden>
@@ -106,21 +106,21 @@ export function Footer() {
             <address className="space-y-3 not-italic text-[length:var(--text-base)] text-graphite">
               <p className="text-slate">Andhra Pradesh, India</p>
               <p>
-                <a href="mailto:info@mgimst.org" className="transition-colors hover:text-crimson">
-                  info@mgimst.org
+                <a href="mailto:info@vimst.org" className="transition-colors hover:text-crimson">
+                  info@vimst.org
                 </a>
               </p>
               <p>
                 <a
-                  href="mailto:verification@mgimst.org"
+                  href="mailto:verification@vimst.org"
                   className="transition-colors hover:text-crimson"
                 >
-                  verification@mgimst.org
+                  verification@vimst.org
                 </a>
               </p>
               <p>
-                <a href="mailto:admin@mgimst.org" className="transition-colors hover:text-crimson">
-                  admin@mgimst.org
+                <a href="mailto:admin@vimst.org" className="transition-colors hover:text-crimson">
+                  admin@vimst.org
                 </a>
               </p>
             </address>
@@ -147,7 +147,7 @@ export function Footer() {
       <div className="border-t border-rule bg-shell">
         <div className="mx-auto flex max-w-[1400px] flex-col items-center justify-between gap-2 px-5 py-5 text-[length:var(--text-sm)] text-slate sm:flex-row sm:px-8">
           <p>
-            © {new Date().getFullYear()} Mahatma Gandhi Institute of Management Science &amp;
+            © {new Date().getFullYear()} Vivekananda Institute of Management Science &amp;
             Technology. All rights reserved.
           </p>
           <p className="text-mist">ISO 9001:2008 Certified</p>

@@ -61,10 +61,10 @@ export function MobileNav({
             aria-label="Mobile navigation"
           >
             <div className="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-rule bg-paper/95 px-5 py-4 backdrop-blur">
-              <Link href="/" onClick={onClose} aria-label="MGIMST home">
+              <Link href="/" onClick={onClose} aria-label="VIMST home">
                 <Media
                   src="/media/logo-wordmark.png"
-                  alt="MGIMST"
+                  alt="VIMST"
                   width={900}
                   height={191}
                   className="h-8 w-auto"
@@ -271,11 +271,11 @@ export function MobileNav({
 
               <div className="mt-6 space-y-1 border-t border-rule pt-5 text-[length:var(--text-sm)] text-slate">
                 <p>Andhra Pradesh, India</p>
-                <a href="mailto:info@mgimst.org" className="block hover:text-crimson">
-                  info@mgimst.org
+                <a href="mailto:info@vimst.org" className="block hover:text-crimson">
+                  info@vimst.org
                 </a>
-                <a href="mailto:admin@mgimst.org" className="block hover:text-crimson">
-                  admin@mgimst.org
+                <a href="mailto:admin@vimst.org" className="block hover:text-crimson">
+                  admin@vimst.org
                 </a>
               </div>
             </nav>

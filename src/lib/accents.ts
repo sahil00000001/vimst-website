@@ -10,7 +10,7 @@
  *
  * Crimson stays reserved for the institute itself: brand marks, the About and
  * Admission menus, primary actions. It is never used for a subject family, so
- * "this is MGIMST" and "this is Mechanical Engineering" never look alike.
+ * "this is VIMST" and "this is Mechanical Engineering" never look alike.
  */
 
 export type AccentName =

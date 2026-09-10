@@ -58,7 +58,7 @@ export function EditorialPage({
               <div className="sticky top-28 space-y-6">
                 <Reveal from="left" className="rounded-2xl border border-rule bg-paper p-6">
                   <p className="mb-4 text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.16em] text-crimson">
-                    More about MGIMST
+                    More about VIMST
                   </p>
                   <ul className="space-y-1">
                     {RELATED.filter((r) => r.href !== currentHref).map((r) => (

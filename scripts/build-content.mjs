@@ -6,6 +6,44 @@ import { AUTHORED } from './authored.mjs';
 const raw = JSON.parse(fs.readFileSync('content/raw-pages.json', 'utf8'));
 const assets = JSON.parse(fs.readFileSync('content/asset-map.json', 'utf8'));
 
+/**
+ * The institute was renamed from Mahatma Gandhi Institute of Management
+ * Science & Technology to Vivekananda Institute of Management Science and
+ * Technology. The source HTML still carries the old name throughout, so the
+ * rename is applied here — at the point where source becomes site content —
+ * rather than by editing the generated JSON. Otherwise re-running
+ * `npm run content` would quietly reinstate the old name.
+ *
+ * Longest first, so a general rule never eats a specific one.
+ */
+const RENAMES = [
+  [/MAHATMA GANDHI INSTITUTE OF MANAGEMENT SCIENCE (?:&|AND) TECHNOLOGY/g,
+   'VIVEKANANDA INSTITUTE OF MANAGEMENT SCIENCE AND TECHNOLOGY'],
+  [/Mahatma Gandhi Institute of Management Science (?:&|and) Technology/g,
+   'Vivekananda Institute of Management Science and Technology'],
+  [/Mahatma Gandhi Institute of Technology/g, 'Vivekananda Institute of Technology'],
+  [/Mahatma Gandhi Institute/g, 'Vivekananda Institute'],
+  [/MAHATMA GANDHI/g, 'VIVEKANANDA'],
+  [/Mahatma Gandhi/g, 'Vivekananda'],
+  [/MGIMST/g, 'VIMST'],
+  [/mgimst/g, 'vimst'],
+];
+
+const rename = (value) =>
+  typeof value === 'string'
+    ? RENAMES.reduce((acc, [pattern, to]) => acc.replace(pattern, to), value)
+    : value;
+
+/** Applies the rename to every string in a nested structure. */
+function renameDeep(node) {
+  if (typeof node === 'string') return rename(node);
+  if (Array.isArray(node)) return node.map(renameDeep);
+  if (node && typeof node === 'object') {
+    return Object.fromEntries(Object.entries(node).map(([k, v]) => [k, renameDeep(v)]));
+  }
+  return node;
+}
+
 /* Source paths are relative and sometimes prefixed with `./`. */
 const asset = (src) => {
   if (!src) return null;
@@ -83,7 +121,7 @@ const courses = COURSES.map((c) => {
   const firstProse = blocks.find(
     (b) => b.type === 'section' && b.lines.length && b.lines[0].length > 60
   );
-  const summary = firstProse ? firstProse.lines[0] : `${c.title} at MGIMST.`;
+  const summary = firstProse ? firstProse.lines[0] : `${c.title} at VIMST.`;
 
   const findSection = (re) =>
     blocks.find((b) => b.type === 'section' && b.heading && re.test(b.heading));
@@ -190,7 +228,7 @@ const siteHome = {
   },
   discover,
   campusLife: [
-    { title: 'Placement at MGIMST', image: asset('images/placement.jpg'), href: '/placement' },
+    { title: 'Placement at VIMST', image: asset('images/placement.jpg'), href: '/placement' },
     { title: 'Photo Gallery', image: asset('download (2).jpg'), href: '/photo-gallery' },
     { title: 'Recognition & Awards', image: asset('images/AWARDS.jpg'), href: '/about' },
   ].filter((c) => c.image),
@@ -205,7 +243,9 @@ const out = {
 };
 
 fs.mkdirSync('content', { recursive: true });
-fs.writeFileSync('content/site.json', JSON.stringify(out, null, 2));
+// Applied once, over the whole tree, so no extracted string can slip through
+// still carrying the former name.
+fs.writeFileSync('content/site.json', JSON.stringify(renameDeep(out), null, 2));
 
 const emptyCourses = courses.filter((c) => c.blocks.length === 0);
 console.log(`built ${courses.length} courses, ${Object.keys(pages).length} pages`);

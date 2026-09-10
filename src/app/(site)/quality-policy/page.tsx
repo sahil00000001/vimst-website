@@ -3,7 +3,7 @@ import { EditorialPage } from '@/components/EditorialPage';
 
 export const metadata: Metadata = {
   title: "Quality Policy",
-  description: "The quality policy of Mahatma Gandhi Institute of Management Science & Technology.",
+  description: "The quality policy of Vivekananda Institute of Management Science and Technology.",
 };
 
 export default function Page() {

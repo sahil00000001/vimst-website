@@ -7,33 +7,33 @@ import { PageBanner } from '@/components/PageBanner';
 export const metadata: Metadata = {
   title: 'Contact Us',
   description:
-    'Get in touch with Mahatma Gandhi Institute of Management Science & Technology — admissions, enrollment verification and general enquiries.',
+    'Get in touch with Vivekananda Institute of Management Science and Technology — admissions, enrollment verification and general enquiries.',
 };
 
 const CONTACTS = [
   {
     label: 'General enquiries',
-    value: 'info@mgimst.org',
-    href: 'mailto:info@mgimst.org',
+    value: 'info@vimst.org',
+    href: 'mailto:info@vimst.org',
     note: 'Admissions, programmes and anything else about the institute.',
   },
   {
     label: 'Enrollment verification',
-    value: 'verification@mgimst.org',
-    href: 'mailto:verification@mgimst.org',
+    value: 'verification@vimst.org',
+    href: 'mailto:verification@vimst.org',
     note: 'Degree, transcript and enrollment verification requests.',
   },
   {
     label: 'Administration',
-    value: 'admin@mgimst.org',
-    href: 'mailto:admin@mgimst.org',
+    value: 'admin@vimst.org',
+    href: 'mailto:admin@vimst.org',
     note: 'Records, fees and administrative matters.',
   },
   {
     label: 'Location',
     value: 'Andhra Pradesh, India',
     href: null,
-    note: 'Mahatma Gandhi Institute of Management Science & Technology.',
+    note: 'Vivekananda Institute of Management Science and Technology.',
   },
 ];
 

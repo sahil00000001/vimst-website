@@ -70,7 +70,7 @@ export function AdminShell({
         <Link href="/" className="block" aria-label="Back to the public site">
           <Media
             src="/media/logo-wordmark.png"
-            alt="MGIMST"
+            alt="VIMST"
             width={900}
             height={191}
             className="h-8 w-auto"
@@ -201,7 +201,7 @@ export function AdminShell({
               <path d="M0 1h18M0 6h18M0 11h12" stroke="currentColor" strokeWidth="1.4" />
             </svg>
           </button>
-          <p className="text-[length:var(--text-sm)] font-semibold text-ink">MGIMST Admin</p>
+          <p className="text-[length:var(--text-sm)] font-semibold text-ink">VIMST Admin</p>
         </header>
 
         <main className="min-w-0 flex-1 px-4 py-6 sm:px-6 lg:px-10 lg:py-10">{children}</main>

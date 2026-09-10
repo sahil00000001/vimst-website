@@ -24,19 +24,19 @@ const body = Inter({
   display: 'swap',
 });
 
-const NAME = 'Mahatma Gandhi Institute of Management Science & Technology';
+const NAME = 'Vivekananda Institute of Management Science and Technology';
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.mgimst.org'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.vimst.org'),
   title: {
-    default: `MGIMST — ${NAME}`,
-    template: `%s — MGIMST`,
+    default: `VIMST — ${NAME}`,
+    template: `%s — VIMST`,
   },
   description:
-    'MGIMST offers engineering, management, computer application, science, commerce and arts programmes through distance learning, at diploma, bachelor, PG diploma and masters level.',
+    'VIMST offers engineering, management, computer application, science, commerce and arts programmes through distance learning, at diploma, bachelor, PG diploma and masters level.',
   keywords: [
-    'MGIMST',
-    'Mahatma Gandhi Institute',
+    'VIMST',
+    'Vivekananda Institute',
     'distance learning India',
     'engineering diploma',
     'MBA',
@@ -45,8 +45,8 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     type: 'website',
-    siteName: 'MGIMST',
-    title: `MGIMST — ${NAME}`,
+    siteName: 'VIMST',
+    title: `VIMST — ${NAME}`,
     description:
       'Engineering, management, science and commerce programmes delivered through distance learning.',
   },

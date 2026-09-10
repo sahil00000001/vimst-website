@@ -75,10 +75,10 @@ export function Navbar({ nav }: { nav: NavItem[] }) {
           </p>
           <div className="flex items-center gap-5">
             <a
-              href="mailto:info@mgimst.org"
+              href="mailto:info@vimst.org"
               className="text-paper/80 transition-colors hover:text-paper"
             >
-              info@mgimst.org
+              info@vimst.org
             </a>
             <span className="h-3 w-px bg-paper/25" />
             <Link
@@ -104,10 +104,10 @@ export function Navbar({ nav }: { nav: NavItem[] }) {
             scrolled ? 'py-2.5' : 'py-3.5 sm:py-4'
           }`}
         >
-          <Link href="/" className="block shrink-0" aria-label="MGIMST home">
+          <Link href="/" className="block shrink-0" aria-label="VIMST home">
             <Media
               src="/media/logo-wordmark.png"
-              alt="Mahatma Gandhi Institute of Management Science &amp; Technology"
+              alt="Vivekananda Institute of Management Science and Technology"
               width={900}
               height={191}
               priority

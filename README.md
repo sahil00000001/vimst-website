@@ -1,4 +1,4 @@
-# MGIMST
+# VIMST
 
 A rebuild of [sahil00000001/MGIMST](https://github.com/sahil00000001/MGIMST) — 70 hand-written
 static HTML pages — as a Next.js App Router site, plus an admin portal that publishes semester
@@ -223,7 +223,7 @@ A white / off-white field: pages sit on paper white, sections step through warme
 Colour has to earn its place, so it appears only at small scale.
 
 **Crimson is reserved for the institute** — brand marks, primary actions, the About and Admission
-menus. It is never used for a subject family, so "this is MGIMST" and "this is Mechanical
+menus. It is never used for a subject family, so "this is VIMST" and "this is Mechanical
 Engineering" never look alike.
 
 Each academic family then gets one muted accent (`src/lib/accents.ts`), used for a mega-menu column

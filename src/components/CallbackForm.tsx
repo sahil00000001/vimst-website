@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useState, type FormEvent } from 'react';
 
 const EASE = [0.22, 1, 0.36, 1] as const;
-const ENQUIRY_ADDRESS = 'info@mgimst.org';
+const ENQUIRY_ADDRESS = 'info@vimst.org';
 
 type Status = 'idle' | 'sending' | 'sent' | 'handoff' | 'error';
 

@@ -19,7 +19,7 @@ const URL = process.env.DATABASE_URL;
 
 declare global {
   // eslint-disable-next-line no-var
-  var _mgimstSql: ReturnType<typeof postgres> | undefined;
+  var _vimstSql: ReturnType<typeof postgres> | undefined;
 }
 
 export class DatabaseNotConfiguredError extends Error {
@@ -38,8 +38,8 @@ export function isDatabaseConfigured() {
 export function db() {
   if (!URL) throw new DatabaseNotConfiguredError();
 
-  if (!global._mgimstSql) {
-    global._mgimstSql = postgres(URL, {
+  if (!global._vimstSql) {
+    global._vimstSql = postgres(URL, {
       // One connection per function instance; the pooler multiplexes the rest.
       max: 1,
       idle_timeout: 20,
@@ -49,7 +49,7 @@ export function db() {
       onnotice: () => {},
     });
   }
-  return global._mgimstSql;
+  return global._vimstSql;
 }
 
 /**

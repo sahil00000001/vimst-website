@@ -58,7 +58,7 @@ export function LoginForm() {
         <Link href="/" className="inline-block" aria-label="Back to the public site">
           <Media
             src="/media/logo-wordmark.png"
-            alt="MGIMST"
+            alt="VIMST"
             width={900}
             height={191}
             priority

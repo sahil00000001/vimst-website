@@ -69,7 +69,7 @@ async function call(pathname, init = {}) {
   });
   for (const c of res.headers.getSetCookie?.() ?? []) {
     const [pair] = c.split(';');
-    if (pair.startsWith('mgimst_admin=')) cookie = pair;
+    if (pair.startsWith('vimst_admin=')) cookie = pair;
   }
   return res;
 }
@@ -212,7 +212,7 @@ try {
       body: JSON.stringify({ username: 'TESTER', password: 'correct-horse' }),
     });
     check('correct credentials sign in (username case-insensitive)', (await res.json()).ok === true);
-    check('a session cookie is issued', cookie.startsWith('mgimst_admin='));
+    check('a session cookie is issued', cookie.startsWith('vimst_admin='));
   }
 
   console.log('\nBULK UPLOAD');
@@ -319,7 +319,7 @@ try {
     check('it really is a PDF', buf.subarray(0, 5).toString() === '%PDF-', buf.subarray(0, 8).toString());
     check(
       'it is sent as an attachment named for the student',
-      (res.headers.get('content-disposition') ?? '').includes('MGIMST-marksheet-MG2024001-semester-I.pdf'),
+      (res.headers.get('content-disposition') ?? '').includes('VIMST-marksheet-MG2024001-semester-I.pdf'),
       res.headers.get('content-disposition')
     );
     const wrong = await fetch(

@@ -11,7 +11,7 @@ import { Media } from '@/components/Media';
 export const metadata: Metadata = {
   title: 'Placements',
   description:
-    'The MGIMST Placement Cell connects students with internships and jobs, and prepares them for interviews, group discussions and the industry.',
+    'The VIMST Placement Cell connects students with internships and jobs, and prepares them for interviews, group discussions and the industry.',
 };
 
 export default function PlacementPage() {
@@ -86,7 +86,7 @@ export default function PlacementPage() {
               <p className="eyebrow mb-5">Where our students go</p>
               <h2 className="max-w-2xl text-[length:var(--text-3xl)]">
                 Organisations that have <em className="not-italic text-crimson">recruited</em>{' '}
-                from MGIMST
+                from VIMST
               </h2>
             </Reveal>
 

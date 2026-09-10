@@ -10,7 +10,7 @@ import { isRole, type Role } from './roles';
  * where `crypto`-based JWT libraries are unavailable.
  */
 
-export const SESSION_COOKIE = 'mgimst_admin';
+export const SESSION_COOKIE = 'vimst_admin';
 const MAX_AGE_SECONDS = 60 * 60 * 8; // one working day
 
 export type SessionPayload = {

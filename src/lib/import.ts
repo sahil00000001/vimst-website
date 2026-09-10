@@ -285,7 +285,7 @@ export async function parseWorkbook(buffer: ArrayBuffer): Promise<ParsedImport> 
 /** Builds the downloadable template, pre-filled with one example row per sheet. */
 export async function buildTemplate(): Promise<ArrayBuffer> {
   const workbook = new ExcelJS.Workbook();
-  workbook.creator = 'MGIMST Admin';
+  workbook.creator = 'VIMST Admin';
   workbook.created = new Date();
 
   const styleHeader = (sheet: ExcelJS.Worksheet) => {
@@ -312,7 +312,7 @@ export async function buildTemplate(): Promise<ArrayBuffer> {
     { header: 'branch', key: 'branch', width: 28 },
   ];
   studentSheet.addRow({
-    rollNo: 'MG2024001',
+    rollNo: 'VIM2024001',
     name: 'Example Student',
     fatherName: 'Example Parent',
     dob: '2002-01-18',
@@ -333,7 +333,7 @@ export async function buildTemplate(): Promise<ArrayBuffer> {
   ];
   marksSheet.addRows([
     {
-      rollNo: 'MG2024001',
+      rollNo: 'VIM2024001',
       semester: 'I',
       subjectCode: 'CS101',
       subject: 'Programming for Problem Solving',
@@ -341,7 +341,7 @@ export async function buildTemplate(): Promise<ArrayBuffer> {
       obtainedMarks: 78,
     },
     {
-      rollNo: 'MG2024001',
+      rollNo: 'VIM2024001',
       semester: 'I',
       subjectCode: 'MA101',
       subject: 'Engineering Mathematics I',

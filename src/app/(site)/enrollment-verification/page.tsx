@@ -5,7 +5,7 @@ import { PageBanner } from '@/components/PageBanner';
 export const metadata: Metadata = {
   title: 'Check Your Result',
   description:
-    'Check your MGIMST semester result with your enrollment number and date of birth, and download the statement of marks as a PDF.',
+    'Check your VIMST semester result with your enrollment number and date of birth, and download the statement of marks as a PDF.',
   robots: { index: true, follow: false },
 };
 
