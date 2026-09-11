@@ -1,8 +1,10 @@
 import Link from 'next/link';
 import { ContentBlocks } from './ContentBlocks';
+import { Figure, LeadFigure } from './Figure';
 import { Reveal } from './Motion';
 import { PageBanner, type Crumb } from './PageBanner';
 import { courses, page as getPage } from '@/lib/content';
+import { figuresFor, leadImageFor } from '@/lib/media';
 
 const RELATED: { label: string; href: string }[] = [
   { label: 'About Us', href: '/about' },
@@ -34,6 +36,9 @@ export function EditorialPage({
 }) {
   const data = getPage(contentKey);
   const heading = title ?? data.title;
+  // Both are empty until photography is added to src/lib/media.ts.
+  const lead = leadImageFor(contentKey);
+  const figures = figuresFor(contentKey);
 
   return (
     <>
@@ -50,7 +55,15 @@ export function EditorialPage({
           <div className="grid gap-12 lg:grid-cols-12 lg:gap-14">
             <div className="lg:col-span-8">
               <div className="rounded-b-2xl border border-t-0 border-rule bg-paper px-5 py-10 sm:px-10 sm:py-12 lg:px-12">
+                {lead && <LeadFigure figure={lead} />}
                 <ContentBlocks blocks={data.blocks} skipLeadHeading={heading} />
+                {figures.length > 0 && (
+                  <div className="mt-12 grid gap-6 sm:grid-cols-2">
+                    {figures.map((f) => (
+                      <Figure key={f.src} figure={f} />
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
 

@@ -29,7 +29,7 @@ type RevealProps = {
   duration?: number;
   className?: string;
   amount?: number;
-  as?: 'div' | 'section' | 'li' | 'article' | 'span' | 'header';
+  as?: 'div' | 'section' | 'li' | 'article' | 'span' | 'header' | 'figure';
 };
 
 const OFFSET = {

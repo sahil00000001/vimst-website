@@ -5,8 +5,10 @@ import { Hero, Arrow } from '@/components/Hero';
 import { Media } from '@/components/Media';
 import { Parallax, ParallaxPlate, Reveal, Stagger, StaggerItem } from '@/components/Motion';
 import { NewsTicker } from '@/components/NewsTicker';
+import { VideoFeature } from '@/components/VideoFeature';
 import { ACCENT_CLASS, accentForStream } from '@/lib/accents';
 import { courses, coursesByStream, departments, home } from '@/lib/content';
+import { CAMPUS_VIDEO, HERO_VIDEO } from '@/lib/media';
 
 /* A representative programme from each stream for the home page grid. */
 function featuredCourses() {
@@ -32,6 +34,7 @@ export default function HomePage() {
     <>
       <Hero
         slides={home.carousel}
+        video={HERO_VIDEO}
         stats={[
           { value: courses.length, suffix: '', label: 'Programmes' },
           { value: departments().length, suffix: '', label: 'Departments' },
@@ -253,6 +256,22 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {CAMPUS_VIDEO && (
+        <section className="border-t border-rule bg-paper">
+          <div className="shell section-y">
+            <Reveal from="up" className="mb-8 max-w-xl">
+              <p className="eyebrow mb-4">Take a look</p>
+              <h2 className="text-[length:var(--text-3xl)]">
+                Inside <em className="not-italic text-crimson">the campus</em>
+              </h2>
+            </Reveal>
+            <Reveal from="up" delay={0.08}>
+              <VideoFeature video={CAMPUS_VIDEO} aspect="aspect-[16/10] sm:aspect-[21/9]" />
+            </Reveal>
+          </div>
+        </section>
+      )}
 
       {/* Campus life — each tile's image parallaxes inside its frame */}
       <section className="border-t border-rule bg-shell">

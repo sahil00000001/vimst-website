@@ -5,6 +5,8 @@ import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Counter, EASE, Magnetic } from './Motion';
 import { Media } from './Media';
+import { VideoFeature } from './VideoFeature';
+import type { VideoSlot } from '@/lib/media';
 
 const INTERVAL = 6400;
 const HEADLINE = ['Learning', 'that travels', 'with you.'];
@@ -26,7 +28,16 @@ export function Arrow({ className = '' }: { className?: string }) {
   );
 }
 
-export function Hero({ slides, stats }: { slides: string[]; stats: HeroStat[] }) {
+export function Hero({
+  slides,
+  stats,
+  video = null,
+}: {
+  slides: string[];
+  stats: HeroStat[];
+  /** When a film exists it replaces the carousel: it says more than six stills. */
+  video?: VideoSlot | null;
+}) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const count = slides.length;
@@ -167,30 +178,44 @@ export function Hero({ slides, stats }: { slides: string[]; stats: HeroStat[] })
           >
             {/* Over-sized so the parallax shift never exposes an edge. */}
             <motion.div style={{ y: imageY }} className="absolute -inset-y-[12%] inset-x-0">
-              <AnimatePresence mode="sync">
-                <motion.div
-                  key={index}
-                  className="absolute inset-0"
-                  initial={{ opacity: 0, scale: 1.08 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 1.2, ease: EASE }}
-                >
-                  <Media
-                    src={slides[index]}
-                    fill
-                    priority={index === 0}
-                    sizes="(max-width: 1024px) 100vw, 58vw"
-                    className="object-cover"
-                  />
-                </motion.div>
-              </AnimatePresence>
+              {video ? (
+                <VideoFeature
+                  video={video}
+                  priority
+                  aspect="absolute inset-0"
+                  rounded="rounded-none"
+                  className="border-0"
+                />
+              ) : (
+                <AnimatePresence mode="sync">
+                  <motion.div
+                    key={index}
+                    className="absolute inset-0"
+                    initial={{ opacity: 0, scale: 1.08 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 1.2, ease: EASE }}
+                  >
+                    <Media
+                      src={slides[index]}
+                      fill
+                      priority={index === 0}
+                      sizes="(max-width: 1024px) 100vw, 58vw"
+                      className="object-cover"
+                    />
+                  </motion.div>
+                </AnimatePresence>
+              )}
             </motion.div>
 
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/35 via-transparent to-transparent" />
 
-            {/* Controls */}
-            <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-4 p-3.5 sm:p-5">
+            {/* Controls — only meaningful for the carousel */}
+            <div
+              className={`absolute inset-x-0 bottom-0 flex items-center justify-between gap-4 p-3.5 sm:p-5 ${
+                video ? 'hidden' : ''
+              }`}
+            >
               <div className="flex items-center gap-1.5" role="tablist" aria-label="Slides">
                 {slides.map((_, i) => (
                   <button

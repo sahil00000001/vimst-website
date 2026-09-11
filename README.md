@@ -179,6 +179,17 @@ institute mark embedded.
 
 ---
 
+## 3b. Adding photographs and video
+
+See **[MEDIA.md](MEDIA.md)**. Every optional image and video slot lives in
+`src/lib/media.ts`; an empty slot renders nothing rather than a placeholder.
+
+The honest headline in that document: most images inherited from the old site are **722px wide**
+and are displayed up to 1400px, so they are upscaled about 2x. New photography at the sizes listed
+there will do more for how the site looks than any further layout work.
+
+---
+
 ## 4. How the public content got here
 
 Nothing was copy-pasted. `npm run content` runs four scripts, each writing into `content/`:
