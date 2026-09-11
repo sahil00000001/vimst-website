@@ -223,16 +223,22 @@ const home = raw['index.html'];
 const homeSection = (re) =>
   home.blocks.find((b) => b.type === 'section' && b.heading && re.test(b.heading));
 
+/**
+ * Hero carousel.
+ *
+ * The institute's own photograph of the entrance leads, because it is the only
+ * one here that is both sharp and unmistakably this place. The rest came from
+ * the old site at 722px and are noticeably soft at this size — replace them as
+ * real photography arrives, newest first.
+ */
 const carousel = [
-  'images/Picsart_24-06-17_13-48-06-691.jpg',
-  'images/Picsart_24-06-17_14-15-14-124.jpg',
-  'banner-4.jpg',
-  'banner-5.jpg',
-  'banner-6.jpg',
-  'banner-7.jpg',
-]
-  .map(asset)
-  .filter(Boolean);
+  // Supplied photograph, 1536x1024, lives in public/media so it needs no
+  // lookup through the asset map.
+  '/media/hero/campus-gate.jpg',
+  ...['images/Picsart_24-06-17_14-15-14-124.jpg', 'banner-4.jpg', 'banner-5.jpg', 'banner-6.jpg', 'banner-7.jpg']
+    .map(asset)
+    .filter(Boolean),
+];
 
 const discoverKeys = [
   'Indian Knowledge System',

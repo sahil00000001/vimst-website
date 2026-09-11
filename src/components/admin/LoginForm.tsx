@@ -59,8 +59,8 @@ export function LoginForm() {
           <Media
             src="/media/logo-wordmark.png"
             alt="VIMST"
-            width={900}
-            height={191}
+            width={1200}
+            height={416}
             priority
             className="mx-auto h-11 w-auto"
           />

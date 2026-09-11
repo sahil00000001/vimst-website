@@ -108,8 +108,8 @@ export function Navbar({ nav }: { nav: NavItem[] }) {
             <Media
               src="/media/logo-wordmark.png"
               alt="Vivekananda Institute of Management Science and Technology"
-              width={900}
-              height={191}
+              width={1200}
+              height={416}
               priority
               className={`w-auto transition-all duration-500 ${
                 scrolled ? 'h-8 sm:h-10' : 'h-10 sm:h-12 lg:h-14'

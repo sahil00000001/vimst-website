@@ -1,35 +1,14 @@
 import Link from 'next/link';
 import { CallbackForm } from '@/components/CallbackForm';
-import { CourseCard } from '@/components/CourseCard';
 import { Hero, Arrow } from '@/components/Hero';
 import { Media } from '@/components/Media';
 import { Parallax, ParallaxPlate, Reveal, Stagger, StaggerItem } from '@/components/Motion';
 import { NewsTicker } from '@/components/NewsTicker';
 import { VideoFeature } from '@/components/VideoFeature';
-import { ACCENT_CLASS, accentForStream } from '@/lib/accents';
-import { courses, coursesByStream, departments, home } from '@/lib/content';
+import { courses, departments, home } from '@/lib/content';
 import { CAMPUS_VIDEO, HERO_VIDEO } from '@/lib/media';
 
-/* A representative programme from each stream for the home page grid. */
-function featuredCourses() {
-  const picked = [
-    'bca',
-    'mba',
-    'bachelor-computer-engineering',
-    'diploma-mechanical-engineering',
-    'msc',
-    'bcom',
-  ];
-  const byPick = picked
-    .map((slug) => courses.find((c) => c.slug === slug))
-    .filter((c): c is NonNullable<typeof c> => Boolean(c));
-  return byPick.length >= 6 ? byPick : courses.slice(0, 6);
-}
-
 export default function HomePage() {
-  const streams = coursesByStream();
-  const featured = featuredCourses();
-
   return (
     <>
       <Hero
@@ -123,98 +102,6 @@ export default function HomePage() {
               </div>
             </div>
           </Reveal>
-        </div>
-      </section>
-
-      {/* Streams */}
-      <section className="border-t border-rule bg-paper">
-        <div className="shell section-y">
-          <Reveal from="up" className="mb-10 flex flex-wrap items-end justify-between gap-6 sm:mb-12">
-            <div>
-              <p className="eyebrow mb-5">Courses offered</p>
-              <h2 className="max-w-[14ch] text-[length:var(--text-3xl)]">
-                Six streams,{' '}
-                <em className="not-italic text-crimson">{courses.length} programmes</em>
-              </h2>
-            </div>
-            <Link
-              href="/courses"
-              className="group inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-[length:var(--text-sm)] font-medium text-paper transition-colors hover:bg-crimson"
-            >
-              Browse all
-              <Arrow className="transition-transform duration-300 group-hover:translate-x-1" />
-            </Link>
-          </Reveal>
-
-          <Stagger className="grid gap-px overflow-hidden rounded-xl border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-3">
-            {streams.map((s) => {
-              const accent = ACCENT_CLASS[accentForStream(s.stream)];
-              return (
-              <StaggerItem key={s.stream} className="bg-paper">
-                <Link
-                  href={`/courses?stream=${encodeURIComponent(s.stream)}`}
-                  className="group relative flex h-full flex-col justify-between gap-8 overflow-hidden p-7 transition-colors duration-500 hover:bg-shell sm:p-8"
-                >
-                  {/* Crimson wipe that rises from the bottom on hover. */}
-                  <span
-                    aria-hidden
-                    className={`pointer-events-none absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100 ${accent.dot}`}
-                  />
-                  <div>
-                    <div className="mb-5 flex items-baseline justify-between">
-                      <h3
-                        className={`font-display text-[length:var(--text-2xl)] text-ink transition-colors ${accent.hoverText}`}
-                      >
-                        {s.stream}
-                      </h3>
-                      <span
-                        className={`rounded-full px-2 py-0.5 text-[length:var(--text-2xs)] font-semibold tabular-nums ${accent.bg} ${accent.text}`}
-                      >
-                        {String(s.courses.length).padStart(2, '0')}
-                      </span>
-                    </div>
-                    <ul className="space-y-1.5">
-                      {s.courses.slice(0, 4).map((c) => (
-                        <li key={c.slug} className="text-[length:var(--text-sm)] text-slate">
-                          {c.title}
-                        </li>
-                      ))}
-                      {s.courses.length > 4 && (
-                        <li className="text-[length:var(--text-sm)] text-mist">
-                          + {s.courses.length - 4} more
-                        </li>
-                      )}
-                    </ul>
-                  </div>
-                  <span className="inline-flex items-center gap-2 text-[length:var(--text-sm)] font-medium text-ink">
-                    View stream
-                    <Arrow className="transition-transform duration-300 group-hover:translate-x-1" />
-                  </span>
-                </Link>
-              </StaggerItem>
-              );
-            })}
-          </Stagger>
-        </div>
-      </section>
-
-      {/* Featured programmes */}
-      <section className="border-t border-rule bg-shell">
-        <div className="shell section-y">
-          <Reveal from="up" className="mb-10 sm:mb-12">
-            <p className="eyebrow mb-5">Popular right now</p>
-            <h2 className="max-w-[16ch] text-[length:var(--text-3xl)]">
-              Programmes students <em className="not-italic text-crimson">ask about most</em>
-            </h2>
-          </Reveal>
-
-          <Stagger className="grid gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-            {featured.map((c) => (
-              <StaggerItem key={c.slug}>
-                <CourseCard course={c} />
-              </StaggerItem>
-            ))}
-          </Stagger>
         </div>
       </section>
 

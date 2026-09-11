@@ -71,8 +71,8 @@ export function AdminShell({
           <Media
             src="/media/logo-wordmark.png"
             alt="VIMST"
-            width={900}
-            height={191}
+            width={1200}
+            height={416}
             className="h-8 w-auto"
           />
         </Link>

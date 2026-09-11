@@ -34,8 +34,8 @@ export function Footer() {
             <Media
               src="/media/logo-wordmark.png"
               alt="Vivekananda Institute of Management Science and Technology"
-              width={900}
-              height={191}
+              width={1200}
+              height={416}
               className="h-10 w-auto sm:h-12"
             />
             <p className="mt-4 max-w-sm text-[length:var(--text-sm)] leading-relaxed text-slate">

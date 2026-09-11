@@ -48,7 +48,9 @@ let logoCache: Uint8Array | null | undefined;
 async function loadLogo(): Promise<Uint8Array | null> {
   if (logoCache !== undefined) return logoCache;
   try {
-    const file = path.join(process.cwd(), 'public', 'media', 'logo-wordmark.png');
+    // A print-sized copy: the full-resolution mark would be embedded whole
+    // into every marksheet a student downloads.
+    const file = path.join(process.cwd(), 'public', 'media', 'logo-print.png');
     logoCache = new Uint8Array(await fs.readFile(file));
   } catch {
     // The document is still valid without it.
