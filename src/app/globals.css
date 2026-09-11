@@ -164,7 +164,7 @@
   }
 
   .section-y {
-    padding-block: clamp(3.5rem, 7vw, 7rem);
+    padding-block: clamp(2.75rem, 7vw, 7rem);
   }
 }
 

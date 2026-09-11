@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { CallbackForm } from '@/components/CallbackForm';
+import { Expandable } from '@/components/Expandable';
 import { Hero, Arrow } from '@/components/Hero';
 import { Media } from '@/components/Media';
 import { Parallax, ParallaxPlate, Reveal, Stagger, StaggerItem } from '@/components/Motion';

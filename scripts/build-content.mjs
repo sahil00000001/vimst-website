@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { COURSES, BANNER_BY_DEPARTMENT } from './catalog.mjs';
 import { AUTHORED } from './authored.mjs';
+import { HOME_COPY, PAGE_COPY, SECTION_REWRITES, tidy, tidyHeading } from './copy.mjs';
 
 const raw = JSON.parse(fs.readFileSync('content/raw-pages.json', 'utf8'));
 const assets = JSON.parse(fs.readFileSync('content/asset-map.json', 'utf8'));
@@ -96,6 +97,44 @@ function repairHeadings(blocks, title) {
 }
 
 /* ------------------------------------------------------------------
+   Rewritten copy
+   ------------------------------------------------------------------ */
+
+/**
+ * The inherited text was lifted from elsewhere and written in heavy corporate
+ * language. scripts/copy.mjs replaces it with plain English, keeping every
+ * fact. Applied here so `npm run content` cannot undo it.
+ */
+function applyRewrites(line) {
+  for (const [pattern, replacement] of SECTION_REWRITES) {
+    if (pattern.test(line)) {
+      return tidy(
+        typeof replacement === 'function' ? line.replace(pattern, replacement) : replacement
+      );
+    }
+  }
+  return tidy(line);
+}
+
+/** Rewrites the prose in a block list, leaving tables untouched. */
+function rewriteBlocks(blocks) {
+  return blocks
+    .map((b) => {
+      if (b.type !== 'section') return b;
+      return {
+        ...b,
+        heading: b.heading ? tidyHeading(b.heading) : b.heading,
+        lines: b.lines.map(applyRewrites).filter(Boolean),
+      };
+    })
+    .filter((b) => (b.type === 'section' ? b.heading || b.lines.length : true));
+}
+
+/** Turns an entry from PAGE_COPY into the block shape the site renders. */
+const blocksFromCopy = (sections) =>
+  sections.map((x) => ({ type: 'section', heading: x.heading, lines: x.lines }));
+
+/* ------------------------------------------------------------------
    Banner artwork
    ------------------------------------------------------------------ */
 
@@ -145,10 +184,10 @@ const courses = COURSES.map((c) => {
   let bannerSrc;
 
   if (page && page.blocks.length) {
-    blocks = repairHeadings(cleanBlocks(page.blocks), c.title);
+    blocks = rewriteBlocks(repairHeadings(cleanBlocks(page.blocks), c.title));
     bannerSrc = page.banner;
   } else if (authored) {
-    blocks = authored.blocks;
+    blocks = rewriteBlocks(authored.blocks);
     bannerSrc = authored.banner;
   } else {
     blocks = [];
@@ -189,10 +228,12 @@ const courses = COURSES.map((c) => {
 
 /* ---------------- editorial pages ---------------- */
 
-function simplePage(file, { title, intro, art }) {
+function simplePage(file, { title, intro, art, copy }) {
   const page = raw[file];
   if (!page) throw new Error(`missing source page: ${file}`);
-  const blocks = cleanBlocks(page.blocks);
+  // A rewritten page replaces the extracted text outright; anything without
+  // one still gets the dashes removed and the spacing fixed.
+  const blocks = copy ? blocksFromCopy(copy) : rewriteBlocks(cleanBlocks(page.blocks));
   return {
     title,
     intro: intro || null,
@@ -203,12 +244,12 @@ function simplePage(file, { title, intro, art }) {
 }
 
 const pages = {
-  about: simplePage('AboutUs.HTML', { title: 'About Us', art: 'about' }),
-  vision: simplePage('vision.html', { title: 'Our Vision', art: 'vision' }),
-  mission: simplePage('mission.html', { title: 'Our Mission', art: 'mission' }),
-  career: simplePage('career.html', { title: 'Career', art: 'career' }),
-  directorMessage: simplePage('director-message.html', { title: "Director's Message", art: 'director-message' }),
-  qualityPolicy: simplePage('quality-policy.html', { title: 'Quality Policy', art: 'quality-policy' }),
+  about: simplePage('AboutUs.HTML', { title: 'About Us', art: 'about', copy: PAGE_COPY.about }),
+  vision: simplePage('vision.html', { title: 'Our Vision', art: 'vision', copy: PAGE_COPY.vision }),
+  mission: simplePage('mission.html', { title: 'Our Mission', art: 'mission', copy: PAGE_COPY.mission }),
+  career: simplePage('career.html', { title: 'Career', art: 'career', copy: PAGE_COPY.career }),
+  directorMessage: simplePage('director-message.html', { title: "Director's Message", art: 'director-message', copy: PAGE_COPY.directorMessage }),
+  qualityPolicy: simplePage('quality-policy.html', { title: 'Quality Policy', art: 'quality-policy', copy: PAGE_COPY.qualityPolicy }),
   placement: simplePage('our-placement.html', { title: 'Our Placements', art: 'placement' }),
   photoGallery: simplePage('photogallery.html', { title: 'Photo Gallery', art: 'gallery' }),
   specializations: simplePage('specializations.html', { title: 'Specializations', art: 'specializations' }),
@@ -257,7 +298,7 @@ const discover = discoverKeys.map((k, i) => {
   const s = homeSection(new RegExp(`^${k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i'));
   return {
     title: k,
-    body: s ? s.lines.join(' ') : '',
+    body: HOME_COPY.discover[k] ?? (s ? s.lines.join(' ') : ''),
     image: asset(discoverImages[i]),
   };
 });
@@ -268,15 +309,15 @@ const siteHome = {
   carousel,
   // The source markup puts the page's welcome heading inside the news column,
   // so short lines are dropped -- a real notice is always a full sentence.
-  news: news ? [...new Set(news.lines)].filter((l) => l.length > 80) : [],
+  news: HOME_COPY.news,
   about: {
     heading: 'About the College',
-    body: homeSection(/about college/i)?.lines.join(' ') || '',
+    body: HOME_COPY.about,
     image: asset('2.jpg'),
   },
   director: {
     heading: "Director's Message",
-    body: homeSection(/director message/i)?.lines.join(' ') || '',
+    body: HOME_COPY.director,
     image: asset('director-img.jpg'),
   },
   discover,

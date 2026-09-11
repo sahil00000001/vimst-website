@@ -1,4 +1,5 @@
 import { visibleBlocks, type Block, type Cell } from '@/lib/content';
+import { Expandable } from './Expandable';
 import { Reveal, Stagger, StaggerItem } from './Motion';
 
 /* ------------------------------------------------------------------
@@ -186,29 +187,33 @@ function ProseSection({
         </div>
       )}
 
-      {asList ? (
-        <Stagger as="ul" className="space-y-0" gap={0.05}>
-          {lines.map((line, i) => (
-            <StaggerItem
-              as="li"
-              key={i}
-              className="group flex gap-4 border-b border-rule-soft py-3.5 last:border-0"
-            >
-              <span
-                className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-crimson/45 transition-colors group-hover:bg-crimson"
-                aria-hidden
-              />
-              <span className="text-[length:var(--text-base)] leading-relaxed text-graphite">{line}</span>
-            </StaggerItem>
-          ))}
-        </Stagger>
-      ) : (
-        <div className="prose-mg">
-          {lines.map((line, i) => (
-            <p key={i}>{line}</p>
-          ))}
-        </div>
-      )}
+      <Expandable>
+        {asList ? (
+          <Stagger as="ul" className="space-y-0" gap={0.05}>
+            {lines.map((line, i) => (
+              <StaggerItem
+                as="li"
+                key={i}
+                className="group flex gap-4 border-b border-rule-soft py-3.5 last:border-0"
+              >
+                <span
+                  className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-crimson/45 transition-colors group-hover:bg-crimson"
+                  aria-hidden
+                />
+                <span className="text-[length:var(--text-base)] leading-relaxed text-graphite">
+                  {line}
+                </span>
+              </StaggerItem>
+            ))}
+          </Stagger>
+        ) : (
+          <div className="prose-mg">
+            {lines.map((line, i) => (
+              <p key={i}>{line}</p>
+            ))}
+          </div>
+        )}
+      </Expandable>
     </Reveal>
   );
 }
@@ -228,7 +233,7 @@ export function ContentBlocks({
   let sectionIndex = 0;
 
   return (
-    <div className="space-y-14">
+    <div className="space-y-10 sm:space-y-14">
       {list.map((block, i) => {
         if (block.type === 'table') {
           return <CurriculumTable key={i} caption={block.caption} rows={block.rows} />;
