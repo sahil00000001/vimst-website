@@ -181,7 +181,9 @@ institute mark embedded.
 
 ## 3b. Adding photographs and video
 
-See **[MEDIA.md](MEDIA.md)**. Every optional image and video slot lives in
+See **[MEDIA.md](MEDIA.md)** for how the slots work, and
+**[IMAGE-BRIEF.md](IMAGE-BRIEF.md)** for a plain-English list of every picture the site wants,
+with the size, the folder and a prompt for each. Every optional image and video slot lives in
 `src/lib/media.ts`; an empty slot renders nothing rather than a placeholder.
 
 The honest headline in that document: most images inherited from the old site are **722px wide**
