@@ -51,7 +51,7 @@ export default function ContactPage() {
         eyebrow="Get in touch"
         title="Contact Us"
         intro="The quickest way to reach us is the form below. Fill in the required fields and we will get back to you as soon as possible."
-        image="/media/images/banner/about-us.jpg"
+        image="/media/art/contact.jpg"
         crumbs={[{ label: 'Contact' }]}
         wide
       />

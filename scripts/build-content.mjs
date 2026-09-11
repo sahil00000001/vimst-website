@@ -95,6 +95,46 @@ function repairHeadings(blocks, title) {
   });
 }
 
+/* ------------------------------------------------------------------
+   Banner artwork
+   ------------------------------------------------------------------ */
+
+/**
+ * Page banners use the drawn artwork from `npm run artwork` rather than the
+ * photographs inherited from the old site.
+ *
+ * Not an aesthetic preference: every inherited banner is 722x247 and the
+ * layout displays it up to 1400x340, so it arrives on screen at roughly twice
+ * its real size and looks it. The artwork is rendered from SVG at 2400px and
+ * is sharp at any size. Swap an entry back to a photograph the moment there is
+ * one shot at a usable resolution — a real picture of the place beats a
+ * drawing every time, but not a blurred one.
+ */
+const ART = (name) => `/media/art/${name}.jpg`;
+
+const ART_BY_DEPARTMENT = {
+  'Automobile Engineering': 'automobile-engineering',
+  'Chemical Engineering': 'chemical-engineering',
+  'Civil Engineering': 'civil-engineering',
+  'Computer Engineering': 'computer-engineering',
+  'Electrical Engineering': 'electrical-engineering',
+  'Electronics Engineering': 'electronics-engineering',
+  'Electronics & Communication': 'electronics-communication',
+  'Electrical & Electronics Engineering': 'electrical-electronics-engineering',
+  'Mechanical Engineering': 'mechanical-engineering',
+  'Instrumentation Engineering': 'instrumentation-engineering',
+  'Metallurgical Engineering': 'metallurgical-engineering',
+  'Mining Engineering': 'mining-engineering',
+  'Information Technology': 'information-technology',
+  Management: 'management',
+  'Hotel Management': 'hotel-management',
+  'Computer Applications': 'computer-applications',
+  Science: 'science',
+  Commerce: 'commerce',
+  Arts: 'arts',
+};
+
+
 /* ---------------- courses ---------------- */
 
 const courses = COURSES.map((c) => {
@@ -115,7 +155,14 @@ const courses = COURSES.map((c) => {
     bannerSrc = null;
   }
 
-  const banner = asset(bannerSrc) || asset(BANNER_BY_DEPARTMENT[c.department]) || null;
+  // Drawn artwork first; the inherited photographs are all too small for a
+  // full-bleed banner. `bannerSrc` is kept as the fallback for any department
+  // the artwork does not cover.
+  const banner =
+    (ART_BY_DEPARTMENT[c.department] && ART(ART_BY_DEPARTMENT[c.department])) ||
+    asset(bannerSrc) ||
+    asset(BANNER_BY_DEPARTMENT[c.department]) ||
+    null;
 
   // The lead paragraph doubles as the card blurb and the meta description.
   const firstProse = blocks.find(
@@ -142,32 +189,32 @@ const courses = COURSES.map((c) => {
 
 /* ---------------- editorial pages ---------------- */
 
-function simplePage(file, { title, intro }) {
+function simplePage(file, { title, intro, art }) {
   const page = raw[file];
   if (!page) throw new Error(`missing source page: ${file}`);
   const blocks = cleanBlocks(page.blocks);
   return {
     title,
     intro: intro || null,
-    banner: asset(page.banner),
+    banner: (art && ART(art)) || asset(page.banner),
     blocks,
     images: page.images.map((i) => ({ ...i, src: asset(i.src) })).filter((i) => i.src),
   };
 }
 
 const pages = {
-  about: simplePage('AboutUs.HTML', { title: 'About Us' }),
-  vision: simplePage('vision.html', { title: 'Our Vision' }),
-  mission: simplePage('mission.html', { title: 'Our Mission' }),
-  career: simplePage('career.html', { title: 'Career' }),
-  directorMessage: simplePage('director-message.html', { title: "Director's Message" }),
-  qualityPolicy: simplePage('quality-policy.html', { title: 'Quality Policy' }),
-  placement: simplePage('our-placement.html', { title: 'Our Placements' }),
-  photoGallery: simplePage('photogallery.html', { title: 'Photo Gallery' }),
-  specializations: simplePage('specializations.html', { title: 'Specializations' }),
-  paymentModes: simplePage('payment-modes.html', { title: 'Payment Modes' }),
-  feeStructure: simplePage('fee-structure.html', { title: 'Fee Structure' }),
-  contact: simplePage('contact-us.html', { title: 'Contact Us' }),
+  about: simplePage('AboutUs.HTML', { title: 'About Us', art: 'about' }),
+  vision: simplePage('vision.html', { title: 'Our Vision', art: 'vision' }),
+  mission: simplePage('mission.html', { title: 'Our Mission', art: 'mission' }),
+  career: simplePage('career.html', { title: 'Career', art: 'career' }),
+  directorMessage: simplePage('director-message.html', { title: "Director's Message", art: 'director-message' }),
+  qualityPolicy: simplePage('quality-policy.html', { title: 'Quality Policy', art: 'quality-policy' }),
+  placement: simplePage('our-placement.html', { title: 'Our Placements', art: 'placement' }),
+  photoGallery: simplePage('photogallery.html', { title: 'Photo Gallery', art: 'gallery' }),
+  specializations: simplePage('specializations.html', { title: 'Specializations', art: 'specializations' }),
+  paymentModes: simplePage('payment-modes.html', { title: 'Payment Modes', art: 'admission' }),
+  feeStructure: simplePage('fee-structure.html', { title: 'Fee Structure', art: 'admission' }),
+  contact: simplePage('contact-us.html', { title: 'Contact Us', art: 'contact' }),
 };
 
 /* ---------------- home ---------------- */

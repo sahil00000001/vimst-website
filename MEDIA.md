@@ -26,6 +26,28 @@ looks than any layout change**, including everything else in this document.
 
 ---
 
+## 1b. What is there now: drawn banners
+
+Every page banner is currently **drawn, not photographed** — `npm run artwork`
+(`scripts/artwork.mjs`) renders 32 banners at 2400x1030 from SVG, so they are sharp at any size
+the layout asks for. Each department gets a motif from its own discipline (a Warren truss for
+civil, a hexagonal lattice for chemical, orbital ellipses for science) in one of eight muted
+palettes, over the same paper ground as the rest of the site, with the crimson hairline along the
+bottom tying them together.
+
+This is what an institute can ship before the photographer arrives. **Replace any of them with a
+real photograph the moment you have one at 2000px** — a picture of the actual place beats a
+drawing every time, but not a blurred one. To swap: put the photo in `public/media/`, then change
+that department's entry in `ART_BY_DEPARTMENT` (or the page's `art:` argument) in
+`scripts/build-content.mjs` and re-run `npm run content`.
+
+To change a motif or colour, edit the `ARTWORK` map at the bottom of `scripts/artwork.mjs` and
+re-run `npm run artwork`. Available motifs: `rings`, `lattice`, `truss`, `traces`, `signal`,
+`waves`, `strata`, `columns`, `orbits`, `arcs`. Palettes: `crimson`, `slate`, `moss`, `ochre`,
+`indigo`, `teal`, `plum`, `clay`.
+
+---
+
 ## 2. Sizes
 
 Shoot or export larger than needed and let the pipeline resize — `npm run content` caps everything

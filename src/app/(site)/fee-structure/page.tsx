@@ -22,7 +22,7 @@ export default function FeeStructurePage() {
         eyebrow="Admission"
         title="Fee Structure"
         intro="The published fee schedule for all programmes. For anything not covered here, our admissions team can talk you through the details."
-        image="/media/images/banner/about-us.jpg"
+        image="/media/art/admission.jpg"
         crumbs={[{ label: 'Admission' }, { label: 'Fee Structure' }]}
         wide
       />

@@ -8,7 +8,7 @@
       "level": "Diploma",
       "department": "Automobile Engineering",
       "source": "diploma-automobile-engineering.html",
-      "banner": "/media/images/banner/banner-automobile.jpg",
+      "banner": "/media/art/automobile-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -354,7 +354,7 @@
       "level": "Diploma",
       "department": "Chemical Engineering",
       "source": "diploma-chemical Engineering.html",
-      "banner": "/media/images/banner/banner-chemical.jpg",
+      "banner": "/media/art/chemical-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -696,7 +696,7 @@
       "level": "Diploma",
       "department": "Civil Engineering",
       "source": "diploma-civil-engineering.html",
-      "banner": "/media/images/banner/banner-civil2.jpg",
+      "banner": "/media/art/civil-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -1045,7 +1045,7 @@
       "level": "Diploma",
       "department": "Computer Engineering",
       "source": "diploma-computer-engineering.html",
-      "banner": "/media/images/banner/banner-computer.jpg",
+      "banner": "/media/art/computer-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -1393,7 +1393,7 @@
       "level": "Diploma",
       "department": "Electrical Engineering",
       "source": "diploma-electrical-engineering.html",
-      "banner": "/media/images/banner/banner-electrical.jpg",
+      "banner": "/media/art/electrical-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -1745,7 +1745,7 @@
       "level": "Diploma",
       "department": "Electronics Engineering",
       "source": "diploma-electronics-engineering.html",
-      "banner": "/media/images/banner/banner-electronics2.jpg",
+      "banner": "/media/art/electronics-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -2102,7 +2102,7 @@
       "level": "Diploma",
       "department": "Electronics & Communication",
       "source": "diploma-electronic-communication.html",
-      "banner": "/media/images/banner/banner-electronics-communication2.jpg",
+      "banner": "/media/art/electronics-communication.jpg",
       "blocks": [
         {
           "type": "section",
@@ -2441,7 +2441,7 @@
       "level": "Diploma",
       "department": "Electrical & Electronics Engineering",
       "source": null,
-      "banner": "/media/images/banner/banner-electrical.jpg",
+      "banner": "/media/art/electrical-electronics-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -2731,7 +2731,7 @@
       "level": "Diploma",
       "department": "Mechanical Engineering",
       "source": "diploma-mechanical-engineering.html",
-      "banner": "/media/images/banner/banner-mechanical.jpg",
+      "banner": "/media/art/mechanical-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -3081,7 +3081,7 @@
       "level": "Diploma",
       "department": "Instrumentation Engineering",
       "source": "diploma-instrumentation-engineering.html",
-      "banner": "/media/images/banner/banner-instrumentation.jpg",
+      "banner": "/media/art/instrumentation-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -3328,7 +3328,7 @@
       "level": "Diploma",
       "department": "Metallurgical Engineering",
       "source": "diploma-metallurgical-engineering.html",
-      "banner": "/media/images/banner/banner-metallurgical.jpg",
+      "banner": "/media/art/metallurgical-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -3575,7 +3575,7 @@
       "level": "Diploma",
       "department": "Mining Engineering",
       "source": "diploma-mining-engineering.html",
-      "banner": "/media/images/banner/banner-mining.jpg",
+      "banner": "/media/art/mining-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -3822,7 +3822,7 @@
       "level": "Bachelor",
       "department": "Automobile Engineering",
       "source": "bachelor-automobile-engineering.html",
-      "banner": "/media/images/banner/banner-automobile.jpg",
+      "banner": "/media/art/automobile-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -4200,7 +4200,7 @@
       "level": "Bachelor",
       "department": "Chemical Engineering",
       "source": "bachelor-chemical-engineering.html",
-      "banner": "/media/images/banner/banner-chemical.jpg",
+      "banner": "/media/art/chemical-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -4577,7 +4577,7 @@
       "level": "Bachelor",
       "department": "Civil Engineering",
       "source": "bachelor-civil-engineering.html",
-      "banner": "/media/images/banner/banner-civil.jpg",
+      "banner": "/media/art/civil-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -4961,7 +4961,7 @@
       "level": "Bachelor",
       "department": "Computer Engineering",
       "source": "bachelor-computer-engineering.html",
-      "banner": "/media/images/banner/banner-computer.jpg",
+      "banner": "/media/art/computer-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -5343,7 +5343,7 @@
       "level": "Bachelor",
       "department": "Electrical Engineering",
       "source": "bachelor-electrical-engineering.html",
-      "banner": "/media/images/banner/banner-electrical.jpg",
+      "banner": "/media/art/electrical-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -5729,7 +5729,7 @@
       "level": "Bachelor",
       "department": "Electronics Engineering",
       "source": "bachelor-electronics-engineering.html",
-      "banner": "/media/images/banner/banner-electronics.jpg",
+      "banner": "/media/art/electronics-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -6120,7 +6120,7 @@
       "level": "Bachelor",
       "department": "Electronics & Communication",
       "source": "bachelor-electronic-communication.html",
-      "banner": "/media/images/banner/banner-electronics-communication.jpg",
+      "banner": "/media/art/electronics-communication.jpg",
       "blocks": [
         {
           "type": "section",
@@ -6495,7 +6495,7 @@
       "level": "Bachelor",
       "department": "Electrical & Electronics Engineering",
       "source": null,
-      "banner": "/media/images/banner/banner-electrical.jpg",
+      "banner": "/media/art/electrical-electronics-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -6870,7 +6870,7 @@
       "level": "Bachelor",
       "department": "Mechanical Engineering",
       "source": "bachelor-mechanical-engineering.html",
-      "banner": "/media/images/banner/banner-mechanical.jpg",
+      "banner": "/media/art/mechanical-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -7262,7 +7262,7 @@
       "level": "Bachelor",
       "department": "Information Technology",
       "source": "information-technology.html",
-      "banner": "/media/images/banner/about-us.jpg",
+      "banner": "/media/art/information-technology.jpg",
       "blocks": [
         {
           "type": "section",
@@ -7639,7 +7639,7 @@
       "level": "PG Diploma",
       "department": "Chemical Engineering",
       "source": "pgd chemical-engineering.html",
-      "banner": "/media/images/banner/banner-chemical.jpg",
+      "banner": "/media/art/chemical-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -7837,7 +7837,7 @@
       "level": "PG Diploma",
       "department": "Civil Engineering",
       "source": "pgd-civil-engineering.html",
-      "banner": "/media/images/banner/banner-civil.jpg",
+      "banner": "/media/art/civil-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -8035,7 +8035,7 @@
       "level": "PG Diploma",
       "department": "Computer Engineering",
       "source": "pgd-computer-engineering.html",
-      "banner": "/media/images/banner/banner-computer.jpg",
+      "banner": "/media/art/computer-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -8233,7 +8233,7 @@
       "level": "PG Diploma",
       "department": "Electrical Engineering",
       "source": "pgd-electrical-engineering.html",
-      "banner": "/media/images/banner/banner-electrical.jpg",
+      "banner": "/media/art/electrical-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -8431,7 +8431,7 @@
       "level": "PG Diploma",
       "department": "Electronics Engineering",
       "source": "pgd-electronics-engineering.html",
-      "banner": "/media/images/banner/banner-electronics.jpg",
+      "banner": "/media/art/electronics-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -8629,7 +8629,7 @@
       "level": "PG Diploma",
       "department": "Electronics & Communication",
       "source": "pgd-electronic-communication.html",
-      "banner": "/media/images/banner/banner-electronics-communication.jpg",
+      "banner": "/media/art/electronics-communication.jpg",
       "blocks": [
         {
           "type": "section",
@@ -8827,7 +8827,7 @@
       "level": "PG Diploma",
       "department": "Mechanical Engineering",
       "source": "pgd-mechanical-engineering.html",
-      "banner": "/media/images/banner/banner-mechanical.jpg",
+      "banner": "/media/art/mechanical-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -9025,7 +9025,7 @@
       "level": "Master",
       "department": "Automobile Engineering",
       "source": "master-automobile-engineering.html",
-      "banner": "/media/images/banner/banner-automobile.jpg",
+      "banner": "/media/art/automobile-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -9233,7 +9233,7 @@
       "level": "Master",
       "department": "Chemical Engineering",
       "source": "master-chemical -engineering.html",
-      "banner": "/media/images/banner/banner-chemical.jpg",
+      "banner": "/media/art/chemical-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -9434,7 +9434,7 @@
       "level": "Master",
       "department": "Civil Engineering",
       "source": "master-civil-engineering.html",
-      "banner": "/media/images/banner/banner-civil2.jpg",
+      "banner": "/media/art/civil-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -9642,7 +9642,7 @@
       "level": "Master",
       "department": "Computer Engineering",
       "source": null,
-      "banner": "/media/images/banner/banner-computer.jpg",
+      "banner": "/media/art/computer-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -9848,7 +9848,7 @@
       "level": "Master",
       "department": "Electrical Engineering",
       "source": "master-electrical-engineering.html",
-      "banner": "/media/images/banner/banner-electrical.jpg",
+      "banner": "/media/art/electrical-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -10057,7 +10057,7 @@
       "level": "Master",
       "department": "Electronics Engineering",
       "source": "master-electronics-engineering.html",
-      "banner": "/media/images/banner/banner-electronics.jpg",
+      "banner": "/media/art/electronics-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -10271,7 +10271,7 @@
       "level": "Master",
       "department": "Electronics & Communication",
       "source": "master-electronic-communication.html",
-      "banner": "/media/images/banner/banner-electronics-communication2.jpg",
+      "banner": "/media/art/electronics-communication.jpg",
       "blocks": [
         {
           "type": "section",
@@ -10469,7 +10469,7 @@
       "level": "Master",
       "department": "Electrical & Electronics Engineering",
       "source": null,
-      "banner": "/media/images/banner/banner-electrical.jpg",
+      "banner": "/media/art/electrical-electronics-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -10662,7 +10662,7 @@
       "level": "Master",
       "department": "Mechanical Engineering",
       "source": "master-mechanical-engineering.html",
-      "banner": "/media/images/banner/banner-mechanical.jpg",
+      "banner": "/media/art/mechanical-engineering.jpg",
       "blocks": [
         {
           "type": "section",
@@ -10870,7 +10870,7 @@
       "level": "Diploma",
       "department": "Hotel Management",
       "source": "diploma-hotel-management.html",
-      "banner": "/media/images/banner/banner-hotel.jpg",
+      "banner": "/media/art/hotel-management.jpg",
       "blocks": [
         {
           "type": "section",
@@ -11153,7 +11153,7 @@
       "level": "Bachelor",
       "department": "Management",
       "source": "BBA.html",
-      "banner": "/media/images/banner/banner-business-5.jpg",
+      "banner": "/media/art/management.jpg",
       "blocks": [
         {
           "type": "section",
@@ -11490,7 +11490,7 @@
       "level": "Bachelor",
       "department": "Management",
       "source": "BBM.html",
-      "banner": "/media/images/banner/banner-business-4.jpg",
+      "banner": "/media/art/management.jpg",
       "blocks": [
         {
           "type": "section",
@@ -11801,7 +11801,7 @@
       "level": "Bachelor",
       "department": "Hotel Management",
       "source": "BHM.html",
-      "banner": "/media/images/banner/banner-business-6.jpg",
+      "banner": "/media/art/hotel-management.jpg",
       "blocks": [
         {
           "type": "section",
@@ -12104,7 +12104,7 @@
       "level": "PG Diploma",
       "department": "Management",
       "source": "PGDM.html",
-      "banner": "/media/images/banner/banner-other-diploma.jpg",
+      "banner": "/media/art/management.jpg",
       "blocks": [
         {
           "type": "section",
@@ -12414,7 +12414,7 @@
       "level": "Master",
       "department": "Management",
       "source": "MBA.html",
-      "banner": "/media/images/banner/banner-business-1.jpg",
+      "banner": "/media/art/management.jpg",
       "blocks": [
         {
           "type": "section",
@@ -12640,7 +12640,7 @@
       "level": "Bachelor",
       "department": "Computer Applications",
       "source": "BCA.html",
-      "banner": "/media/images/banner/banner-business-3.jpg",
+      "banner": "/media/art/computer-applications.jpg",
       "blocks": [
         {
           "type": "section",
@@ -13013,7 +13013,7 @@
       "level": "PG Diploma",
       "department": "Computer Applications",
       "source": "PGDCA.html",
-      "banner": "/media/images/banner/banner-other-diploma.jpg",
+      "banner": "/media/art/computer-applications.jpg",
       "blocks": [
         {
           "type": "section",
@@ -13204,7 +13204,7 @@
       "level": "Master",
       "department": "Computer Applications",
       "source": null,
-      "banner": "/media/images/banner/banner-bca2.jpg",
+      "banner": "/media/art/computer-applications.jpg",
       "blocks": [
         {
           "type": "section",
@@ -13530,7 +13530,7 @@
       "level": "Bachelor",
       "department": "Science",
       "source": "BSc.html",
-      "banner": "/media/images/banner/banner-bsc.jpg",
+      "banner": "/media/art/science.jpg",
       "blocks": [
         {
           "type": "section",
@@ -13743,7 +13743,7 @@
       "level": "Master",
       "department": "Science",
       "source": "MSc.html",
-      "banner": "/media/images/banner/banner-bsc2.jpg",
+      "banner": "/media/art/science.jpg",
       "blocks": [
         {
           "type": "section",
@@ -13971,7 +13971,7 @@
       "level": "Bachelor",
       "department": "Commerce",
       "source": "BCom.html",
-      "banner": "/media/images/banner/banner-business-1.jpg",
+      "banner": "/media/art/commerce.jpg",
       "blocks": [
         {
           "type": "section",
@@ -14194,7 +14194,7 @@
       "level": "Master",
       "department": "Commerce",
       "source": "MCom.html",
-      "banner": "/media/images/banner/banner-business-4.jpg",
+      "banner": "/media/art/commerce.jpg",
       "blocks": [
         {
           "type": "section",
@@ -14395,7 +14395,7 @@
       "level": "Bachelor",
       "department": "Arts",
       "source": "BA.html",
-      "banner": "/media/images/banner/banner-ba.jpg",
+      "banner": "/media/art/arts.jpg",
       "blocks": [
         {
           "type": "section",
@@ -14581,7 +14581,7 @@
     "about": {
       "title": "About Us",
       "intro": null,
-      "banner": "/media/images/banner/banner-message.jpg",
+      "banner": "/media/art/about.jpg",
       "blocks": [
         {
           "type": "section",
@@ -14602,7 +14602,7 @@
     "vision": {
       "title": "Our Vision",
       "intro": null,
-      "banner": "/media/images/banner/banner-vision.jpg",
+      "banner": "/media/art/vision.jpg",
       "blocks": [
         {
           "type": "section",
@@ -14618,7 +14618,7 @@
     "mission": {
       "title": "Our Mission",
       "intro": null,
-      "banner": "/media/images/banner/banner-mission.jpg",
+      "banner": "/media/art/mission.jpg",
       "blocks": [
         {
           "type": "section",
@@ -14637,7 +14637,7 @@
     "career": {
       "title": "Career",
       "intro": null,
-      "banner": "/media/images/banner/banner-career.jpg",
+      "banner": "/media/art/career.jpg",
       "blocks": [
         {
           "type": "section",
@@ -14658,7 +14658,7 @@
     "directorMessage": {
       "title": "Director's Message",
       "intro": null,
-      "banner": "/media/images/banner/banner-message.jpg",
+      "banner": "/media/art/director-message.jpg",
       "blocks": [
         {
           "type": "section",
@@ -14677,7 +14677,7 @@
     "qualityPolicy": {
       "title": "Quality Policy",
       "intro": null,
-      "banner": "/media/images/banner/banner-quality.jpg",
+      "banner": "/media/art/quality-policy.jpg",
       "blocks": [
         {
           "type": "section",
@@ -14696,7 +14696,7 @@
     "placement": {
       "title": "Our Placements",
       "intro": null,
-      "banner": "/media/images/banner/banner-placement.jpg",
+      "banner": "/media/art/placement.jpg",
       "blocks": [],
       "images": [
         {
@@ -15020,7 +15020,7 @@
     "photoGallery": {
       "title": "Photo Gallery",
       "intro": null,
-      "banner": "/media/images/banner/about-us.jpg",
+      "banner": "/media/art/gallery.jpg",
       "blocks": [
         {
           "type": "section",
@@ -15150,7 +15150,7 @@
     "specializations": {
       "title": "Specializations",
       "intro": null,
-      "banner": "/media/images/banner/banner-mining.jpg",
+      "banner": "/media/art/specializations.jpg",
       "blocks": [
         {
           "type": "table",
@@ -16379,7 +16379,7 @@
     "paymentModes": {
       "title": "Payment Modes",
       "intro": null,
-      "banner": "/media/images/banner/about-us.jpg",
+      "banner": "/media/art/admission.jpg",
       "blocks": [
         {
           "type": "section",
@@ -16409,7 +16409,7 @@
     "feeStructure": {
       "title": "Fee Structure",
       "intro": null,
-      "banner": null,
+      "banner": "/media/art/admission.jpg",
       "blocks": [],
       "images": [
         {
@@ -16421,7 +16421,7 @@
     "contact": {
       "title": "Contact Us",
       "intro": null,
-      "banner": null,
+      "banner": "/media/art/contact.jpg",
       "blocks": [
         {
           "type": "section",

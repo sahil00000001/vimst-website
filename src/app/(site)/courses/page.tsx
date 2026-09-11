@@ -21,7 +21,7 @@ export default function CoursesPage() {
         eyebrow="Academics"
         title="Courses Offered"
         intro={`${courses.length} programmes across six streams, from diploma through to masters, all delivered with distance learning in mind.`}
-        image="/media/images/banner/banner-bca2.jpg"
+        image="/media/art/courses.jpg"
         crumbs={[{ label: 'Courses' }]}
         wide
         attached={false}
