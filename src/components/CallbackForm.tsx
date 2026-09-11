@@ -225,7 +225,7 @@ export function CallbackForm({ compact }: { compact?: boolean }) {
               Or email us at{' '}
               <a
                 href={`mailto:${ENQUIRY_ADDRESS}`}
-                className="text-slate underline underline-offset-2 transition-colors hover:text-crimson"
+                className="-my-3 inline-block py-3 text-slate underline underline-offset-2 transition-colors hover:text-crimson"
               >
                 {ENQUIRY_ADDRESS}
               </a>

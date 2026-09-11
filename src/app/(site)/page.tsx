@@ -112,7 +112,7 @@ export default function HomePage() {
                 </div>
                 <Link
                   href="/director-message"
-                  className="group mt-8 inline-flex w-fit items-center gap-2 border-b border-ink pb-1 text-[length:var(--text-sm)] font-medium text-ink transition-colors hover:border-crimson hover:text-crimson"
+                  className="group mt-7 inline-flex min-h-11 w-fit items-center gap-2 border-b border-ink pb-1 text-[length:var(--text-sm)] font-medium text-ink transition-colors hover:border-crimson hover:text-crimson"
                 >
                   Read the full message
                   <Arrow className="transition-transform duration-300 group-hover:translate-x-1" />
@@ -328,7 +328,7 @@ export default function HomePage() {
                     {x.v.includes('@') ? (
                       <a
                         href={`mailto:${x.v}`}
-                        className="mg-underline transition-colors hover:text-crimson"
+                        className="mg-underline -my-2 inline-block py-2 transition-colors hover:text-crimson"
                       >
                         {x.v}
                       </a>

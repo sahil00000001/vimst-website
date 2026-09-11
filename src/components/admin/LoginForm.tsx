@@ -107,7 +107,10 @@ export function LoginForm() {
       </div>
 
       <p className="mt-6 text-center text-[length:var(--text-xs)] text-mist">
-        <Link href="/" className="transition-colors hover:text-crimson">
+        <Link
+          href="/"
+          className="inline-flex min-h-11 items-center justify-center px-3 transition-colors hover:text-crimson"
+        >
           ← Back to the website
         </Link>
       </p>

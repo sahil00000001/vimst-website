@@ -28,17 +28,17 @@ export function Footer() {
   return (
     <footer className="mt-auto border-t border-rule bg-paper">
       <div className="shell">
-        <div className="grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-12 lg:gap-10 lg:py-20">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-9 py-12 lg:grid-cols-12 lg:gap-10 lg:py-20">
           {/* Identity */}
-          <Reveal className="lg:col-span-4" from="up">
+          <Reveal className="col-span-2 lg:col-span-4" from="up">
             <Media
               src="/media/logo-wordmark.png"
               alt="Vivekananda Institute of Management Science and Technology"
               width={900}
               height={191}
-              className="h-12 w-auto"
+              className="h-10 w-auto sm:h-12"
             />
-            <p className="mt-5 max-w-sm text-[length:var(--text-base)] leading-relaxed text-slate">
+            <p className="mt-4 max-w-sm text-[length:var(--text-sm)] leading-relaxed text-slate">
               Vivekananda Institute of Management Science and Technology stands as a
               prestigious beacon of excellence in education, committed to fostering
               innovation and leadership.
@@ -64,15 +64,15 @@ export function Footer() {
           </Reveal>
 
           <Reveal className="lg:col-span-2" from="up" delay={0.06}>
-            <h3 className="mb-4 text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.16em] text-crimson">
+            <h3 className="mb-3 text-[length:var(--text-xs)] font-semibold uppercase tracking-[0.13em] text-crimson">
               Institute
             </h3>
-            <ul className="space-y-2.5">
+            <ul>
               {USEFUL.map((l) => (
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-[length:var(--text-base)] text-graphite transition-colors hover:text-crimson"
+                    className="-mx-1 block rounded px-1 py-3 text-[length:var(--text-sm)] text-graphite transition-colors hover:text-crimson"
                   >
                     {l.label}
                   </Link>
@@ -82,15 +82,15 @@ export function Footer() {
           </Reveal>
 
           <Reveal className="lg:col-span-3" from="up" delay={0.12}>
-            <h3 className="mb-4 text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.16em] text-crimson">
+            <h3 className="mb-3 text-[length:var(--text-xs)] font-semibold uppercase tracking-[0.13em] text-crimson">
               Admission
             </h3>
-            <ul className="space-y-2.5">
+            <ul>
               {ADMISSION.map((l) => (
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-[length:var(--text-base)] text-graphite transition-colors hover:text-crimson"
+                    className="-mx-1 block rounded px-1 py-3 text-[length:var(--text-sm)] text-graphite transition-colors hover:text-crimson"
                   >
                     {l.label}
                   </Link>
@@ -99,34 +99,40 @@ export function Footer() {
             </ul>
           </Reveal>
 
-          <Reveal className="lg:col-span-3" from="up" delay={0.18}>
-            <h3 className="mb-4 text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.16em] text-crimson">
+          <Reveal className="col-span-2 lg:col-span-3" from="up" delay={0.18}>
+            <h3 className="mb-3 text-[length:var(--text-xs)] font-semibold uppercase tracking-[0.13em] text-crimson">
               Contact
             </h3>
-            <address className="space-y-3 not-italic text-[length:var(--text-base)] text-graphite">
-              <p className="text-slate">Andhra Pradesh, India</p>
+            <address className="not-italic text-[length:var(--text-sm)] text-graphite">
+              <p className="py-2.5 text-slate">Andhra Pradesh, India</p>
               <p>
-                <a href="mailto:info@vimst.org" className="transition-colors hover:text-crimson">
+                <a
+                  href="mailto:info@vimst.org"
+                  className="-mx-1 block break-all rounded px-1 py-3 transition-colors hover:text-crimson"
+                >
                   info@vimst.org
                 </a>
               </p>
               <p>
                 <a
                   href="mailto:verification@vimst.org"
-                  className="transition-colors hover:text-crimson"
+                  className="-mx-1 block break-all rounded px-1 py-3 transition-colors hover:text-crimson"
                 >
                   verification@vimst.org
                 </a>
               </p>
               <p>
-                <a href="mailto:admin@vimst.org" className="transition-colors hover:text-crimson">
+                <a
+                  href="mailto:admin@vimst.org"
+                  className="-mx-1 block break-all rounded px-1 py-3 transition-colors hover:text-crimson"
+                >
                   admin@vimst.org
                 </a>
               </p>
             </address>
             <Link
               href="/contact"
-              className="group mt-6 inline-flex items-center gap-2 border-b border-ink pb-1 text-[length:var(--text-sm)] font-medium text-ink transition-colors hover:border-crimson hover:text-crimson"
+              className="group mt-5 inline-flex min-h-11 items-center gap-2 border-b border-ink pb-1 text-[length:var(--text-sm)] font-medium text-ink transition-colors hover:border-crimson hover:text-crimson"
             >
               Request a callback
               <svg width="13" height="10" viewBox="0 0 13 10" fill="none" aria-hidden>
@@ -145,9 +151,9 @@ export function Footer() {
       </div>
 
       <div className="border-t border-rule bg-shell">
-        <div className="mx-auto flex max-w-[1400px] flex-col items-center justify-between gap-2 px-5 py-5 text-[length:var(--text-sm)] text-slate sm:flex-row sm:px-8">
+        <div className="mx-auto flex max-w-[1400px] flex-col justify-between gap-1.5 px-5 py-5 pr-20 text-[length:var(--text-xs)] text-slate sm:flex-row sm:items-center sm:px-8 sm:pr-8 sm:text-[length:var(--text-sm)]">
           <p>
-            © {new Date().getFullYear()} Vivekananda Institute of Management Science &amp;
+            © {new Date().getFullYear()} Vivekananda Institute of Management Science and
             Technology. All rights reserved.
           </p>
           <p className="text-mist">ISO 9001:2008 Certified</p>

@@ -69,21 +69,21 @@ export function Navbar({ nav }: { nav: NavItem[] }) {
     <>
       {/* Utility strip */}
       <div className="hidden border-b border-ink bg-ink text-paper lg:block">
-        <div className="shell flex items-center justify-between gap-6 py-2 text-[length:var(--text-xs)]">
+        <div className="shell flex items-center justify-between gap-6 py-1 text-[length:var(--text-xs)]">
           <p className="tracking-wide text-paper/70">
             Andhra Pradesh, India · ISO 9001:2008 Certified Institute
           </p>
           <div className="flex items-center gap-5">
             <a
               href="mailto:info@vimst.org"
-              className="text-paper/80 transition-colors hover:text-paper"
+              className="inline-flex min-h-9 items-center text-paper/80 transition-colors hover:text-paper"
             >
               info@vimst.org
             </a>
             <span className="h-3 w-px bg-paper/25" />
             <Link
               href="/enrollment-verification"
-              className="text-paper/80 transition-colors hover:text-paper"
+              className="inline-flex min-h-9 items-center text-paper/80 transition-colors hover:text-paper"
             >
               Check your result
             </Link>

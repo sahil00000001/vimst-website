@@ -109,24 +109,24 @@ export function Hero({ slides, stats }: { slides: string[]; stats: HeroStat[] })
           </motion.p>
 
           <motion.div
-            className="mt-8 flex flex-wrap items-center gap-3 sm:mt-10"
+            className="mt-8 flex flex-col items-stretch gap-3 sm:mt-10 sm:flex-row sm:flex-wrap sm:items-center"
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.85, delay: 0.58, ease: EASE }}
           >
-            <Magnetic>
+            <Magnetic className="w-full sm:w-auto">
               <Link
                 href="/courses"
-                className="group inline-flex items-center gap-2.5 rounded-full bg-ink px-6 py-3.5 text-[length:var(--text-sm)] font-medium text-paper transition-colors duration-300 hover:bg-crimson sm:px-7"
+                className="group inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-ink px-6 py-4 text-[length:var(--text-sm)] font-medium text-paper transition-colors duration-300 hover:bg-crimson sm:w-auto sm:px-7 sm:py-3.5"
               >
                 Explore Programmes
                 <Arrow className="transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </Magnetic>
-            <Magnetic strength={0.18}>
+            <Magnetic strength={0.18} className="w-full sm:w-auto">
               <Link
                 href="/contact"
-                className="inline-flex items-center rounded-full border border-rule bg-paper px-6 py-3.5 text-[length:var(--text-sm)] font-medium text-ink transition-colors duration-300 hover:border-ink sm:px-7"
+                className="inline-flex w-full items-center justify-center rounded-full border border-rule bg-paper px-6 py-4 text-[length:var(--text-sm)] font-medium text-ink transition-colors duration-300 hover:border-ink sm:w-auto sm:px-7 sm:py-3.5"
               >
                 Request a Callback
               </Link>

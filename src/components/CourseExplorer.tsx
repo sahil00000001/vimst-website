@@ -22,10 +22,15 @@ function FilterRow({
   onChange: (v: string) => void;
 }) {
   return (
-    <div className="flex flex-wrap items-center gap-2">
-      <span className="mr-1 w-16 shrink-0 text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.14em] text-mist">
+    <div className="flex items-center gap-2">
+      <span className="w-14 shrink-0 text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.1em] text-mist sm:w-16 sm:tracking-[0.14em]">
         {label}
       </span>
+      <div
+        className="mg-scroll scroll-hint -my-1 flex flex-1 items-center gap-1.5 overflow-x-auto py-1 sm:flex-wrap sm:gap-2 sm:overflow-visible"
+        role="group"
+        aria-label={label}
+      >
       {[ALL, ...options].map((opt) => {
         const active = value === opt;
         return (
@@ -34,7 +39,7 @@ function FilterRow({
             type="button"
             onClick={() => onChange(opt)}
             aria-pressed={active}
-            className={`relative rounded-full px-4 py-1.5 text-[length:var(--text-sm)] transition-colors duration-300 ${
+            className={`relative shrink-0 whitespace-nowrap rounded-full px-3.5 py-2.5 text-[length:var(--text-sm)] transition-colors duration-300 sm:px-4 ${
               active ? 'text-paper' : 'text-graphite hover:text-ink'
             }`}
           >
@@ -49,6 +54,7 @@ function FilterRow({
           </button>
         );
       })}
+      </div>
     </div>
   );
 }
@@ -98,7 +104,7 @@ export function CourseExplorer({ courses }: { courses: Course[] }) {
 
   return (
     <div>
-      <div className="sticky top-[68px] z-30 -mx-5 mb-10 border-y border-rule bg-shell/92 px-5 py-5 backdrop-blur-md sm:-mx-8 sm:px-8">
+      <div className="sticky top-[60px] z-30 -mx-5 mb-8 border-y border-rule bg-shell/95 px-5 py-3.5 backdrop-blur-md sm:top-[68px] sm:mb-10 sm:-mx-8 sm:px-8 sm:py-5">
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-3.5">
             <FilterRow
@@ -138,7 +144,7 @@ export function CourseExplorer({ courses }: { courses: Course[] }) {
                 type="search"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search programmes or departments"
+                placeholder="Search programmes"
                 aria-label="Search programmes"
                 className="w-full rounded-full border border-rule bg-paper py-2.5 pl-10 pr-4 text-[length:var(--text-sm)] text-ink transition-colors placeholder:text-mist focus:border-crimson focus:outline-none"
               />

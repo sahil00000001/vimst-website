@@ -59,17 +59,17 @@ export default function PlacementPage() {
               </Reveal>
 
               <Reveal from="left" delay={0.1} className="lg:col-span-5">
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+                <div className="grid grid-cols-3 gap-3 lg:grid-cols-1 lg:gap-4">
                   {[
                     { v: `${logos.length}+`, l: 'Recruiting organisations' },
                     { v: 'CV & GD', l: 'Interview preparation' },
                     { v: 'Alumni', l: 'Industry mentor network' },
                   ].map((s) => (
-                    <div key={s.l} className="rounded-xl border border-rule bg-shell p-6">
+                    <div key={s.l} className="rounded-xl border border-rule bg-shell p-4 lg:p-6">
                       <p className="font-display text-[length:var(--text-3xl)] leading-none text-crimson">
                         {s.v}
                       </p>
-                      <p className="mt-2 text-[length:var(--text-sm)] text-slate">{s.l}</p>
+                      <p className="mt-1.5 text-[length:var(--text-2xs)] leading-snug text-slate lg:mt-2 lg:text-[length:var(--text-sm)]">{s.l}</p>
                     </div>
                   ))}
                 </div>

@@ -35,7 +35,7 @@
   /* Fluid type scale. Each step interpolates between a comfortable phone size
      and its desktop size across the 380px-1400px range, so nothing needs a
      breakpoint to stay readable. */
-  --text-2xs: clamp(0.66rem, 0.63rem + 0.13vw, 0.72rem);
+  --text-2xs: clamp(0.72rem, 0.69rem + 0.13vw, 0.78rem);
   --text-xs: clamp(0.75rem, 0.72rem + 0.14vw, 0.82rem);
   --text-sm: clamp(0.84rem, 0.81rem + 0.16vw, 0.92rem);
   --text-base: clamp(0.95rem, 0.91rem + 0.2vw, 1.05rem);
@@ -139,10 +139,17 @@
   /* Long-form editorial copy, held to a comfortable measure. */
   .prose-mg p {
     color: var(--color-graphite);
-    margin-bottom: 1.15em;
+    margin-bottom: 1.05em;
     font-size: var(--text-lg);
-    line-height: 1.78;
+    line-height: 1.62;
     max-width: 68ch;
+  }
+
+  @media (min-width: 640px) {
+    .prose-mg p {
+      margin-bottom: 1.15em;
+      line-height: 1.78;
+    }
   }
 
   .prose-mg p:last-child {
@@ -283,5 +290,19 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* A horizontally scrolling row gives no hint that it scrolls, so the right
+   edge fades out while there is more to reach. Removed once the row fits. */
+.scroll-hint {
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent 100%);
+  mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent 100%);
+}
+
+@media (min-width: 640px) {
+  .scroll-hint {
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 }

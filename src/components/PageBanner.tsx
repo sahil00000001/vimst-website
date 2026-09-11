@@ -79,9 +79,9 @@ export function PageBanner({
             >
               {crumbs.length > 0 && (
                 <nav aria-label="Breadcrumb" className="mb-4">
-                  <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[length:var(--text-xs)] text-slate">
+                  <ol className="-my-3 flex flex-wrap items-center gap-x-2 text-[length:var(--text-xs)] text-slate">
                     <li>
-                      <Link href="/" className="transition-colors hover:text-crimson">
+                      <Link href="/" className="inline-block py-3 transition-colors hover:text-crimson">
                         Home
                       </Link>
                     </li>
@@ -91,11 +91,11 @@ export function PageBanner({
                           /
                         </span>
                         {c.href ? (
-                          <Link href={c.href} className="transition-colors hover:text-crimson">
+                          <Link href={c.href} className="inline-block py-3 transition-colors hover:text-crimson">
                             {c.label}
                           </Link>
                         ) : (
-                          <span className="text-graphite">{c.label}</span>
+                          <span className="inline-block py-3 text-graphite">{c.label}</span>
                         )}
                       </li>
                     ))}

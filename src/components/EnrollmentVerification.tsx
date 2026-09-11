@@ -169,7 +169,7 @@ export function EnrollmentVerification() {
           Problems with your record? Email{' '}
           <a
             href="mailto:verification@vimst.org"
-            className="text-slate underline underline-offset-2 hover:text-crimson"
+            className="-my-3 inline-block py-3 text-slate underline underline-offset-2 hover:text-crimson"
           >
             verification@vimst.org
           </a>

@@ -20,7 +20,7 @@ export function NewsTicker({ items }: { items: string[] }) {
         </h2>
         <Link
           href="/contact"
-          className="text-[length:var(--text-xs)] text-slate transition-colors hover:text-crimson"
+          className="-my-2 inline-flex min-h-11 items-center px-1 text-[length:var(--text-xs)] text-slate transition-colors hover:text-crimson"
         >
           Enquire
         </Link>

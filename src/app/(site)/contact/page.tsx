@@ -40,7 +40,7 @@ const CONTACTS = [
 const QUICK = [
   { label: 'Fee structure', href: '/fee-structure' },
   { label: 'Payment modes', href: '/payment-modes' },
-  { label: 'Enrollment verification', href: '/enrollment-verification' },
+  { label: 'Check your result', href: '/enrollment-verification' },
   { label: 'All courses', href: '/courses' },
 ];
 
@@ -80,7 +80,7 @@ export default function ContactPage() {
                       {c.href ? (
                         <a
                           href={c.href}
-                          className="mt-1.5 block font-display text-[length:var(--text-lg)] text-ink transition-colors hover:text-crimson"
+                          className="-mx-1 mt-1 block rounded px-1 py-2 font-display text-[length:var(--text-lg)] text-ink transition-colors hover:text-crimson"
                         >
                           {c.value}
                         </a>
