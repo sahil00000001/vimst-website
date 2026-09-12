@@ -58,7 +58,7 @@ const QUICK_LINKS = [
   {
     href: '/api/admin/export',
     title: 'Export everything',
-    body: 'Download the register as a workbook — the same shape the importer reads back.',
+    body: 'Download the register as a workbook, in the same shape the importer reads back.',
     external: true,
   },
 ];

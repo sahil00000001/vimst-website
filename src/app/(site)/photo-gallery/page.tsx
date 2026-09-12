@@ -18,7 +18,7 @@ export default function PhotoGalleryPage() {
       <PageBanner
         eyebrow="Campus life"
         title="Photo Gallery"
-        intro="Moments from the campus — ceremonies, classrooms and the people who make up VIMST."
+        intro="Moments from the campus: ceremonies, classrooms and the people who make up VIMST."
         image={data.banner}
         crumbs={[{ label: 'Photo Gallery' }]}
         wide

@@ -7,7 +7,7 @@ import { courses } from '@/lib/content';
 export const metadata: Metadata = {
   title: 'Courses',
   description:
-    'Every programme offered by VIMST across engineering, management, computer applications, science, commerce and arts — at diploma, bachelor, PG diploma and masters level.',
+    'Every programme offered by VIMST across engineering, management, computer applications, science, commerce and arts, at diploma, bachelor, PG diploma and masters level.',
 };
 
 export default function CoursesPage() {

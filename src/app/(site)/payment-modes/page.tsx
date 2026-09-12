@@ -9,7 +9,7 @@ import { Media } from '@/components/Media';
 export const metadata: Metadata = {
   title: 'Payment Modes',
   description:
-    'Ways to pay your VIMST fees — debit or credit card, cash, cheque and demand draft.',
+    'Ways to pay your VIMST fees: debit or credit card, cash, cheque and demand draft.',
 };
 
 /* The source page shows four unlabelled payment icons; the filenames identify

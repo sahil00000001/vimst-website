@@ -39,9 +39,10 @@ export function Footer() {
               className="h-10 w-auto sm:h-12"
             />
             <p className="mt-4 max-w-sm text-[length:var(--text-sm)] leading-relaxed text-slate">
-              Vivekananda Institute of Management Science and Technology stands as a
-              prestigious beacon of excellence in education, committed to fostering
-              innovation and leadership.
+              Vivekananda Institute of Management Science and Technology has taught
+              engineering, management, science and commerce in Andhra Pradesh since
+              1998. Our programmes are delivered through distance learning, so you can
+              study for a recognised qualification while you keep working.
             </p>
             {socials.length > 0 && (
               <div className="mt-6 flex items-center gap-2">

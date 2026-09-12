@@ -37,7 +37,7 @@ function departmentColumns(): NavColumn[] {
 /** Programme menu: engineering by level, then the non-engineering streams. */
 function programmeColumns(): NavColumn[] {
   const engineering = engineeringByLevel().map(({ level, courses }) => ({
-    heading: `Engineering — ${level}`,
+    heading: `Engineering · ${level}`,
     accent: accentForLevel(level),
     note: `${courses.length} departments`,
     links: courses.map((c) => ({ label: c.department, href: `/courses/${c.slug}` })),
@@ -50,7 +50,7 @@ function programmeColumns(): NavColumn[] {
       accent: accentForStream(stream),
       note: `${courses.length} programme${courses.length === 1 ? '' : 's'}`,
       links: courses.map((c) => ({
-        label: `${c.short} — ${c.level}`,
+        label: `${c.short} · ${c.level}`,
         href: `/courses/${c.slug}`,
       })),
     }));

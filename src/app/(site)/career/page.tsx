@@ -3,7 +3,7 @@ import { EditorialPage } from '@/components/EditorialPage';
 
 export const metadata: Metadata = {
   title: "Career",
-  description: "Building a career at VIMST — strategic goals, careful planning and the support to get there.",
+  description: "Building a career at VIMST: strategic goals, careful planning and the support to get there.",
 };
 
 export default function Page() {

@@ -116,7 +116,7 @@ export function Hero({
             transition={{ duration: 0.85, delay: 0.45, ease: EASE }}
           >
             Engineering, management, science and commerce programmes delivered through
-            distance learning — so a degree fits around the work you are already doing.
+            distance learning, so a degree fits around the work you are already doing.
           </motion.p>
 
           <motion.div

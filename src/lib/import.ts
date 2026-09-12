@@ -368,7 +368,7 @@ export async function buildTemplate(): Promise<ArrayBuffer> {
       '  semester    I to VIII, or 1 to 8.',
       '  totalMarks / obtainedMarks must be numbers, and obtained cannot exceed total.',
       '',
-      'Totals, percentage and pass/fail are calculated on upload — do not add columns for them.',
+      'Totals, percentage and pass/fail are calculated on upload. Do not add columns for them.',
       'A subject scoring under 35% fails the semester.',
       '',
       'Uploading again updates existing records rather than duplicating them.',

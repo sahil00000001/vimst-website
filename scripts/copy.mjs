@@ -1,3 +1,5 @@
+import { COURSE_REWRITES } from './course-copy.mjs';
+
 /**
  * Rewritten website copy.
  *
@@ -211,6 +213,10 @@ const plural = (phrase) =>
     .trim();
 
 export const SECTION_REWRITES = [
+  // The long inherited programme descriptions, rewritten in plain English.
+  // Kept in their own file because there are fifty-odd of them and each runs
+  // to a paragraph; see scripts/course-copy.mjs.
+  ...COURSE_REWRITES,
   [
     /^The candidate who has successfully completed 10\/10\+2 with Physics, Mathematics, Chemistry\s*\/\s*Diploma with work experience\.?$/i,
     'You need to have passed Class 10 or Class 12 with Physics, Mathematics and Chemistry, or to hold a diploma. Work experience in the field is preferred.',
@@ -282,11 +288,33 @@ export const SECTION_REWRITES = [
     /^Candidates who have passed Intermediate \(12th\) in any stream from a recognized board\.?$/i,
     'You need to have passed Intermediate, or Class 12, in any stream from a recognised board.',
   ],
-  // Duration, in the form students actually ask about.
+  // Duration, in the form students actually ask about. The source writes this
+  // sentence five different ways, so each shape gets its own pattern, longest
+  // first. Every one of them ends in the same voice.
   [
-    /^The Program Duration for (.+?) will be (.+?) comprising of (.+?), Students may choose to take breaks in between subjects\/semesters\. However, they are expected to follow a normative period of (.+?) i\.?e\.? Students will have to complete the program within (.+?) from session start date\.?$/i,
+    /^The Program Duration for (.+?) will be (.+?) comprising of (.+?), Students may choose to take breaks in between subjects\/(?:semesters|parts)\. However, they are expected to follow a normative period of (.+?) i\.\s?e\.? Students will have to complete the program within (.+?) from session start date\.?$/i,
     (_m, course, years, sems, _norm, limit) =>
       `${course} runs for ${plural(years)}, made up of ${sems.toLowerCase()}. You may take breaks between subjects or semesters if you need to. You have up to ${plural(limit)} from the start of your session to finish.`,
+  ],
+  [
+    /^The Program Duration for (.+?) will be (.+?) comprising of (.+?), Students may choose to take breaks in between subjects\/(?:semesters|parts)\.?$/i,
+    (_m, course, years, sems) =>
+      `${course} runs for ${plural(years)}, made up of ${sems.toLowerCase()}. You may take breaks between subjects or semesters if you need to.`,
+  ],
+  // The BBA page splits this sentence over two paragraphs, so the second half
+  // arrives on its own.
+  [
+    /^However, they are expected to follow a normative period of (.+?) i\.\s?e\.? Students will have to complete the program within (.+?) from session start date\.?$/i,
+    (_m, _norm, limit) =>
+      `You have up to ${plural(limit)} from the start of your session to finish.`,
+  ],
+  [
+    /^The Program Duration for (.+?) will be (.+?) comprising\.?$/i,
+    (_m, course, years) => `${course} runs for ${plural(years)}.`,
+  ],
+  [
+    /^The Program Duration for (.+?) will be (.+?)\.?$/i,
+    (_m, course, years) => `${course} runs for ${plural(years)}.`,
   ],
 ];
 
@@ -314,7 +342,23 @@ export function tidy(line) {
 
   // Spacing the original got wrong in a lot of places.
   out = out.replace(/\s+([,.;:])/g, '$1');
-  out = out.replace(/([,.;:])(?=[A-Za-z])/g, '$1 ');
+
+  // A missing space after punctuation, but not after the full stop inside a
+  // degree abbreviation: B.Com and M.Tech must not become "B. Com".
+  out = out.replace(/(?<!\b[A-Z])([,.;:])(?=[A-Za-z])/g, '$1 ');
+
+  // One page writes the length as a numeral while every other writes it out.
+  out = out.replace(/\b2 years\b/g, 'two years');
+
+  // Degree codes arrive lowercased in places: B.sc, M.com, B.tech.
+  out = out.replace(
+    /\b([BM])\.(sc|com|tech|ed|a|e)\b/g,
+    (_m, level, name) => `${level}.${name[0].toUpperCase()}${name.slice(1)}`
+  );
+
+  // The source writes those abbreviations both ways; settle on the closed one.
+  out = out.replace(/\b([A-Z])\.\s+(?=(?:Com|Sc|Tech|Ed|Arch|Pharm|Des|E|A)\b)/g, '$1.');
+
   out = out.replace(/\s{2,}/g, ' ');
   out = out.replace(/\(\s+/g, '(').replace(/\s+\)/g, ')');
 

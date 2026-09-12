@@ -7,7 +7,7 @@ import { PageBanner } from '@/components/PageBanner';
 export const metadata: Metadata = {
   title: 'Contact Us',
   description:
-    'Get in touch with Vivekananda Institute of Management Science and Technology — admissions, enrollment verification and general enquiries.',
+    'Get in touch with Vivekananda Institute of Management Science and Technology: admissions, enrollment verification and general enquiries.',
 };
 
 const CONTACTS = [

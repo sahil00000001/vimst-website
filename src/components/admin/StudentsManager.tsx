@@ -302,10 +302,10 @@ export function StudentsManager() {
                         {s.dob}
                       </td>
                       <td className="px-5 py-3 text-[length:var(--text-sm)] text-slate">
-                        {s.batch || '—'}
+                        {s.batch || '-'}
                       </td>
                       <td className="px-5 py-3 text-[length:var(--text-sm)] text-slate">
-                        {s.branch || '—'}
+                        {s.branch || '-'}
                       </td>
                       <td className="px-5 py-3">
                         <div className="flex justify-end gap-1.5">

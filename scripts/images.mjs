@@ -45,8 +45,10 @@ for (const abs of files) {
   const cap = rel.includes('/logo/') ? LOGO_MAX : MAX_WIDTH;
   const isPng = /\.png$/i.test(abs);
 
-  // Wordmark and crest are already tuned; leave them alone.
-  const skip = /logo-wordmark|logo-crest/.test(rel);
+  // Already tuned at the size and quality they are generated or chosen at.
+  // Re-encoding them here only throws away detail, a little on every run.
+  // The blur placeholder below is still produced for them.
+  const skip = /logo-wordmark|logo-crest|^\/media\/(art|hero)\//.test(rel);
 
   if (!skip && (info.width > cap || before > 120_000)) {
     const pipeline = sharp(source, { failOn: 'none' }).resize({

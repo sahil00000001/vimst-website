@@ -133,7 +133,7 @@ export function ResultsManager() {
       totalMarks,
       obtained,
       percentage,
-      finalResult: rows.length === 0 ? '—' : failed || percentage < 35 ? 'FAIL' : 'PASS',
+      finalResult: rows.length === 0 ? '-' : failed || percentage < 35 ? 'FAIL' : 'PASS',
     };
   })();
 
@@ -168,7 +168,7 @@ export function ResultsManager() {
 
       if (json.ok) {
         setEditorOpen(false);
-        setNotice(`${payload.rollNo} — semester ${payload.semester} saved.`);
+        setNotice(`${payload.rollNo}, semester ${payload.semester} saved.`);
         load();
       } else {
         setFormError(json.error ?? 'Could not save.');
@@ -187,7 +187,7 @@ export function ResultsManager() {
       const res = await fetch(`/api/admin/results/${deleting._id}`, { method: 'DELETE' });
       const json = await res.json();
       if (json.ok) {
-        setNotice(`${deleting.rollNo} — semester ${deleting.semester} deleted.`);
+        setNotice(`${deleting.rollNo}, semester ${deleting.semester} deleted.`);
         setDeleting(null);
         load();
       } else {
@@ -488,7 +488,7 @@ export function ResultsManager() {
       <Modal
         open={editorOpen}
         onClose={() => setEditorOpen(false)}
-        title={editingId ? `Edit ${rollNo} — semester ${sem}` : 'Add result'}
+        title={editingId ? `Edit ${rollNo}, semester ${sem}` : 'Add result'}
         wide
       >
         <div className="space-y-5">

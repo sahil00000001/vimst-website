@@ -209,7 +209,7 @@ export function BulkUpload() {
               <Banner tone="info">
                 <p className="font-medium">
                   {committed.summary.skippedResults.length} result
-                  {committed.summary.skippedResults.length === 1 ? '' : 's'} skipped — no matching
+                  {committed.summary.skippedResults.length === 1 ? '' : 's'} skipped: no matching
                   student.
                 </p>
                 <p className="mt-1 text-[length:var(--text-xs)]">
@@ -281,7 +281,7 @@ export function BulkUpload() {
                       Drop an .xlsx workbook here
                     </p>
                     <p className="mt-1 text-[length:var(--text-xs)] text-mist">
-                      or choose one from your computer — up to 8 MB
+                      or choose one from your computer. Up to 8 MB
                     </p>
                   </>
                 )}
@@ -417,7 +417,7 @@ export function BulkUpload() {
                 How the workbook is read
               </h2>
               <p className="mb-5 text-[length:var(--text-xs)] leading-relaxed text-slate">
-                Download the template — it has the columns already set up, plus an example row on
+                Download the template. It has the columns already set up, plus an example row on
                 each sheet.
               </p>
 
@@ -445,7 +445,7 @@ export function BulkUpload() {
                     rollNo | semester | subjectCode | subject | totalMarks | obtainedMarks
                   </code>
                   <p className="mt-2 text-[length:var(--text-xs)] leading-relaxed text-slate">
-                    One row per subject — repeat the roll number and semester for each. Semester
+                    One row per subject. Repeat the roll number and semester for each. Semester
                     accepts I–VIII or 1–8.
                   </p>
                 </div>
@@ -455,7 +455,7 @@ export function BulkUpload() {
                     'Totals, percentage and pass/fail are calculated on upload.',
                     'A subject scoring under 35% fails that semester.',
                     'Results whose roll number has no student record are skipped.',
-                    'Review always runs first — nothing is written until you confirm.',
+                    'Review always runs first. Nothing is written until you confirm.',
                   ].map((t) => (
                     <li
                       key={t}
@@ -482,7 +482,7 @@ function IssueList({ issues, inline }: { issues: Issue[]; inline?: boolean }) {
   if (issues.length === 0) {
     return inline ? (
       <p className="text-[length:var(--text-sm)] text-slate">
-        Every row was read successfully — no issues found.
+        Every row was read successfully. No issues found.
       </p>
     ) : null;
   }
@@ -498,7 +498,7 @@ function IssueList({ issues, inline }: { issues: Issue[]; inline?: boolean }) {
             <span className="font-medium text-crimson-deep">
               {issue.sheet} row {issue.row}
             </span>{' '}
-            — {issue.message}
+            · {issue.message}
           </li>
         ))}
       </ul>

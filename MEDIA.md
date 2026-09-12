@@ -144,8 +144,8 @@ never for anything with speech.
 ## 5. Adding files
 
 ```bash
-# 1. drop the originals somewhere under public/media/
-cp ~/photos/campus-front.jpg public/media/about/
+# 1. drop the originals into one of the photograph folders
+cp ~/photos/campus-front.jpg public/media/home/
 
 # 2. optimise, measure, build blur placeholders
 npm run content
@@ -154,7 +154,29 @@ npm run content
 npm run dev
 ```
 
-`npm run content` is safe to re-run; it is idempotent and rebuilds from source each time.
+### Put files only in these folders
+
+`npm run content` rebuilds `public/media/` from the old site's asset tree, and **anything it finds
+there that it did not put there itself is deleted.** Six names are protected from that, and they
+are the only safe places for a file you add by hand:
+
+| Folder | For |
+| --- | --- |
+| `public/media/hero/` | hero carousel slides |
+| `public/media/home/` | home page pictures |
+| `public/media/gallery/` | photo gallery |
+| `public/media/pages/` | page banners |
+| `public/media/video/` | video files |
+| `public/media/art/` | generated banners (`npm run artwork`) |
+
+`logo-*.png` at the top of `public/media/` is protected too; those come from `npm run brand`.
+
+A photograph dropped anywhere else under `public/media/` survives until the next `npm run content`
+and then disappears without a word. If you need another folder, add its name to `NOT_OURS` in
+[`scripts/assets.mjs`](scripts/assets.mjs) first.
+
+Files in `hero/` and `art/` are also left at the size and quality they arrive at, rather than being
+re-compressed on every run; see `skip` in [`scripts/images.mjs`](scripts/images.mjs).
 
 Before publishing, check the result on a phone:
 

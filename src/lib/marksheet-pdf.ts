@@ -71,7 +71,7 @@ function fit(text: string, font: PDFFont, size: number, maxWidth: number) {
 
 export async function buildMarksheetPdf(data: MarksheetData): Promise<Uint8Array> {
   const pdf = await PDFDocument.create();
-  pdf.setTitle(`Statement of Marks — ${data.rollNo} — Semester ${data.semester}`);
+  pdf.setTitle(`Statement of Marks, ${data.rollNo}, Semester ${data.semester}`);
   pdf.setAuthor('Vivekananda Institute of Management Science and Technology');
   pdf.setSubject('Statement of Marks');
   pdf.setProducer('VIMST');
@@ -155,11 +155,11 @@ export async function buildMarksheetPdf(data: MarksheetData): Promise<Uint8Array
   const details: [string, string][] = [
     ['Name of the student', data.name],
     ['Roll number', data.rollNo],
-    ["Father's name", data.fatherName || '—'],
+    ["Father's name", data.fatherName || '-'],
     ['Date of birth', data.dob],
-    ['Class', data.className || '—'],
-    ['Batch', data.batch || '—'],
-    ['Branch', data.branch || '—'],
+    ['Class', data.className || '-'],
+    ['Batch', data.batch || '-'],
+    ['Branch', data.branch || '-'],
     ['Semester', data.semester],
   ];
 
@@ -274,7 +274,7 @@ export async function buildMarksheetPdf(data: MarksheetData): Promise<Uint8Array
       page,
       y,
       [
-        s.subjectCode || '—',
+        s.subjectCode || '-',
         s.subject,
         String(s.totalMarks),
         String(s.obtainedMarks),

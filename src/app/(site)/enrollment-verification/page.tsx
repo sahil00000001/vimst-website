@@ -15,7 +15,7 @@ export default function EnrollmentVerificationPage() {
       <PageBanner
         eyebrow="Students"
         title="Check Your Result"
-        intro="Enter your enrollment number and date of birth to see every semester published for you — view it on screen, or download the statement of marks as a PDF."
+        intro="Enter your enrollment number and date of birth to see every semester published for you. View it on screen, or download the statement of marks as a PDF."
         image="/media/art/result.jpg"
         crumbs={[{ label: 'Check Your Result' }]}
         wide

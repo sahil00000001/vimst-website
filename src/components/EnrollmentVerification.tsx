@@ -313,11 +313,11 @@ function Marksheet({
   const details: [string, string][] = [
     ['Name of the student', data.name],
     ['Enrollment no.', data.rollNo],
-    ["Father's name", data.fatherName || '—'],
+    ["Father's name", data.fatherName || '-'],
     ['Date of birth', data.dob],
-    ['Class', data.className || '—'],
-    ['Batch', data.batch || '—'],
-    ['Branch', data.branch || '—'],
+    ['Class', data.className || '-'],
+    ['Batch', data.batch || '-'],
+    ['Branch', data.branch || '-'],
     ['Semester', data.semester],
   ];
 
@@ -415,7 +415,7 @@ function Marksheet({
                       className="border-b border-rule-soft last:border-0"
                     >
                       <td className="px-5 py-3 text-[length:var(--text-sm)] tabular-nums text-slate">
-                        {row.subjectCode || '—'}
+                        {row.subjectCode || '-'}
                       </td>
                       <td className="px-5 py-3 text-[length:var(--text-base)] text-ink">
                         {row.subject}

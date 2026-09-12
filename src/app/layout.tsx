@@ -29,8 +29,8 @@ const NAME = 'Vivekananda Institute of Management Science and Technology';
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.vimst.org'),
   title: {
-    default: `VIMST — ${NAME}`,
-    template: `%s — VIMST`,
+    default: `VIMST · ${NAME}`,
+    template: `%s · VIMST`,
   },
   description:
     'VIMST offers engineering, management, computer application, science, commerce and arts programmes through distance learning, at diploma, bachelor, PG diploma and masters level.',
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     siteName: 'VIMST',
-    title: `VIMST — ${NAME}`,
+    title: `VIMST · ${NAME}`,
     description:
       'Engineering, management, science and commerce programmes delivered through distance learning.',
   },

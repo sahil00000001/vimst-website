@@ -58,7 +58,26 @@ function slugifyDir(d) {
   return d.split('/').map((p) => slugify(p + '.x').replace(/\.x$/, '')).join('/');
 }
 
-fs.rmSync(DEST, { recursive: true, force: true });
+/**
+ * Names under public/media that this script does not own.
+ *
+ * This script only mirrors the old site's asset tree. Everything listed here
+ * arrived another way: `art/` is the 32 department banners from
+ * `npm run artwork`, the `logo-*` files come from `npm run brand`, and
+ * `hero/ gallery/ home/ pages/ video/` are the media slots documented in
+ * MEDIA.md, which are filled by hand.
+ *
+ * A blind wipe of public/media takes all of that with it and silently 404s
+ * every banner and the header logo on the next `npm run content`. That has
+ * already happened once; hence the list.
+ */
+const NOT_OURS = new Set(['art', 'hero', 'gallery', 'home', 'pages', 'video']);
+const GENERATED = (name) => NOT_OURS.has(name) || /^logo-/.test(name);
+
+for (const entry of fs.existsSync(DEST) ? fs.readdirSync(DEST) : []) {
+  if (GENERATED(entry)) continue;
+  fs.rmSync(path.join(DEST, entry), { recursive: true, force: true });
+}
 fs.mkdirSync(DEST, { recursive: true });
 walk(SRC);
 fs.mkdirSync(path.resolve('content'), { recursive: true });

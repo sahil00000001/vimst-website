@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     title: course.title,
     description,
     openGraph: {
-      title: `${course.title} — VIMST`,
+      title: `${course.title} · VIMST`,
       description,
       images: course.banner ? [course.banner] : undefined,
     },

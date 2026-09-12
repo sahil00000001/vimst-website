@@ -116,10 +116,29 @@ function applyRewrites(line) {
   return tidy(line);
 }
 
-/** Rewrites the prose in a block list, leaving tables untouched. */
+/**
+ * Subject names in the syllabus tables carry dashes from the source HTML
+ * ("Business Finance – I", "Instrumentation –II"). A hyphen reads the same and
+ * renders identically in every font, so the tables lose their long dashes
+ * without losing a word.
+ */
+const tidyCell = (text) =>
+  text
+    .replace(/\s*[—–]\s*/g, '-')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+
+/** Rewrites the prose in a block list, and the dashes inside tables. */
 function rewriteBlocks(blocks) {
   return blocks
     .map((b) => {
+      if (b.type === 'table') {
+        return {
+          ...b,
+          caption: b.caption ? tidyCell(b.caption) : b.caption,
+          rows: b.rows.map((row) => row.map((c) => ({ ...c, text: tidyCell(c.text) }))),
+        };
+      }
       if (b.type !== 'section') return b;
       return {
         ...b,

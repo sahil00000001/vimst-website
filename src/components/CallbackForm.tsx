@@ -28,7 +28,7 @@ function mailtoHandoff(data: Record<string, string>) {
     .filter(Boolean)
     .join('\n');
 
-  const subject = `Website enquiry — ${data.name}${data.course ? ` (${data.course})` : ''}`;
+  const subject = `Website enquiry · ${data.name}${data.course ? ` (${data.course})` : ''}`;
   window.location.href = `mailto:${ENQUIRY_ADDRESS}?subject=${encodeURIComponent(
     subject
   )}&body=${encodeURIComponent(body)}`;

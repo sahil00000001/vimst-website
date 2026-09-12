@@ -17,11 +17,17 @@ import path from 'node:path';
  *   node scripts/brand.mjs
  */
 
-const SRC = 'public/media/images';
+/**
+ * The originals live in `brand/`, outside public/media, because
+ * `npm run content` rebuilds public/media from the old site's asset tree and
+ * deletes anything else it finds there. They were kept in
+ * public/media/images/ once and were silently destroyed on the next build.
+ */
+const SRC = 'brand';
 const OUT = 'public/media';
 
-const WIDE = path.join(SRC, 'WhatsApp Image 2026-09-11 at 6.19.49 PM.jpeg');
-const CREST = path.join(SRC, 'WhatsApp Image 2026-09-11 at 6.19.48 PM.jpeg');
+const WIDE = path.join(SRC, 'logo-wide.jpeg');
+const CREST = path.join(SRC, 'logo-crest.jpeg');
 
 /** Replaces a white background with transparency, keeping edges smooth. */
 async function keyOutWhite(input) {
@@ -139,5 +145,18 @@ const icon = await sharp({
   .then((buf) => sharp(buf).png({ compressionLevel: 9, palette: true, quality: 90 }).toBuffer());
 fs.writeFileSync('src/app/icon.png', icon);
 console.log(`  src/app/icon.png   512x512  ${Math.round(icon.length / 1024)} KB`);
+
+/*
+ * The campus photograph for the first hero slide. It is used as supplied, so
+ * this is a copy rather than a conversion, but it belongs here so that one
+ * command restores every file that came out of the originals in `brand/`.
+ */
+const HERO = 'public/media/hero/campus-gate.jpg';
+fs.mkdirSync(path.dirname(HERO), { recursive: true });
+fs.copyFileSync(path.join(SRC, 'campus.jpeg'), HERO);
+const campus = await sharp(HERO).metadata();
+console.log(
+  `  ${HERO}  ${campus.width}x${campus.height}  ${Math.round(fs.statSync(HERO).size / 1024)} KB`
+);
 
 console.log('\nDone.');

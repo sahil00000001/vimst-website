@@ -44,7 +44,7 @@ export const AUTHORED = {
         'The candidate should have successfully completed B.E. / B.Tech in Computer Engineering, Information Technology or an allied discipline, preferably with relevant work experience.',
       ]),
       section('Duration', [
-        'The programme runs for Two Years, comprising Four Semesters. Students may take breaks between subjects or semesters, but are expected to complete the programme within Four Years from the session start date.',
+        'The programme runs for two years, made up of four semesters. You may take breaks between subjects or semesters if you need to. You have up to four years from the start of your session to finish.',
       ]),
       semesterTable('FIRST YEAR', 'Semester 1st', 'Semester 2nd', [
         ['Advanced Data Structures and Algorithms', 'Distributed Systems'],
@@ -78,7 +78,7 @@ export const AUTHORED = {
         'Candidates who hold a Bachelor’s degree from a recognised university with Mathematics at 10+2 or graduate level, or a BCA / B.Sc in Computer Science or Information Technology.',
       ]),
       section('Duration', [
-        'The programme duration for MCA is Three Years, comprising Six Semesters. Students may take breaks between subjects or semesters, but are expected to complete the programme within Five Years from the session start date.',
+        'MCA runs for three years, made up of six semesters. You may take breaks between subjects or semesters if you need to. You have up to five years from the start of your session to finish.',
       ]),
       semesterTable('Course Contents', 'Semester 1st', 'Semester 2nd', [
         ['Problem Solving and Programming in C', 'Object Oriented Programming with C++'],
@@ -122,7 +122,7 @@ export const AUTHORED = {
         'Candidates who have passed Class 10 (Matriculation) or an equivalent examination from a recognised board.',
       ]),
       section('Duration', [
-        'The programme duration is Three Years, comprising Six Semesters. Students are expected to complete the programme within Five Years from the session start date.',
+        'The programme runs for three years, made up of six semesters. You have up to five years from the start of your session to finish.',
       ]),
       semesterTable('Course Contents', 'Semester 1st', 'Semester 2nd', [
         ['Applied Mathematics', 'Applied Physics'],
@@ -163,7 +163,7 @@ export const AUTHORED = {
         'Candidates who have passed Intermediate (10+2) with Physics, Chemistry and Mathematics from a recognised board, or hold a Diploma in a relevant engineering discipline.',
       ]),
       section('Duration', [
-        'The programme duration is Four Years, comprising Eight Semesters. Students are expected to complete the programme within Six Years from the session start date.',
+        'The programme runs for four years, made up of eight semesters. You have up to six years from the start of your session to finish.',
       ]),
       semesterTable('FIRST YEAR', 'Semester 1st', 'Semester 2nd', [
         ['Engineering Mathematics I', 'Engineering Mathematics II'],
@@ -211,7 +211,7 @@ export const AUTHORED = {
         'The candidate should have successfully completed B.E. / B.Tech in Electrical, Electronics or Electrical & Electronics Engineering, preferably with relevant work experience.',
       ]),
       section('Duration', [
-        'The programme runs for Two Years, comprising Four Semesters. Students are expected to complete the programme within Four Years from the session start date.',
+        'The programme runs for two years, made up of four semesters. You have up to four years from the start of your session to finish.',
       ]),
       semesterTable('FIRST YEAR', 'Semester 1st', 'Semester 2nd', [
         ['Advanced Power System Analysis', 'Power System Dynamics and Stability'],

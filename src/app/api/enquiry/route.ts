@@ -93,7 +93,7 @@ export async function POST(request: Request) {
         from,
         to: [to],
         reply_to: email,
-        subject: `Website enquiry — ${name}${course ? ` (${course})` : ''}`,
+        subject: `Website enquiry · ${name}${course ? ` (${course})` : ''}`,
         text: lines.join('\n'),
       }),
     });

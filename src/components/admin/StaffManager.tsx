@@ -288,7 +288,7 @@ export function StaffManager() {
             >
               {ROLES.map((r) => (
                 <option key={r} value={r}>
-                  {ROLE_LABEL[r]} — {ROLE_DESCRIPTION[r]}
+                  {ROLE_LABEL[r]}: {ROLE_DESCRIPTION[r]}
                 </option>
               ))}
             </select>
@@ -352,7 +352,7 @@ export function StaffManager() {
       <Modal open={Boolean(issued)} onClose={() => setIssued(null)} title="Password">
         <p className="text-[length:var(--text-sm)] leading-relaxed text-graphite">
           Give this to <strong className="font-medium text-ink">{issued?.username}</strong>. It is
-          shown once and cannot be retrieved again — only reset.
+          shown once and cannot be retrieved again, only reset.
         </p>
         <p className="mt-4 select-all rounded-lg bg-shell px-4 py-4 text-center font-mono text-[length:var(--text-lg)] tracking-wide text-ink">
           {issued?.password}

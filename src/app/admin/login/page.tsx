@@ -3,7 +3,7 @@ import { Suspense } from 'react';
 import { LoginForm } from '@/components/admin/LoginForm';
 
 export const metadata: Metadata = {
-  title: 'Sign in — VIMST Admin',
+  title: 'Sign in · VIMST Admin',
   robots: { index: false, follow: false },
 };
 

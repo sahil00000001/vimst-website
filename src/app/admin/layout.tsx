@@ -3,7 +3,7 @@ import { getSession } from '@/lib/auth';
 import { AdminShell } from '@/components/admin/AdminShell';
 
 export const metadata: Metadata = {
-  title: 'Admin — VIMST',
+  title: 'Admin · VIMST',
   robots: { index: false, follow: false },
 };
 
