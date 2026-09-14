@@ -151,13 +151,15 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-rule bg-shell">
-        <div className="mx-auto flex max-w-[1400px] flex-col justify-between gap-1.5 px-5 py-5 pr-20 text-[length:var(--text-xs)] text-slate sm:flex-row sm:items-center sm:px-8 sm:pr-8 sm:text-[length:var(--text-sm)]">
+      {/* The copyright strip is navy, matching the one at the top of the page,
+          so the brand closes the page as well as opening it. */}
+      <div className="border-t border-brand bg-brand text-paper">
+        <div className="mx-auto flex max-w-[1400px] flex-col justify-between gap-1.5 px-5 py-5 pr-20 text-[length:var(--text-xs)] text-paper/75 sm:flex-row sm:items-center sm:px-8 sm:pr-8 sm:text-[length:var(--text-sm)]">
           <p>
             © {new Date().getFullYear()} Vivekananda Institute of Management Science and
             Technology. All rights reserved.
           </p>
-          <p className="text-mist">ISO 9001:2008 Certified</p>
+          <p className="text-gold">ISO 9001:2008 Certified</p>
         </div>
       </div>
     </footer>

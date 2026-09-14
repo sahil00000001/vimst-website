@@ -46,7 +46,7 @@ function FilterRow({
             {active && (
               <motion.span
                 layoutId={`filter-${label}`}
-                className="absolute inset-0 rounded-full bg-ink"
+                className="absolute inset-0 rounded-full bg-brand"
                 transition={{ duration: 0.4, ease: EASE }}
               />
             )}
@@ -185,7 +185,7 @@ export function CourseExplorer({ courses }: { courses: Course[] }) {
           <button
             type="button"
             onClick={reset}
-            className="mt-6 rounded-full bg-ink px-6 py-3 text-[length:var(--text-sm)] font-medium text-paper transition-colors hover:bg-brand"
+            className="mt-6 rounded-full bg-brand px-6 py-3 text-[length:var(--text-sm)] font-medium text-paper transition-colors hover:bg-brand-deep"
           >
             Show all programmes
           </button>

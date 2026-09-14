@@ -113,17 +113,24 @@ export function Navbar({ nav }: { nav: NavItem[] }) {
               height={416}
               priority
               /* The mark is the institute's identity and carries the whole
-                 header, so it is sized as large as the bar allows rather than
-                 tucked into a corner.
+                 header, so it is sized to whatever the row can actually give
+                 it rather than tucked into a corner.
 
-                 It grows in two steps rather than one because the desktop nav
-                 appears at `xl` and then wants the same row: at 1280px exactly,
-                 the eight nav items plus the button leave only about 65px of
-                 slack beside an 80px mark, and none at all beside a 96px one.
-                 So the biggest size waits for `2xl`, where there is room for
-                 it. */
+                 On a phone the ceiling is arithmetic. The row holds the mark,
+                 a 44px menu button and the gutters, which on a 320px screen
+                 leaves about 219px of width; the wordmark is 2.88 times wider
+                 than it is tall, so it cannot pass roughly 76px there. The
+                 clamp starts just under that and then grows with the viewport,
+                 so a 390px phone gets 78px and a 430px one 86px rather than
+                 every phone being held down to the narrowest one.
+
+                 The dip at `xl` is deliberate: that is where the eight nav
+                 items and the button appear and start competing for the same
+                 row. It grows again at `2xl`. */
               className={`w-auto transition-all duration-500 ${
-                scrolled ? 'h-12 sm:h-14 xl:h-16 2xl:h-[4.25rem]' : 'h-16 sm:h-20 2xl:h-24'
+                scrolled
+                  ? 'h-14 sm:h-16 lg:h-20 xl:h-16 2xl:h-20'
+                  : 'h-[clamp(4.5rem,21vw,6.5rem)] sm:h-[6.5rem] lg:h-28 xl:h-[5.75rem] 2xl:h-28'
               }`}
             />
           </Link>
@@ -146,7 +153,11 @@ export function Navbar({ nav }: { nav: NavItem[] }) {
                     href={item.href}
                     onFocus={() => setOpen(hasMenu ? item.label : null)}
                     aria-expanded={hasMenu ? showing : undefined}
-                    className={`relative flex items-center gap-1.5 rounded-lg px-3 py-2 text-[length:var(--text-sm)] font-medium tracking-tight transition-colors duration-300 ${
+                    /* Tighter horizontal padding at `xl` than at `2xl`: the
+                       eight items and the button share the row with the mark,
+                       and 4px either side of each item is 64px given back to
+                       the logo at the one width where the row is tight. */
+                    className={`relative flex items-center gap-1.5 rounded-lg px-2 py-2 text-[length:var(--text-sm)] font-medium tracking-tight transition-colors duration-300 2xl:px-3 ${
                       active || showing ? 'text-brand' : 'text-graphite hover:text-ink'
                     }`}
                   >
@@ -191,7 +202,7 @@ export function Navbar({ nav }: { nav: NavItem[] }) {
 
             <Link
               href="/contact"
-              className="group relative ml-3 inline-flex items-center gap-2 overflow-hidden rounded-full bg-ink px-5 py-2.5 text-[length:var(--text-sm)] font-medium text-paper"
+              className="group relative ml-3 inline-flex items-center gap-2 overflow-hidden rounded-full bg-brand px-5 py-2.5 text-[length:var(--text-sm)] font-medium text-paper"
             >
               {/* The brand navy sweeps in from the left on hover. */}
               <span

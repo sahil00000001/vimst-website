@@ -197,7 +197,7 @@ export function CallbackForm({ compact }: { compact?: boolean }) {
             <button
               type="submit"
               disabled={status === 'sending'}
-              className="group mt-7 inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-ink px-8 py-4 text-[length:var(--text-sm)] font-medium text-paper transition-colors duration-300 hover:bg-brand disabled:cursor-not-allowed disabled:opacity-60"
+              className="group mt-7 inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-brand px-8 py-4 text-[length:var(--text-sm)] font-medium text-paper transition-colors duration-300 hover:bg-brand-deep disabled:cursor-not-allowed disabled:opacity-60"
             >
               {status === 'sending' ? (
                 <>

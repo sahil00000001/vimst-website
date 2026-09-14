@@ -247,7 +247,7 @@ export function MobileNav({
                 <Link
                   href="/contact"
                   onClick={onClose}
-                  className="flex items-center justify-center gap-2 rounded-full bg-ink px-6 py-3.5 text-[length:var(--text-sm)] font-medium text-paper transition-colors hover:bg-brand"
+                  className="flex items-center justify-center gap-2 rounded-full bg-brand px-6 py-3.5 text-[length:var(--text-sm)] font-medium text-paper transition-colors hover:bg-brand-deep"
                 >
                   Apply Now
                   <svg width="13" height="10" viewBox="0 0 13 10" fill="none" aria-hidden>

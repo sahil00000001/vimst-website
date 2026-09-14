@@ -130,7 +130,7 @@ export function Hero({
             <Magnetic className="w-full sm:w-auto">
               <Link
                 href="/courses"
-                className="group inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-ink px-6 py-4 text-[length:var(--text-sm)] font-medium text-paper transition-colors duration-300 hover:bg-brand sm:w-auto sm:px-7 sm:py-3.5"
+                className="group inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-brand px-6 py-4 text-[length:var(--text-sm)] font-medium text-paper transition-colors duration-300 hover:bg-brand-deep sm:w-auto sm:px-7 sm:py-3.5"
               >
                 Explore Programmes
                 <Arrow className="transition-transform duration-300 group-hover:translate-x-1" />
@@ -154,7 +154,7 @@ export function Hero({
           >
             {stats.map((s) => (
               <div key={s.label}>
-                <dt className="font-display text-[length:var(--text-2xl)] leading-none text-ink">
+                <dt className="font-display text-[length:var(--text-2xl)] leading-none text-brand">
                   {s.static ?? <Counter value={s.value} suffix={s.suffix} />}
                 </dt>
                 <dd className="mt-1.5 text-[length:var(--text-2xs)] uppercase tracking-[0.12em] text-mist">

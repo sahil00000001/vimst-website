@@ -106,7 +106,7 @@ export function EditorialPage({
                 <Reveal
                   from="left"
                   delay={0.08}
-                  className="rounded-2xl border border-rule bg-ink p-7 text-paper"
+                  className="rounded-2xl border border-rule bg-brand p-7 text-paper"
                 >
                   <h3 className="font-display text-[length:var(--text-xl)] text-paper">
                     Admissions are open

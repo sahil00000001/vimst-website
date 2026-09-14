@@ -153,7 +153,7 @@ export function EnrollmentVerification() {
         <button
           type="submit"
           disabled={state.phase === 'loading'}
-          className="mt-7 inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-ink px-8 py-4 text-[length:var(--text-sm)] font-medium text-paper transition-colors duration-300 hover:bg-brand disabled:cursor-not-allowed disabled:opacity-60"
+          className="mt-7 inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-brand px-8 py-4 text-[length:var(--text-sm)] font-medium text-paper transition-colors duration-300 hover:bg-brand-deep disabled:cursor-not-allowed disabled:opacity-60"
         >
           {state.phase === 'loading' ? (
             <>
@@ -268,7 +268,7 @@ function SemesterChooser({
                   <button
                     type="button"
                     onClick={() => onOpen(s.semester)}
-                    className="rounded-full bg-ink px-5 py-2.5 text-[length:var(--text-xs)] font-medium text-paper transition-colors hover:bg-brand"
+                    className="rounded-full bg-brand px-5 py-2.5 text-[length:var(--text-xs)] font-medium text-paper transition-colors hover:bg-brand-deep"
                   >
                     View
                   </button>
@@ -357,7 +357,7 @@ function Marksheet({
           </button>
           <a
             href={pdfHref}
-            className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-[length:var(--text-sm)] font-medium text-paper transition-colors hover:bg-brand"
+            className="inline-flex items-center gap-2 rounded-full bg-brand px-5 py-2.5 text-[length:var(--text-sm)] font-medium text-paper transition-colors hover:bg-brand-deep"
           >
             <DownloadIcon />
             Download PDF

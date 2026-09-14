@@ -107,7 +107,7 @@ export function Button({
   loading?: boolean;
 }) {
   const styles = {
-    primary: 'bg-ink text-paper hover:bg-brand',
+    primary: 'bg-brand text-paper hover:bg-brand-deep',
     secondary: 'border border-rule bg-paper text-ink hover:border-ink',
     danger: 'border border-brand/30 bg-brand-soft text-brand-deep hover:bg-brand hover:text-paper',
     ghost: 'text-graphite hover:bg-linen hover:text-ink',

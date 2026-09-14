@@ -131,7 +131,7 @@ export default function PlacementPage() {
           <Reveal from="left" delay={0.08} className="flex shrink-0 flex-wrap gap-3">
             <Link
               href="/courses"
-              className="rounded-full bg-ink px-7 py-3.5 text-[length:var(--text-sm)] font-medium text-paper transition-colors hover:bg-brand"
+              className="rounded-full bg-brand px-7 py-3.5 text-[length:var(--text-sm)] font-medium text-paper transition-colors hover:bg-brand-deep"
             >
               Browse courses
             </Link>

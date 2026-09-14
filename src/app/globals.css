@@ -147,12 +147,15 @@
     color: var(--color-brand);
   }
 
+  /* The little rule before every section label is the gold, not the navy of
+     the text beside it. It is the one mark that repeats on every page, so it
+     is where the second brand colour earns its keep: too small to need to
+     carry contrast, frequent enough to be recognised. */
   .eyebrow::before {
     content: '';
     width: 1.75rem;
-    height: 1px;
-    background: currentColor;
-    opacity: 0.55;
+    height: 2px;
+    background: var(--color-gold);
     /* Draws itself in when the surrounding section reveals. */
     animation: mg-rule-in 0.9s var(--ease-out-soft) both;
   }

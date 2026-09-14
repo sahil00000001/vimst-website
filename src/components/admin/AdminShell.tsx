@@ -124,7 +124,7 @@ export function AdminShell({
 
       <div className="border-t border-rule p-4">
         <div className="mb-3 flex items-center gap-3 px-1">
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink text-[length:var(--text-sm)] font-semibold text-paper">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand text-[length:var(--text-sm)] font-semibold text-paper">
             {admin.name.charAt(0).toUpperCase()}
           </span>
           <div className="min-w-0">
@@ -147,7 +147,7 @@ export function AdminShell({
             type="button"
             onClick={signOut}
             disabled={signingOut}
-            className="rounded-lg bg-ink px-3.5 py-2 text-[length:var(--text-xs)] font-medium text-paper transition-colors hover:bg-brand disabled:opacity-60"
+            className="rounded-lg bg-brand px-3.5 py-2 text-[length:var(--text-xs)] font-medium text-paper transition-colors hover:bg-brand-deep disabled:opacity-60"
           >
             {signingOut ? 'Signing out…' : 'Sign out'}
           </button>
