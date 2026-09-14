@@ -30,7 +30,7 @@ export default function HomePage() {
               <p className="eyebrow mb-5">Welcome</p>
               <h2 className="max-w-[18ch] text-[length:var(--text-3xl)]">
                 Vivekananda Institute of{' '}
-                <em className="not-italic text-crimson">Management Science and Technology</em>
+                <em className="not-italic text-brand">Management Science and Technology</em>
               </h2>
             </Reveal>
             <Reveal from="up" delay={0.12} className="prose-mg mt-7">
@@ -46,7 +46,7 @@ export default function HomePage() {
               </Link>
               <Link
                 href="/quality-policy"
-                className="inline-flex items-center rounded-full px-6 py-3 text-[length:var(--text-sm)] font-medium text-slate transition-colors hover:text-crimson"
+                className="inline-flex items-center rounded-full px-6 py-3 text-[length:var(--text-sm)] font-medium text-slate transition-colors hover:text-brand"
               >
                 Quality policy
               </Link>
@@ -80,9 +80,9 @@ export default function HomePage() {
               <div className="flex flex-col justify-center p-7 sm:p-10 lg:col-span-8 lg:p-14">
                 <p className="eyebrow mb-5">From the desk</p>
                 <h2 className="text-[length:var(--text-3xl)]">
-                  Director&rsquo;s <em className="not-italic text-crimson">Message</em>
+                  Director&rsquo;s <em className="not-italic text-brand">Message</em>
                 </h2>
-                <blockquote className="mt-6 border-l-2 border-crimson pl-5 font-display text-[length:var(--text-xl)] italic leading-relaxed text-graphite">
+                <blockquote className="mt-6 border-l-2 border-brand pl-5 font-display text-[length:var(--text-xl)] italic leading-relaxed text-graphite">
                   &ldquo;We shape minds and shape lives.&rdquo;
                 </blockquote>
                 <div className="prose-mg mt-6">
@@ -95,7 +95,7 @@ export default function HomePage() {
                 </div>
                 <Link
                   href="/director-message"
-                  className="group mt-7 inline-flex min-h-11 w-fit items-center gap-2 border-b border-ink pb-1 text-[length:var(--text-sm)] font-medium text-ink transition-colors hover:border-crimson hover:text-crimson"
+                  className="group mt-7 inline-flex min-h-11 w-fit items-center gap-2 border-b border-ink pb-1 text-[length:var(--text-sm)] font-medium text-ink transition-colors hover:border-brand hover:text-brand"
                 >
                   Read the full message
                   <Arrow className="transition-transform duration-300 group-hover:translate-x-1" />
@@ -112,7 +112,7 @@ export default function HomePage() {
           <Reveal from="up" className="mb-10 sm:mb-12">
             <p className="eyebrow mb-5">Beyond the classroom</p>
             <h2 className="text-[length:var(--text-3xl)]">
-              Discover <em className="not-italic text-crimson">more</em>
+              Discover <em className="not-italic text-brand">more</em>
             </h2>
           </Reveal>
 
@@ -151,7 +151,7 @@ export default function HomePage() {
             <Reveal from="up" className="mb-8 max-w-xl">
               <p className="eyebrow mb-4">Take a look</p>
               <h2 className="text-[length:var(--text-3xl)]">
-                Inside <em className="not-italic text-crimson">the campus</em>
+                Inside <em className="not-italic text-brand">the campus</em>
               </h2>
             </Reveal>
             <Reveal from="up" delay={0.08}>
@@ -167,7 +167,7 @@ export default function HomePage() {
           <Reveal from="up" className="mb-10 sm:mb-12">
             <p className="eyebrow mb-5">On campus</p>
             <h2 className="text-[length:var(--text-3xl)]">
-              Campus <em className="not-italic text-crimson">life</em>
+              Campus <em className="not-italic text-brand">life</em>
             </h2>
           </Reveal>
 
@@ -189,7 +189,7 @@ export default function HomePage() {
                     </ParallaxPlate>
                   </div>
                   <div className="flex items-center justify-between gap-4 p-5 sm:p-6">
-                    <h3 className="font-display text-[length:var(--text-lg)] text-ink transition-colors group-hover:text-crimson">
+                    <h3 className="font-display text-[length:var(--text-lg)] text-ink transition-colors group-hover:text-brand">
                       {c.title}
                     </h3>
                     <span className="text-slate">
@@ -206,14 +206,14 @@ export default function HomePage() {
       {/* Enquiry */}
       <section className="relative overflow-hidden border-t border-rule bg-paper">
         <Parallax speed={0.12} className="pointer-events-none absolute -right-24 top-0 h-full w-1/2 opacity-[0.05]">
-          <div className="h-full w-full bg-[radial-gradient(circle_at_60%_40%,var(--color-crimson),transparent_65%)]" />
+          <div className="h-full w-full bg-[radial-gradient(circle_at_60%_40%,var(--color-brand),transparent_65%)]" />
         </Parallax>
 
         <div className="shell section-y grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-14">
           <Reveal from="right">
             <p className="eyebrow mb-5">Get in touch</p>
             <h2 className="max-w-[15ch] text-[length:var(--text-3xl)]">
-              Not sure which programme <em className="not-italic text-crimson">fits</em>?
+              Not sure which programme <em className="not-italic text-brand">fits</em>?
             </h2>
             <p className="mt-6 max-w-[46ch] text-[length:var(--text-lg)] leading-relaxed text-slate">
               Leave your details and one of our counsellors will talk you through the
@@ -235,7 +235,7 @@ export default function HomePage() {
                     {x.v.includes('@') ? (
                       <a
                         href={`mailto:${x.v}`}
-                        className="mg-underline -my-2 inline-block py-2 transition-colors hover:text-crimson"
+                        className="mg-underline -my-2 inline-block py-2 transition-colors hover:text-brand"
                       >
                         {x.v}
                       </a>

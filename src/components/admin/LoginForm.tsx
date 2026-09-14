@@ -62,7 +62,7 @@ export function LoginForm() {
             width={1200}
             height={416}
             priority
-            className="mx-auto h-11 w-auto"
+            className="mx-auto h-16 w-auto"
           />
         </Link>
       </div>
@@ -109,7 +109,7 @@ export function LoginForm() {
       <p className="mt-6 text-center text-[length:var(--text-xs)] text-mist">
         <Link
           href="/"
-          className="inline-flex min-h-11 items-center justify-center px-3 transition-colors hover:text-crimson"
+          className="inline-flex min-h-11 items-center justify-center px-3 transition-colors hover:text-brand"
         >
           ← Back to the website
         </Link>

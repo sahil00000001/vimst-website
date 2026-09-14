@@ -81,7 +81,7 @@ export default function FeeStructurePage() {
                   <p className="mt-3 text-[length:var(--text-base)] leading-relaxed text-slate">{c.b}</p>
                   <Link
                     href={c.href}
-                    className="group mt-4 inline-flex min-h-11 items-center gap-2 text-[length:var(--text-sm)] font-medium text-ink transition-colors hover:text-crimson"
+                    className="group mt-4 inline-flex min-h-11 items-center gap-2 text-[length:var(--text-sm)] font-medium text-ink transition-colors hover:text-brand"
                   >
                     {c.cta}
                     <svg width="13" height="10" viewBox="0 0 13 10" fill="none" aria-hidden>

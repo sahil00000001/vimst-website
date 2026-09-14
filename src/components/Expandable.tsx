@@ -80,7 +80,7 @@ export function Expandable({
           type="button"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
-          className="mt-3 inline-flex min-h-11 items-center gap-1.5 text-[length:var(--text-sm)] font-medium text-crimson transition-opacity hover:opacity-70 sm:hidden"
+          className="mt-3 inline-flex min-h-11 items-center gap-1.5 text-[length:var(--text-sm)] font-medium text-brand transition-opacity hover:opacity-70 sm:hidden"
         >
           {open ? 'Show less' : 'Read more'}
           <svg

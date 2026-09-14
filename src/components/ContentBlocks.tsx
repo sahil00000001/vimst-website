@@ -58,7 +58,7 @@ function CurriculumTable({ caption, rows }: { caption: string | null; rows: Cell
     <Reveal from="up" className="overflow-hidden rounded-xl border border-rule bg-paper">
       {caption && (
         <div className="border-b border-rule bg-linen px-6 py-3.5">
-          <h3 className="text-[length:var(--text-sm)] font-semibold uppercase tracking-[0.14em] text-crimson">
+          <h3 className="text-[length:var(--text-sm)] font-semibold uppercase tracking-[0.14em] text-brand">
             {caption}
           </h3>
         </div>
@@ -68,7 +68,7 @@ function CurriculumTable({ caption, rows }: { caption: string | null; rows: Cell
           <div key={gi} className="bg-paper p-6">
             {columns[gi] && (
               <p className="mb-4 flex items-center gap-2.5 font-display text-[length:var(--text-base)] text-ink">
-                <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-crimson-soft text-[length:var(--text-2xs)] font-semibold text-crimson">
+                <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-brand-soft text-[length:var(--text-2xs)] font-semibold text-brand">
                   {gi + 1}
                 </span>
                 {columns[gi]}
@@ -108,7 +108,7 @@ function GenericTable({ caption, rows }: { caption: string | null; rows: Cell[][
     <Reveal from="up" className="overflow-hidden rounded-xl border border-rule bg-paper">
       {caption && (
         <div className="border-b border-rule bg-linen px-6 py-3.5">
-          <h3 className="text-[length:var(--text-sm)] font-semibold uppercase tracking-[0.14em] text-crimson">
+          <h3 className="text-[length:var(--text-sm)] font-semibold uppercase tracking-[0.14em] text-brand">
             {caption}
           </h3>
         </div>
@@ -197,7 +197,7 @@ function ProseSection({
                 className="group flex gap-4 border-b border-rule-soft py-3.5 last:border-0"
               >
                 <span
-                  className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-crimson/45 transition-colors group-hover:bg-crimson"
+                  className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand/45 transition-colors group-hover:bg-brand"
                   aria-hidden
                 />
                 <span className="text-[length:var(--text-base)] leading-relaxed text-graphite">

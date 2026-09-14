@@ -4,9 +4,18 @@
    VIMST design tokens
 
    A white / off-white system: pages sit on paper white, sections step
-   through progressively warmer off-whites, and the institute's crimson
-   appears only as an accent -- rules, small labels, hover states -- never
-   as a field colour.
+   through progressively warmer off-whites, and the institute's colours
+   appear only as accents, rules, small labels, hover states, never as a
+   field colour.
+
+   Both accents are measured off the logo itself, not approximated, so the
+   mark never sits slightly off its own page: the navy of the wordmark and
+   the gold of the crest.
+
+   Navy carries everything interactive, links, buttons, active nav, focus.
+   It reads 15.6:1 on white, comfortably past AA. Gold is decoration only,
+   hairlines and small marks, because at 2.4:1 on white it cannot carry
+   text at all. Where gold does have to be read, gold-deep clears AA.
    ------------------------------------------------------------------ */
 
 @theme {
@@ -24,9 +33,13 @@
   --color-rule: #e7e3da;
   --color-rule-soft: #f0ede6;
 
-  --color-crimson: #b01029;
-  --color-crimson-deep: #8a0c20;
-  --color-crimson-soft: #f7e8ea;
+  --color-brand: #072151;
+  --color-brand-deep: #04152f;
+  --color-brand-soft: #eaeef7;
+
+  --color-gold: #d09e31;
+  --color-gold-deep: #8c6715;
+  --color-gold-soft: #f8f1e1;
 
   --font-sans: var(--font-body), ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
     sans-serif;
@@ -60,8 +73,16 @@
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
-    /* Leave room under the sticky header when jumping to an anchor. */
-    scroll-padding-top: 6rem;
+    /* Leave room under the sticky header when jumping to an anchor. The header
+       grew with the logo, so this tracks it rather than sitting at a fixed 6rem
+       and dropping the target behind the bar. */
+    scroll-padding-top: clamp(6.5rem, 9vw, 8.5rem);
+
+    /* Has to be here as well as on body. Overflow set only on body propagates
+       up to the viewport and leaves body itself `visible`, so the clip stops
+       clipping and a decorative element a few pixels wide can pan the whole
+       page sideways on a phone. */
+    overflow-x: clip;
   }
 
   body {
@@ -101,12 +122,12 @@
   }
 
   ::selection {
-    background: var(--color-crimson);
+    background: var(--color-brand);
     color: #fff;
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-crimson);
+    outline: 2px solid var(--color-brand);
     outline-offset: 3px;
     border-radius: 3px;
   }
@@ -123,7 +144,7 @@
     font-weight: 600;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--color-crimson);
+    color: var(--color-brand);
   }
 
   .eyebrow::before {

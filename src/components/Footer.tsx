@@ -36,7 +36,7 @@ export function Footer() {
               alt="Vivekananda Institute of Management Science and Technology"
               width={1200}
               height={416}
-              className="h-10 w-auto sm:h-12"
+              className="h-16 w-auto sm:h-20"
             />
             <p className="mt-4 max-w-sm text-[length:var(--text-sm)] leading-relaxed text-slate">
               Vivekananda Institute of Management Science and Technology has taught
@@ -53,7 +53,7 @@ export function Footer() {
                     target="_blank"
                     rel="noreferrer"
                     aria-label={`VIMST on ${s.label}`}
-                    className="flex h-11 w-11 items-center justify-center rounded-full border border-rule text-slate transition-all duration-300 hover:-translate-y-0.5 hover:border-crimson hover:bg-crimson hover:text-paper"
+                    className="flex h-11 w-11 items-center justify-center rounded-full border border-rule text-slate transition-all duration-300 hover:-translate-y-0.5 hover:border-brand hover:bg-brand hover:text-paper"
                   >
                     <svg width="17" height="17" viewBox="0 0 18 18" fill="currentColor" aria-hidden>
                       <path d={s.d} />
@@ -65,7 +65,7 @@ export function Footer() {
           </Reveal>
 
           <Reveal className="lg:col-span-2" from="up" delay={0.06}>
-            <h3 className="mb-3 text-[length:var(--text-xs)] font-semibold uppercase tracking-[0.13em] text-crimson">
+            <h3 className="mb-3 text-[length:var(--text-xs)] font-semibold uppercase tracking-[0.13em] text-brand">
               Institute
             </h3>
             <ul>
@@ -73,7 +73,7 @@ export function Footer() {
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="-mx-1 block rounded px-1 py-3 text-[length:var(--text-sm)] text-graphite transition-colors hover:text-crimson"
+                    className="-mx-1 block rounded px-1 py-3 text-[length:var(--text-sm)] text-graphite transition-colors hover:text-brand"
                   >
                     {l.label}
                   </Link>
@@ -83,7 +83,7 @@ export function Footer() {
           </Reveal>
 
           <Reveal className="lg:col-span-3" from="up" delay={0.12}>
-            <h3 className="mb-3 text-[length:var(--text-xs)] font-semibold uppercase tracking-[0.13em] text-crimson">
+            <h3 className="mb-3 text-[length:var(--text-xs)] font-semibold uppercase tracking-[0.13em] text-brand">
               Admission
             </h3>
             <ul>
@@ -91,7 +91,7 @@ export function Footer() {
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="-mx-1 block rounded px-1 py-3 text-[length:var(--text-sm)] text-graphite transition-colors hover:text-crimson"
+                    className="-mx-1 block rounded px-1 py-3 text-[length:var(--text-sm)] text-graphite transition-colors hover:text-brand"
                   >
                     {l.label}
                   </Link>
@@ -101,7 +101,7 @@ export function Footer() {
           </Reveal>
 
           <Reveal className="col-span-2 lg:col-span-3" from="up" delay={0.18}>
-            <h3 className="mb-3 text-[length:var(--text-xs)] font-semibold uppercase tracking-[0.13em] text-crimson">
+            <h3 className="mb-3 text-[length:var(--text-xs)] font-semibold uppercase tracking-[0.13em] text-brand">
               Contact
             </h3>
             <address className="not-italic text-[length:var(--text-sm)] text-graphite">
@@ -109,7 +109,7 @@ export function Footer() {
               <p>
                 <a
                   href="mailto:info@vimst.org"
-                  className="-mx-1 block break-all rounded px-1 py-3 transition-colors hover:text-crimson"
+                  className="-mx-1 block break-all rounded px-1 py-3 transition-colors hover:text-brand"
                 >
                   info@vimst.org
                 </a>
@@ -117,7 +117,7 @@ export function Footer() {
               <p>
                 <a
                   href="mailto:verification@vimst.org"
-                  className="-mx-1 block break-all rounded px-1 py-3 transition-colors hover:text-crimson"
+                  className="-mx-1 block break-all rounded px-1 py-3 transition-colors hover:text-brand"
                 >
                   verification@vimst.org
                 </a>
@@ -125,7 +125,7 @@ export function Footer() {
               <p>
                 <a
                   href="mailto:admin@vimst.org"
-                  className="-mx-1 block break-all rounded px-1 py-3 transition-colors hover:text-crimson"
+                  className="-mx-1 block break-all rounded px-1 py-3 transition-colors hover:text-brand"
                 >
                   admin@vimst.org
                 </a>
@@ -133,7 +133,7 @@ export function Footer() {
             </address>
             <Link
               href="/contact"
-              className="group mt-5 inline-flex min-h-11 items-center gap-2 border-b border-ink pb-1 text-[length:var(--text-sm)] font-medium text-ink transition-colors hover:border-crimson hover:text-crimson"
+              className="group mt-5 inline-flex min-h-11 items-center gap-2 border-b border-ink pb-1 text-[length:var(--text-sm)] font-medium text-ink transition-colors hover:border-brand hover:text-brand"
             >
               Request a callback
               <svg width="13" height="10" viewBox="0 0 13 10" fill="none" aria-hidden>

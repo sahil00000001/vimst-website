@@ -34,10 +34,14 @@ export type MarksheetData = {
   totalMarksInWord: string;
 };
 
-/* A4 at 72dpi, and the institute's crimson. */
+/* A4 at 72dpi, and the institute's brand. */
 const PAGE = { width: 595.28, height: 841.89 };
 const MARGIN = 42;
-const CRIMSON = rgb(0.69, 0.06, 0.16);
+/* The institute navy, #072151, for the headings and the mark. */
+const NAVY = rgb(0.027, 0.129, 0.318);
+/* A fail stays red. It is the one thing on the sheet that has to be read
+   as bad news at a glance, and navy would quietly remove that. */
+const FAIL = rgb(0.69, 0.06, 0.16);
 const INK = rgb(0.09, 0.08, 0.1);
 const SLATE = rgb(0.42, 0.42, 0.45);
 const RULE = rgb(0.85, 0.83, 0.79);
@@ -117,7 +121,7 @@ export async function buildMarksheetPdf(data: MarksheetData): Promise<Uint8Array
       y: y - size,
       size,
       font: serif,
-      color: CRIMSON,
+      color: NAVY,
     });
     y -= size + 16;
   }
@@ -147,7 +151,7 @@ export async function buildMarksheetPdf(data: MarksheetData): Promise<Uint8Array
     y: y + 1,
     size: 12,
     font: bold,
-    color: CRIMSON,
+    color: NAVY,
   });
   y -= 34;
 
@@ -280,7 +284,7 @@ export async function buildMarksheetPdf(data: MarksheetData): Promise<Uint8Array
         String(s.obtainedMarks),
         ratio >= 0.35 ? 'Pass' : 'Fail',
       ],
-      { font: body, size: 9, height: bodyRowHeight, color: ratio >= 0.35 ? INK : CRIMSON }
+      { font: body, size: 9, height: bodyRowHeight, color: ratio >= 0.35 ? INK : FAIL }
     );
     y -= bodyRowHeight;
   }
@@ -330,7 +334,7 @@ export async function buildMarksheetPdf(data: MarksheetData): Promise<Uint8Array
       y: y - 30,
       size: 10,
       font: bold,
-      color: label === 'Final result' && data.finalResult !== 'PASS' ? CRIMSON : INK,
+      color: label === 'Final result' && data.finalResult !== 'PASS' ? FAIL : INK,
     });
     if (i > 0) {
       page.drawLine({

@@ -69,14 +69,16 @@ export function Hero({
     <section
       ref={ref}
       className="relative overflow-hidden bg-shell"
-      aria-roledescription="carousel"
+      /* A single still is not a carousel, and announcing it as one sends a
+         screen reader looking for controls that are not there. */
+      aria-roledescription={count > 1 ? 'carousel' : undefined}
       aria-label="Campus highlights"
     >
       {/* Ambient wash behind everything, drifting slowly. */}
       <motion.div
         aria-hidden
         style={{ y: washY }}
-        className="pointer-events-none absolute -top-1/4 left-1/2 h-[110%] w-[130%] -translate-x-1/2 bg-[radial-gradient(60%_50%_at_30%_25%,rgba(176,16,41,0.05),transparent_70%),radial-gradient(45%_40%_at_80%_15%,rgba(233,229,219,0.7),transparent_70%)]"
+        className="pointer-events-none absolute -top-1/4 left-1/2 h-[110%] w-[130%] -translate-x-1/2 bg-[radial-gradient(60%_50%_at_30%_25%,rgba(7,33,81,0.06),transparent_70%),radial-gradient(45%_40%_at_80%_15%,rgba(208,158,49,0.1),transparent_70%)]"
       />
 
       <div className="shell relative grid gap-0 pb-8 pt-8 sm:pt-12 lg:grid-cols-12 lg:gap-10 lg:pb-20 lg:pt-16">
@@ -103,7 +105,7 @@ export function Hero({
                   animate={{ y: '0%' }}
                   transition={{ duration: 0.95, delay: 0.1 + i * 0.1, ease: EASE }}
                 >
-                  {i === 2 ? <em className="not-italic text-crimson">{line}</em> : line}
+                  {i === 2 ? <em className="not-italic text-brand">{line}</em> : line}
                 </motion.span>
               </span>
             ))}
@@ -128,7 +130,7 @@ export function Hero({
             <Magnetic className="w-full sm:w-auto">
               <Link
                 href="/courses"
-                className="group inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-ink px-6 py-4 text-[length:var(--text-sm)] font-medium text-paper transition-colors duration-300 hover:bg-crimson sm:w-auto sm:px-7 sm:py-3.5"
+                className="group inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-ink px-6 py-4 text-[length:var(--text-sm)] font-medium text-paper transition-colors duration-300 hover:bg-brand sm:w-auto sm:px-7 sm:py-3.5"
               >
                 Explore Programmes
                 <Arrow className="transition-transform duration-300 group-hover:translate-x-1" />
@@ -210,10 +212,10 @@ export function Hero({
 
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/35 via-transparent to-transparent" />
 
-            {/* Controls — only meaningful for the carousel */}
+            {/* Controls, only meaningful when there is more than one still */}
             <div
               className={`absolute inset-x-0 bottom-0 flex items-center justify-between gap-4 p-3.5 sm:p-5 ${
-                video ? 'hidden' : ''
+                video || count < 2 ? 'hidden' : ''
               }`}
             >
               <div className="flex items-center gap-1.5" role="tablist" aria-label="Slides">
@@ -255,7 +257,7 @@ export function Hero({
                     type="button"
                     aria-label={b.label}
                     onClick={() => go(index + b.delta)}
-                    className="flex h-11 w-11 items-center justify-center rounded-full bg-paper/85 text-ink backdrop-blur transition-all duration-300 hover:scale-105 hover:bg-paper hover:text-crimson"
+                    className="flex h-11 w-11 items-center justify-center rounded-full bg-paper/85 text-ink backdrop-blur transition-all duration-300 hover:scale-105 hover:bg-paper hover:text-brand"
                   >
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
                       <path

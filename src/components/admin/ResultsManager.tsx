@@ -442,7 +442,7 @@ export function ResultsManager() {
                           <Button
                             variant="ghost"
                             type="button"
-                            className="px-2.5 py-1.5 text-crimson"
+                            className="px-2.5 py-1.5 text-brand"
                             onClick={() => setDeleting(r)}
                           >
                             Delete
@@ -590,7 +590,7 @@ export function ResultsManager() {
                     aria-label={`Remove subject ${i + 1}`}
                     disabled={subjects.length === 1}
                     onClick={() => setSubjects((r) => r.filter((_, x) => x !== i))}
-                    className="flex h-9 w-9 items-center justify-center justify-self-end rounded-lg text-slate transition-colors hover:bg-crimson-soft hover:text-crimson disabled:opacity-30"
+                    className="flex h-9 w-9 items-center justify-center justify-self-end rounded-lg text-slate transition-colors hover:bg-brand-soft hover:text-brand disabled:opacity-30"
                   >
                     <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden>
                       <path d="M1 1l11 11M12 1L1 12" stroke="currentColor" strokeWidth="1.5" />

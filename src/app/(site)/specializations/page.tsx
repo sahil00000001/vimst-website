@@ -62,7 +62,7 @@ export default function SpecializationsPage() {
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link
                   href="/courses"
-                  className="rounded-full bg-ink px-6 py-3 text-[length:var(--text-sm)] font-medium text-paper transition-colors hover:bg-crimson"
+                  className="rounded-full bg-ink px-6 py-3 text-[length:var(--text-sm)] font-medium text-paper transition-colors hover:bg-brand"
                 >
                   Browse courses
                 </Link>

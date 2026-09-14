@@ -70,7 +70,7 @@ export function EditorialPage({
             <aside className="lg:col-span-4">
               <div className="sticky top-28 space-y-6">
                 <Reveal from="left" className="rounded-2xl border border-rule bg-paper p-6">
-                  <p className="mb-4 text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.16em] text-crimson">
+                  <p className="mb-4 text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.16em] text-brand">
                     More about VIMST
                   </p>
                   <ul className="space-y-1">
@@ -78,7 +78,7 @@ export function EditorialPage({
                       <li key={r.href}>
                         <Link
                           href={r.href}
-                          className="group flex items-center justify-between gap-3 border-b border-rule-soft py-2.5 text-[length:var(--text-sm)] text-graphite transition-colors last:border-0 hover:text-crimson"
+                          className="group flex items-center justify-between gap-3 border-b border-rule-soft py-2.5 text-[length:var(--text-sm)] text-graphite transition-colors last:border-0 hover:text-brand"
                         >
                           {r.label}
                           <svg
@@ -87,7 +87,7 @@ export function EditorialPage({
                             viewBox="0 0 13 10"
                             fill="none"
                             aria-hidden
-                            className="shrink-0 text-mist transition-transform duration-300 group-hover:translate-x-1 group-hover:text-crimson"
+                            className="shrink-0 text-mist transition-transform duration-300 group-hover:translate-x-1 group-hover:text-brand"
                           >
                             <path
                               d="M1 5h10M7.5 1.5L11 5l-3.5 3.5"
@@ -118,7 +118,7 @@ export function EditorialPage({
                   <div className="mt-6 flex flex-wrap gap-3">
                     <Link
                       href="/courses"
-                      className="rounded-full bg-paper px-5 py-2.5 text-[length:var(--text-sm)] font-medium text-ink transition-colors hover:bg-crimson hover:text-paper"
+                      className="rounded-full bg-paper px-5 py-2.5 text-[length:var(--text-sm)] font-medium text-ink transition-colors hover:bg-brand hover:text-paper"
                     >
                       Browse courses
                     </Link>

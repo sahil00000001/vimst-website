@@ -64,7 +64,7 @@ export default function ContactPage() {
                 <Reveal from="right">
                   <p className="eyebrow mb-5">Reach us</p>
                   <h2 className="text-[length:var(--text-3xl)]">
-                    Where to send <em className="not-italic text-crimson">what</em>
+                    Where to send <em className="not-italic text-brand">what</em>
                   </h2>
                 </Reveal>
 
@@ -80,7 +80,7 @@ export default function ContactPage() {
                       {c.href ? (
                         <a
                           href={c.href}
-                          className="-mx-1 mt-1 block rounded px-1 py-2 font-display text-[length:var(--text-lg)] text-ink transition-colors hover:text-crimson"
+                          className="-mx-1 mt-1 block rounded px-1 py-2 font-display text-[length:var(--text-lg)] text-ink transition-colors hover:text-brand"
                         >
                           {c.value}
                         </a>
@@ -93,7 +93,7 @@ export default function ContactPage() {
                 </Stagger>
 
                 <Reveal from="right" delay={0.14} className="mt-10">
-                  <p className="mb-4 text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.14em] text-crimson">
+                  <p className="mb-4 text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.14em] text-brand">
                     Quick links
                   </p>
                   <div className="flex flex-wrap gap-2">
@@ -101,7 +101,7 @@ export default function ContactPage() {
                       <Link
                         key={q.href}
                         href={q.href}
-                        className="rounded-full border border-rule bg-shell px-4 py-2 text-[length:var(--text-sm)] text-graphite transition-colors hover:border-crimson hover:text-crimson"
+                        className="rounded-full border border-rule bg-shell px-4 py-2 text-[length:var(--text-sm)] text-graphite transition-colors hover:border-brand hover:text-brand"
                       >
                         {q.label}
                       </Link>

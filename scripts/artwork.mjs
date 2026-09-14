@@ -29,12 +29,15 @@ const H = 515; // 21:9, rendered at 2x for a 2400px file
 const SCALE = 2;
 
 const INK = '#16151a';
-const CRIMSON = '#b01029';
+/* The hairline along the bottom of every banner. Gold rather than navy:
+   navy on these pale grounds reads as another drawn line, where the gold
+   reads as the institute signing the picture. */
+const GOLD = '#d09e31';
 
 /* Each family gets its own hue so a department is recognisable at a glance,
    but all of them sit at the same low saturation as the rest of the site. */
 const PALETTES = {
-  crimson: { line: '#b01029', wash: '#f7ebed', ground: '#fbf8f7' },
+  navy: { line: '#26375c', wash: '#e9edf4', ground: '#f7f9fb' },
   slate: { line: '#3f4a5c', wash: '#eceff4', ground: '#f8f9fb' },
   moss: { line: '#3f5545', wash: '#eaf0eb', ground: '#f7faf8' },
   ochre: { line: '#7a5a24', wash: '#f5efe2', ground: '#fbf9f4' },
@@ -244,7 +247,7 @@ export const ARTWORK = {
   'chemical-engineering': ['lattice', 'teal'],
   'civil-engineering': ['truss', 'ochre'],
   'computer-engineering': ['traces', 'indigo'],
-  'electrical-engineering': ['waves', 'crimson'],
+  'electrical-engineering': ['waves', 'navy'],
   'electronics-engineering': ['traces', 'teal'],
   'electronics-communication': ['signal', 'indigo'],
   'electrical-electronics-engineering': ['waves', 'slate'],
@@ -255,7 +258,7 @@ export const ARTWORK = {
   'information-technology': ['traces', 'moss'],
 
   // Other streams
-  management: ['columns', 'crimson'],
+  management: ['columns', 'navy'],
   'hotel-management': ['arcs', 'ochre'],
   'computer-applications': ['orbits', 'indigo'],
   science: ['orbits', 'teal'],
@@ -263,15 +266,15 @@ export const ARTWORK = {
   arts: ['arcs', 'plum'],
 
   // Editorial pages
-  about: ['arcs', 'crimson'],
+  about: ['arcs', 'navy'],
   vision: ['orbits', 'indigo'],
   mission: ['truss', 'moss'],
   career: ['columns', 'ochre'],
   'director-message': ['arcs', 'plum'],
   'quality-policy': ['lattice', 'slate'],
-  placement: ['columns', 'crimson'],
+  placement: ['columns', 'navy'],
   gallery: ['arcs', 'teal'],
-  courses: ['orbits', 'crimson'],
+  courses: ['orbits', 'navy'],
   admission: ['truss', 'clay'],
   contact: ['signal', 'slate'],
   specializations: ['lattice', 'plum'],
@@ -317,8 +320,8 @@ const page = (motif, paletteName) => {
     <!-- The heading is printed over the left of this plate, so it stays calm. -->
     <rect width="1200" height="515" fill="url(#quiet)"/>
 
-    <!-- A crimson hairline ties every banner to the brand. -->
-    <rect x="0" y="511" width="1200" height="4" fill="${CRIMSON}" opacity="0.85"/>
+    <!-- A gold hairline ties every banner to the brand. -->
+    <rect x="0" y="511" width="1200" height="4" fill="${GOLD}" opacity="0.9"/>
 
     <rect width="1200" height="515" filter="url(#grain)" fill="${INK}" opacity="0.5"/>
   </svg></body></html>`;

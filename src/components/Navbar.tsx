@@ -67,8 +67,9 @@ export function Navbar({ nav }: { nav: NavItem[] }) {
 
   return (
     <>
-      {/* Utility strip */}
-      <div className="hidden border-b border-ink bg-ink text-paper lg:block">
+      {/* Utility strip, in the logo navy so the brand reads from the very
+          top of the page rather than starting at the mark. */}
+      <div className="hidden border-b border-brand bg-brand text-paper lg:block">
         <div className="shell flex items-center justify-between gap-6 py-1 text-[length:var(--text-xs)]">
           <p className="tracking-wide text-paper/70">
             Andhra Pradesh, India · ISO 9001:2008 Certified Institute
@@ -76,14 +77,14 @@ export function Navbar({ nav }: { nav: NavItem[] }) {
           <div className="flex items-center gap-5">
             <a
               href="mailto:info@vimst.org"
-              className="inline-flex min-h-9 items-center text-paper/80 transition-colors hover:text-paper"
+              className="inline-flex min-h-9 items-center text-paper/80 transition-colors hover:text-gold"
             >
               info@vimst.org
             </a>
             <span className="h-3 w-px bg-paper/25" />
             <Link
               href="/enrollment-verification"
-              className="inline-flex min-h-9 items-center text-paper/80 transition-colors hover:text-paper"
+              className="inline-flex min-h-9 items-center text-paper/80 transition-colors hover:text-gold"
             >
               Check your result
             </Link>
@@ -111,8 +112,18 @@ export function Navbar({ nav }: { nav: NavItem[] }) {
               width={1200}
               height={416}
               priority
+              /* The mark is the institute's identity and carries the whole
+                 header, so it is sized as large as the bar allows rather than
+                 tucked into a corner.
+
+                 It grows in two steps rather than one because the desktop nav
+                 appears at `xl` and then wants the same row: at 1280px exactly,
+                 the eight nav items plus the button leave only about 65px of
+                 slack beside an 80px mark, and none at all beside a 96px one.
+                 So the biggest size waits for `2xl`, where there is room for
+                 it. */
               className={`w-auto transition-all duration-500 ${
-                scrolled ? 'h-8 sm:h-10' : 'h-10 sm:h-12 lg:h-14'
+                scrolled ? 'h-12 sm:h-14 xl:h-16 2xl:h-[4.25rem]' : 'h-16 sm:h-20 2xl:h-24'
               }`}
             />
           </Link>
@@ -136,7 +147,7 @@ export function Navbar({ nav }: { nav: NavItem[] }) {
                     onFocus={() => setOpen(hasMenu ? item.label : null)}
                     aria-expanded={hasMenu ? showing : undefined}
                     className={`relative flex items-center gap-1.5 rounded-lg px-3 py-2 text-[length:var(--text-sm)] font-medium tracking-tight transition-colors duration-300 ${
-                      active || showing ? 'text-crimson' : 'text-graphite hover:text-ink'
+                      active || showing ? 'text-brand' : 'text-graphite hover:text-ink'
                     }`}
                   >
                     {showing && (
@@ -169,7 +180,7 @@ export function Navbar({ nav }: { nav: NavItem[] }) {
                     {active && (
                       <motion.span
                         layoutId="nav-active"
-                        className="absolute inset-x-3 -bottom-0.5 h-px bg-crimson"
+                        className="absolute inset-x-3 -bottom-0.5 h-px bg-brand"
                         transition={{ duration: 0.45, ease: EASE }}
                       />
                     )}
@@ -182,10 +193,10 @@ export function Navbar({ nav }: { nav: NavItem[] }) {
               href="/contact"
               className="group relative ml-3 inline-flex items-center gap-2 overflow-hidden rounded-full bg-ink px-5 py-2.5 text-[length:var(--text-sm)] font-medium text-paper"
             >
-              {/* Crimson fill sweeps in from the left on hover. */}
+              {/* The brand navy sweeps in from the left on hover. */}
               <span
                 aria-hidden
-                className="absolute inset-0 origin-left scale-x-0 bg-crimson transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100"
+                className="absolute inset-0 origin-left scale-x-0 bg-brand transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100"
               />
               <span className="relative z-10">Apply Now</span>
               <svg
@@ -214,7 +225,7 @@ export function Navbar({ nav }: { nav: NavItem[] }) {
             onClick={() => setMobileOpen(true)}
             aria-label="Open menu"
             aria-expanded={mobileOpen}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-rule text-ink transition-colors hover:border-crimson hover:text-crimson xl:hidden"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-rule text-ink transition-colors hover:border-brand hover:text-brand xl:hidden"
           >
             <svg width="18" height="12" viewBox="0 0 18 12" fill="none" aria-hidden>
               <path d="M0 1h18M0 6h18M0 11h12" stroke="currentColor" strokeWidth="1.4" />

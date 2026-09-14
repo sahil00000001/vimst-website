@@ -67,14 +67,14 @@ export function MobileNav({
                   alt="VIMST"
                   width={1200}
                   height={416}
-                  className="h-8 w-auto"
+                  className="h-12 w-auto"
                 />
               </Link>
               <button
                 type="button"
                 onClick={onClose}
                 aria-label="Close menu"
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-rule text-graphite transition-colors hover:border-crimson hover:text-crimson"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-rule text-graphite transition-colors hover:border-brand hover:text-brand"
               >
                 <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden>
                   <path d="M1 1l11 11M12 1L1 12" stroke="currentColor" strokeWidth="1.4" />
@@ -99,7 +99,7 @@ export function MobileNav({
                         <Link
                           href={item.href}
                           onClick={onClose}
-                          className="flex-1 py-3 font-display text-[length:var(--text-lg)] text-ink transition-colors hover:text-crimson"
+                          className="flex-1 py-3 font-display text-[length:var(--text-lg)] text-ink transition-colors hover:text-brand"
                         >
                           {item.label}
                         </Link>
@@ -112,7 +112,7 @@ export function MobileNav({
                               setExpanded(isOpen ? null : item.label);
                               setExpandedCol(null);
                             }}
-                            className="flex h-11 w-11 items-center justify-center rounded-full text-slate transition-colors hover:bg-linen hover:text-crimson"
+                            className="flex h-11 w-11 items-center justify-center rounded-full text-slate transition-colors hover:bg-linen hover:text-brand"
                           >
                             <motion.svg
                               width="11"
@@ -247,7 +247,7 @@ export function MobileNav({
                 <Link
                   href="/contact"
                   onClick={onClose}
-                  className="flex items-center justify-center gap-2 rounded-full bg-ink px-6 py-3.5 text-[length:var(--text-sm)] font-medium text-paper transition-colors hover:bg-crimson"
+                  className="flex items-center justify-center gap-2 rounded-full bg-ink px-6 py-3.5 text-[length:var(--text-sm)] font-medium text-paper transition-colors hover:bg-brand"
                 >
                   Apply Now
                   <svg width="13" height="10" viewBox="0 0 13 10" fill="none" aria-hidden>
@@ -271,10 +271,10 @@ export function MobileNav({
 
               <div className="mt-6 space-y-1 border-t border-rule pt-5 text-[length:var(--text-sm)] text-slate">
                 <p>Andhra Pradesh, India</p>
-                <a href="mailto:info@vimst.org" className="block hover:text-crimson">
+                <a href="mailto:info@vimst.org" className="block hover:text-brand">
                   info@vimst.org
                 </a>
-                <a href="mailto:admin@vimst.org" className="block hover:text-crimson">
+                <a href="mailto:admin@vimst.org" className="block hover:text-brand">
                   admin@vimst.org
                 </a>
               </div>

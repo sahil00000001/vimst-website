@@ -97,7 +97,7 @@ export function CallbackForm({ compact }: { compact?: boolean }) {
               initial={{ scale: 0.6, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.08, ease: EASE }}
-              className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-crimson-soft text-crimson"
+              className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-brand-soft text-brand"
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
                 <motion.path
@@ -124,7 +124,7 @@ export function CallbackForm({ compact }: { compact?: boolean }) {
             <button
               type="button"
               onClick={() => setStatus('idle')}
-              className="mt-6 text-[length:var(--text-sm)] font-medium text-ink underline decoration-rule underline-offset-4 transition-colors hover:text-crimson"
+              className="mt-6 text-[length:var(--text-sm)] font-medium text-ink underline decoration-rule underline-offset-4 transition-colors hover:text-brand"
             >
               Send another enquiry
             </button>
@@ -153,7 +153,7 @@ export function CallbackForm({ compact }: { compact?: boolean }) {
                     className="mb-2 block text-[length:var(--text-xs)] font-medium uppercase tracking-[0.1em] text-slate"
                   >
                     {f.label}
-                    {f.required && <span className="ml-1 text-crimson">*</span>}
+                    {f.required && <span className="ml-1 text-brand">*</span>}
                   </label>
                   <input
                     id={f.name}
@@ -161,7 +161,7 @@ export function CallbackForm({ compact }: { compact?: boolean }) {
                     type={f.type}
                     required={f.required}
                     autoComplete={f.autoComplete}
-                    className="w-full rounded-lg border border-rule bg-shell px-4 py-3 text-[length:var(--text-base)] text-ink transition-all duration-300 placeholder:text-mist focus:border-crimson focus:bg-paper focus:outline-none"
+                    className="w-full rounded-lg border border-rule bg-shell px-4 py-3 text-[length:var(--text-base)] text-ink transition-all duration-300 placeholder:text-mist focus:border-brand focus:bg-paper focus:outline-none"
                   />
                 </div>
               ))}
@@ -171,14 +171,14 @@ export function CallbackForm({ compact }: { compact?: boolean }) {
                   htmlFor="message"
                   className="mb-2 block text-[length:var(--text-xs)] font-medium uppercase tracking-[0.1em] text-slate"
                 >
-                  Your query<span className="ml-1 text-crimson">*</span>
+                  Your query<span className="ml-1 text-brand">*</span>
                 </label>
                 <textarea
                   id="message"
                   name="message"
                   rows={4}
                   required
-                  className="w-full resize-y rounded-lg border border-rule bg-shell px-4 py-3 text-[length:var(--text-base)] text-ink transition-all duration-300 placeholder:text-mist focus:border-crimson focus:bg-paper focus:outline-none"
+                  className="w-full resize-y rounded-lg border border-rule bg-shell px-4 py-3 text-[length:var(--text-base)] text-ink transition-all duration-300 placeholder:text-mist focus:border-brand focus:bg-paper focus:outline-none"
                 />
               </div>
             </div>
@@ -188,7 +188,7 @@ export function CallbackForm({ compact }: { compact?: boolean }) {
                 initial={{ opacity: 0, y: -6 }}
                 animate={{ opacity: 1, y: 0 }}
                 role="alert"
-                className="mt-4 rounded-lg bg-crimson-soft px-4 py-3 text-[length:var(--text-sm)] text-crimson-deep"
+                className="mt-4 rounded-lg bg-brand-soft px-4 py-3 text-[length:var(--text-sm)] text-brand-deep"
               >
                 {error}
               </motion.p>
@@ -197,7 +197,7 @@ export function CallbackForm({ compact }: { compact?: boolean }) {
             <button
               type="submit"
               disabled={status === 'sending'}
-              className="group mt-7 inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-ink px-8 py-4 text-[length:var(--text-sm)] font-medium text-paper transition-colors duration-300 hover:bg-crimson disabled:cursor-not-allowed disabled:opacity-60"
+              className="group mt-7 inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-ink px-8 py-4 text-[length:var(--text-sm)] font-medium text-paper transition-colors duration-300 hover:bg-brand disabled:cursor-not-allowed disabled:opacity-60"
             >
               {status === 'sending' ? (
                 <>
@@ -225,7 +225,7 @@ export function CallbackForm({ compact }: { compact?: boolean }) {
               Or email us at{' '}
               <a
                 href={`mailto:${ENQUIRY_ADDRESS}`}
-                className="-my-3 inline-block py-3 text-slate underline underline-offset-2 transition-colors hover:text-crimson"
+                className="-my-3 inline-block py-3 text-slate underline underline-offset-2 transition-colors hover:text-brand"
               >
                 {ENQUIRY_ADDRESS}
               </a>

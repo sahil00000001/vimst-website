@@ -10,7 +10,6 @@
     "audit": "node scripts/audit.mjs",
     "seed:admin": "node scripts/seed-admin.mjs",
     "e2e": "node scripts/e2e.mjs",
-    "logo": "node scripts/logo.mjs",
     "ui:mobile": "node scripts/uishots.mjs",
     "artwork": "node scripts/artwork.mjs",
     "brand": "node scripts/brand.mjs"

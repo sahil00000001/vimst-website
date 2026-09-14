@@ -95,7 +95,7 @@ export default function PaymentModesPage() {
                   ].map((t) => (
                     <li key={t} className="flex gap-3.5 text-[length:var(--text-base)] leading-relaxed text-graphite">
                       <span
-                        className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-crimson/50"
+                        className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand/50"
                         aria-hidden
                       />
                       {t}
@@ -105,7 +105,7 @@ export default function PaymentModesPage() {
                 <div className="mt-7 flex flex-wrap gap-3">
                   <Link
                     href="/fee-structure"
-                    className="rounded-full bg-ink px-6 py-3 text-[length:var(--text-sm)] font-medium text-paper transition-colors hover:bg-crimson"
+                    className="rounded-full bg-ink px-6 py-3 text-[length:var(--text-sm)] font-medium text-paper transition-colors hover:bg-brand"
                   >
                     View fee structure
                   </Link>

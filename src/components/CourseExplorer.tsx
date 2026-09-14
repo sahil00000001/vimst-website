@@ -146,7 +146,7 @@ export function CourseExplorer({ courses }: { courses: Course[] }) {
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search programmes"
                 aria-label="Search programmes"
-                className="w-full rounded-full border border-rule bg-paper py-2.5 pl-10 pr-4 text-[length:var(--text-sm)] text-ink transition-colors placeholder:text-mist focus:border-crimson focus:outline-none"
+                className="w-full rounded-full border border-rule bg-paper py-2.5 pl-10 pr-4 text-[length:var(--text-sm)] text-ink transition-colors placeholder:text-mist focus:border-brand focus:outline-none"
               />
             </div>
 
@@ -162,7 +162,7 @@ export function CourseExplorer({ courses }: { courses: Course[] }) {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -6 }}
                   onClick={reset}
-                  className="text-[length:var(--text-sm)] text-crimson underline underline-offset-4 transition-opacity hover:opacity-70"
+                  className="text-[length:var(--text-sm)] text-brand underline underline-offset-4 transition-opacity hover:opacity-70"
                 >
                   Clear filters
                 </motion.button>
@@ -185,7 +185,7 @@ export function CourseExplorer({ courses }: { courses: Course[] }) {
           <button
             type="button"
             onClick={reset}
-            className="mt-6 rounded-full bg-ink px-6 py-3 text-[length:var(--text-sm)] font-medium text-paper transition-colors hover:bg-crimson"
+            className="mt-6 rounded-full bg-ink px-6 py-3 text-[length:var(--text-sm)] font-medium text-paper transition-colors hover:bg-brand"
           >
             Show all programmes
           </button>

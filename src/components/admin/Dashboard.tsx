@@ -137,11 +137,11 @@ export function Dashboard() {
                     <p className="text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.14em] text-mist">
                       {tile.label}
                     </p>
-                    <p className="mt-3 font-display text-[length:var(--text-4xl)] leading-none text-ink transition-colors group-hover:text-crimson">
+                    <p className="mt-3 font-display text-[length:var(--text-4xl)] leading-none text-ink transition-colors group-hover:text-brand">
                       <Counter value={tile.value} />
                     </p>
                     {tile.note && (
-                      <p className="mt-2 text-[length:var(--text-2xs)] text-crimson">{tile.note}</p>
+                      <p className="mt-2 text-[length:var(--text-2xs)] text-brand">{tile.note}</p>
                     )}
                   </Link>
                 </motion.div>
@@ -171,7 +171,7 @@ export function Dashboard() {
                         </span>
                         <span className="h-2 flex-1 overflow-hidden rounded-full bg-linen">
                           <motion.span
-                            className="block h-full rounded-full bg-crimson/70"
+                            className="block h-full rounded-full bg-brand/70"
                             initial={{ scaleX: 0 }}
                             animate={{ scaleX: s.count / maxSemester }}
                             transition={{ duration: 0.8, delay: 0.2 + i * 0.05, ease: EASE }}
@@ -193,7 +193,7 @@ export function Dashboard() {
                   <h2 className="font-display text-[length:var(--text-xl)]">Recently updated</h2>
                   <Link
                     href="/admin/results"
-                    className="text-[length:var(--text-xs)] font-medium text-crimson transition-opacity hover:opacity-70"
+                    className="text-[length:var(--text-xs)] font-medium text-brand transition-opacity hover:opacity-70"
                   >
                     View all
                   </Link>
@@ -248,7 +248,7 @@ export function Dashboard() {
                     prefetch={q.external ? false : undefined}
                     className="group flex h-full flex-col rounded-xl border border-rule bg-paper p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lift"
                   >
-                    <h3 className="font-display text-[length:var(--text-lg)] text-ink transition-colors group-hover:text-crimson">
+                    <h3 className="font-display text-[length:var(--text-lg)] text-ink transition-colors group-hover:text-brand">
                       {q.title}
                     </h3>
                     <p className="mt-2 flex-1 text-[length:var(--text-xs)] leading-relaxed text-slate">

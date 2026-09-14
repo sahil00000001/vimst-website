@@ -8,13 +8,15 @@
  * white and on the off-whites), so a menu of eleven columns reads as one
  * considered system rather than as eleven competing labels.
  *
- * Crimson stays reserved for the institute itself: brand marks, the About and
- * Admission menus, primary actions. It is never used for a subject family, so
- * "this is VIMST" and "this is Mechanical Engineering" never look alike.
+ * The institute navy, taken from the logo, stays reserved for the institute
+ * itself: brand marks, the About and Admission menus, primary actions. It is
+ * never used for a subject family, so "this is VIMST" and "this is Mechanical
+ * Engineering" never look alike. Engineering's indigo is pulled towards violet
+ * for the same reason, to keep it clear of the navy sitting beside it.
  */
 
 export type AccentName =
-  | 'crimson'
+  | 'brand'
   | 'indigo'
   | 'teal'
   | 'plum'
@@ -30,19 +32,19 @@ export const ACCENT_CLASS: Record<
   AccentName,
   { text: string; bg: string; border: string; dot: string; hoverText: string }
 > = {
-  crimson: {
-    text: 'text-[#b01029]',
-    bg: 'bg-[#f7e8ea]',
-    border: 'border-[#b01029]',
-    dot: 'bg-[#b01029]',
-    hoverText: 'hover:text-[#b01029]',
+  brand: {
+    text: 'text-[#072151]',
+    bg: 'bg-[#eaeef7]',
+    border: 'border-[#072151]',
+    dot: 'bg-[#072151]',
+    hoverText: 'hover:text-[#072151]',
   },
   indigo: {
-    text: 'text-[#40428f]',
-    bg: 'bg-[#ececf6]',
-    border: 'border-[#40428f]',
-    dot: 'bg-[#40428f]',
-    hoverText: 'hover:text-[#40428f]',
+    text: 'text-[#4b3d9c]',
+    bg: 'bg-[#eceaf7]',
+    border: 'border-[#4b3d9c]',
+    dot: 'bg-[#4b3d9c]',
+    hoverText: 'hover:text-[#4b3d9c]',
   },
   teal: {
     text: 'text-[#14615f]',
@@ -104,8 +106,8 @@ export const ACCENT_CLASS: Record<
 
 /** Raw hex, for inline styles and SVG fills. */
 export const ACCENT_HEX: Record<AccentName, string> = {
-  crimson: '#b01029',
-  indigo: '#40428f',
+  brand: '#072151',
+  indigo: '#4b3d9c',
   teal: '#14615f',
   plum: '#6b2d6b',
   forest: '#2c5f3a',

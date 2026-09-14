@@ -323,7 +323,7 @@ export function StudentsManager() {
                           <Button
                             variant="ghost"
                             type="button"
-                            className="px-2.5 py-1.5 text-crimson"
+                            className="px-2.5 py-1.5 text-brand"
                             onClick={() => setDeleting(s)}
                           >
                             Delete

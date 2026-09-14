@@ -17,7 +17,7 @@ type State =
 type Identity = { rollNo: string; dob: string };
 
 const inputClass =
-  'w-full rounded-lg border border-rule bg-shell px-4 py-3 text-[length:var(--text-base)] text-ink transition-all duration-300 focus:border-crimson focus:bg-paper focus:outline-none';
+  'w-full rounded-lg border border-rule bg-shell px-4 py-3 text-[length:var(--text-base)] text-ink transition-all duration-300 focus:border-brand focus:bg-paper focus:outline-none';
 
 export function EnrollmentVerification() {
   const [state, setState] = useState<State>({ phase: 'idle' });
@@ -103,7 +103,7 @@ export function EnrollmentVerification() {
               htmlFor="rollNo"
               className="mb-2 block text-[length:var(--text-xs)] font-medium uppercase tracking-[0.1em] text-slate"
             >
-              Enrollment number<span className="ml-1 text-crimson">*</span>
+              Enrollment number<span className="ml-1 text-brand">*</span>
             </label>
             <input
               id="rollNo"
@@ -123,7 +123,7 @@ export function EnrollmentVerification() {
               htmlFor="dob"
               className="mb-2 block text-[length:var(--text-xs)] font-medium uppercase tracking-[0.1em] text-slate"
             >
-              Date of birth<span className="ml-1 text-crimson">*</span>
+              Date of birth<span className="ml-1 text-brand">*</span>
             </label>
             <input
               id="dob"
@@ -143,7 +143,7 @@ export function EnrollmentVerification() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
               role="alert"
-              className="mt-5 rounded-lg bg-crimson-soft px-4 py-3 text-[length:var(--text-sm)] text-crimson-deep"
+              className="mt-5 rounded-lg bg-brand-soft px-4 py-3 text-[length:var(--text-sm)] text-brand-deep"
             >
               {state.message}
             </motion.p>
@@ -153,7 +153,7 @@ export function EnrollmentVerification() {
         <button
           type="submit"
           disabled={state.phase === 'loading'}
-          className="mt-7 inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-ink px-8 py-4 text-[length:var(--text-sm)] font-medium text-paper transition-colors duration-300 hover:bg-crimson disabled:cursor-not-allowed disabled:opacity-60"
+          className="mt-7 inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-ink px-8 py-4 text-[length:var(--text-sm)] font-medium text-paper transition-colors duration-300 hover:bg-brand disabled:cursor-not-allowed disabled:opacity-60"
         >
           {state.phase === 'loading' ? (
             <>
@@ -169,7 +169,7 @@ export function EnrollmentVerification() {
           Problems with your record? Email{' '}
           <a
             href="mailto:verification@vimst.org"
-            className="-my-3 inline-block py-3 text-slate underline underline-offset-2 hover:text-crimson"
+            className="-my-3 inline-block py-3 text-slate underline underline-offset-2 hover:text-brand"
           >
             verification@vimst.org
           </a>
@@ -260,7 +260,7 @@ function SemesterChooser({
                     className={`rounded-full px-3 py-1 text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.1em] ${
                       s.finalResult === 'PASS'
                         ? 'bg-[#e9f4ec] text-[#1d6b38]'
-                        : 'bg-crimson-soft text-crimson-deep'
+                        : 'bg-brand-soft text-brand-deep'
                     }`}
                   >
                     {s.finalResult}
@@ -268,7 +268,7 @@ function SemesterChooser({
                   <button
                     type="button"
                     onClick={() => onOpen(s.semester)}
-                    className="rounded-full bg-ink px-5 py-2.5 text-[length:var(--text-xs)] font-medium text-paper transition-colors hover:bg-crimson"
+                    className="rounded-full bg-ink px-5 py-2.5 text-[length:var(--text-xs)] font-medium text-paper transition-colors hover:bg-brand"
                   >
                     View
                   </button>
@@ -289,7 +289,7 @@ function SemesterChooser({
       <button
         type="button"
         onClick={onReset}
-        className="mx-auto mt-6 block text-[length:var(--text-sm)] font-medium text-graphite transition-colors hover:text-crimson"
+        className="mx-auto mt-6 block text-[length:var(--text-sm)] font-medium text-graphite transition-colors hover:text-brand"
       >
         ← Check a different enrollment number
       </button>
@@ -332,7 +332,7 @@ function Marksheet({
         <button
           type="button"
           onClick={onBack}
-          className="group inline-flex items-center gap-2 text-[length:var(--text-sm)] font-medium text-graphite transition-colors hover:text-crimson"
+          className="group inline-flex items-center gap-2 text-[length:var(--text-sm)] font-medium text-graphite transition-colors hover:text-brand"
         >
           <svg width="13" height="10" viewBox="0 0 13 10" fill="none" aria-hidden>
             <path
@@ -357,7 +357,7 @@ function Marksheet({
           </button>
           <a
             href={pdfHref}
-            className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-[length:var(--text-sm)] font-medium text-paper transition-colors hover:bg-crimson"
+            className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-[length:var(--text-sm)] font-medium text-paper transition-colors hover:bg-brand"
           >
             <DownloadIcon />
             Download PDF
@@ -367,13 +367,13 @@ function Marksheet({
 
       <article className="overflow-hidden rounded-2xl border border-rule bg-paper print:border-0">
         <header className="border-b border-rule bg-linen px-6 py-8 text-center sm:px-10">
-          <h2 className="font-display text-[length:var(--text-2xl)] text-crimson">
+          <h2 className="font-display text-[length:var(--text-2xl)] text-brand">
             Vivekananda
           </h2>
           <p className="mt-1 text-[length:var(--text-xs)] uppercase tracking-[0.18em] text-graphite">
             Institute of Management Science and Technology
           </p>
-          <p className="mt-4 inline-block rounded-full bg-paper px-4 py-1 text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.16em] text-crimson">
+          <p className="mt-4 inline-block rounded-full bg-paper px-4 py-1 text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.16em] text-brand">
             Statement of marks
           </p>
         </header>
@@ -428,7 +428,7 @@ function Marksheet({
                       </td>
                       <td
                         className={`px-5 py-3 text-right text-[length:var(--text-xs)] font-medium ${
-                          ratio >= 0.35 ? 'text-[#1d6b38]' : 'text-crimson'
+                          ratio >= 0.35 ? 'text-[#1d6b38]' : 'text-brand'
                         }`}
                       >
                         {ratio >= 0.35 ? 'Pass' : 'Fail'}
@@ -471,7 +471,7 @@ function Marksheet({
               <p
                 className={`mt-1.5 font-display text-[length:var(--text-lg)] ${
                   label === 'Final result' && data.finalResult !== 'PASS'
-                    ? 'text-crimson'
+                    ? 'text-brand'
                     : 'text-ink'
                 }`}
               >

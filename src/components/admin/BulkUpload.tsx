@@ -136,7 +136,7 @@ export function BulkUpload() {
           <div key={label} className="flex flex-1 items-center gap-2">
             <span
               className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[length:var(--text-2xs)] font-semibold transition-colors duration-300 ${
-                i <= step ? 'bg-crimson text-paper' : 'bg-linen text-mist'
+                i <= step ? 'bg-brand text-paper' : 'bg-linen text-mist'
               }`}
             >
               {i + 1}
@@ -151,7 +151,7 @@ export function BulkUpload() {
             {i < STEPS.length - 1 && (
               <span className="h-px flex-1 overflow-hidden bg-rule">
                 <motion.span
-                  className="block h-full bg-crimson"
+                  className="block h-full bg-brand"
                   initial={false}
                   animate={{ scaleX: i < step ? 1 : 0 }}
                   transition={{ duration: 0.5, ease: EASE }}
@@ -247,13 +247,13 @@ export function BulkUpload() {
                 onDragLeave={() => setDragging(false)}
                 onDrop={onDrop}
                 className={`rounded-xl border-2 border-dashed p-8 text-center transition-colors duration-300 ${
-                  dragging ? 'border-crimson bg-crimson-soft/40' : 'border-rule bg-shell'
+                  dragging ? 'border-brand bg-brand-soft/40' : 'border-rule bg-shell'
                 }`}
               >
                 <motion.div
                   animate={{ y: dragging ? -4 : 0 }}
                   transition={{ duration: 0.3, ease: EASE }}
-                  className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-paper text-crimson"
+                  className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-paper text-brand"
                 >
                   <svg width="22" height="22" viewBox="0 0 20 20" fill="none" aria-hidden>
                     <path
@@ -423,7 +423,7 @@ export function BulkUpload() {
 
               <div className="space-y-5">
                 <div>
-                  <p className="mb-2 text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.12em] text-crimson">
+                  <p className="mb-2 text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.12em] text-brand">
                     Sheet: Students
                   </p>
                   <code className="block overflow-x-auto rounded-lg bg-shell px-3.5 py-2.5 text-[length:var(--text-2xs)] text-graphite">
@@ -438,7 +438,7 @@ export function BulkUpload() {
                 </div>
 
                 <div>
-                  <p className="mb-2 text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.12em] text-crimson">
+                  <p className="mb-2 text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.12em] text-brand">
                     Sheet: Marks
                   </p>
                   <code className="block overflow-x-auto rounded-lg bg-shell px-3.5 py-2.5 text-[length:var(--text-2xs)] text-graphite">
@@ -462,7 +462,7 @@ export function BulkUpload() {
                       className="flex gap-2.5 text-[length:var(--text-xs)] leading-relaxed text-slate"
                     >
                       <span
-                        className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-crimson/50"
+                        className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-brand/50"
                         aria-hidden
                       />
                       {t}
@@ -489,13 +489,13 @@ function IssueList({ issues, inline }: { issues: Issue[]; inline?: boolean }) {
 
   return (
     <div className={inline ? '' : 'mt-5'}>
-      <p className="mb-2.5 text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.12em] text-crimson">
+      <p className="mb-2.5 text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.12em] text-brand">
         {issues.length} row{issues.length === 1 ? '' : 's'} could not be read
       </p>
       <ul className="mg-scroll max-h-64 space-y-1.5 overflow-y-auto rounded-lg bg-shell p-3">
         {issues.map((issue, i) => (
           <li key={i} className="text-[length:var(--text-xs)] leading-relaxed text-graphite">
-            <span className="font-medium text-crimson-deep">
+            <span className="font-medium text-brand-deep">
               {issue.sheet} row {issue.row}
             </span>{' '}
             · {issue.message}

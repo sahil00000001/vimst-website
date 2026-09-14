@@ -35,7 +35,7 @@ export function SpecializationList({ names }: { names: string[] }) {
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search specializations"
             aria-label="Search specializations"
-            className="w-full rounded-full border border-rule bg-shell py-2.5 pl-10 pr-4 text-[length:var(--text-sm)] text-ink transition-colors placeholder:text-mist focus:border-crimson focus:bg-paper focus:outline-none"
+            className="w-full rounded-full border border-rule bg-shell py-2.5 pl-10 pr-4 text-[length:var(--text-sm)] text-ink transition-colors placeholder:text-mist focus:border-brand focus:bg-paper focus:outline-none"
           />
         </div>
         <p className="text-[length:var(--text-sm)] tabular-nums text-slate" aria-live="polite">

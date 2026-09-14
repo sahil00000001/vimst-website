@@ -118,7 +118,7 @@ export default async function CoursePage({ params }: Params) {
                     </dl>
                     <Link
                       href="/fee-structure"
-                      className="group mt-5 inline-flex min-h-11 items-center gap-2 text-[length:var(--text-sm)] font-medium text-ink transition-colors hover:text-crimson"
+                      className="group mt-5 inline-flex min-h-11 items-center gap-2 text-[length:var(--text-sm)] font-medium text-ink transition-colors hover:text-brand"
                     >
                       See fee structure
                       <svg width="13" height="10" viewBox="0 0 13 10" fill="none" aria-hidden>

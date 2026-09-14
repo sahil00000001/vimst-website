@@ -64,7 +64,7 @@ export function Card({
    ------------------------------------------------------------------ */
 
 export const inputClass =
-  'w-full rounded-lg border border-rule bg-shell px-3.5 py-2.5 text-[length:var(--text-sm)] text-ink transition-colors duration-200 placeholder:text-mist focus:border-crimson focus:bg-paper focus:outline-none disabled:opacity-60';
+  'w-full rounded-lg border border-rule bg-shell px-3.5 py-2.5 text-[length:var(--text-sm)] text-ink transition-colors duration-200 placeholder:text-mist focus:border-brand focus:bg-paper focus:outline-none disabled:opacity-60';
 
 export function Field({
   label,
@@ -88,7 +88,7 @@ export function Field({
         className="mb-1.5 block text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.12em] text-slate"
       >
         {label}
-        {required && <span className="ml-1 text-crimson">*</span>}
+        {required && <span className="ml-1 text-brand">*</span>}
       </label>
       {children}
       {hint && <p className="mt-1.5 text-[length:var(--text-2xs)] text-mist">{hint}</p>}
@@ -107,9 +107,9 @@ export function Button({
   loading?: boolean;
 }) {
   const styles = {
-    primary: 'bg-ink text-paper hover:bg-crimson',
+    primary: 'bg-ink text-paper hover:bg-brand',
     secondary: 'border border-rule bg-paper text-ink hover:border-ink',
-    danger: 'border border-crimson/30 bg-crimson-soft text-crimson-deep hover:bg-crimson hover:text-paper',
+    danger: 'border border-brand/30 bg-brand-soft text-brand-deep hover:bg-brand hover:text-paper',
     ghost: 'text-graphite hover:bg-linen hover:text-ink',
   }[variant];
 
@@ -141,7 +141,7 @@ export function Banner({
   onDismiss?: () => void;
 }) {
   const styles = {
-    error: 'bg-crimson-soft text-crimson-deep',
+    error: 'bg-brand-soft text-brand-deep',
     success: 'bg-[#e9f4ec] text-[#1d6b38]',
     info: 'bg-linen text-graphite',
   }[tone];
@@ -194,7 +194,7 @@ export function EmptyState({
 export function Spinner({ label = 'Loading…' }: { label?: string }) {
   return (
     <div className="flex items-center justify-center gap-3 py-16 text-[length:var(--text-sm)] text-slate">
-      <span className="h-4 w-4 animate-spin rounded-full border-2 border-rule border-t-crimson" />
+      <span className="h-4 w-4 animate-spin rounded-full border-2 border-rule border-t-brand" />
       {label}
     </div>
   );
@@ -210,7 +210,7 @@ export function Pill({
   const styles = {
     neutral: 'bg-linen text-graphite',
     pass: 'bg-[#e9f4ec] text-[#1d6b38]',
-    fail: 'bg-crimson-soft text-crimson-deep',
+    fail: 'bg-brand-soft text-brand-deep',
     muted: 'bg-linen text-mist',
   }[tone];
 

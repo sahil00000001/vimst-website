@@ -227,7 +227,7 @@ export function StaffManager() {
                         <Button
                           variant="ghost"
                           type="button"
-                          className="px-2.5 py-1.5 text-crimson disabled:opacity-30"
+                          className="px-2.5 py-1.5 text-brand disabled:opacity-30"
                           disabled={s.username === currentUser}
                           onClick={() => setDeleting(s)}
                         >

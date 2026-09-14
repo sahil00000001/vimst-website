@@ -294,7 +294,7 @@ export async function buildTemplate(): Promise<ArrayBuffer> {
     header.fill = {
       type: 'pattern',
       pattern: 'solid',
-      fgColor: { argb: 'FFB01029' },
+      fgColor: { argb: 'FF072151' },
     };
     header.height = 22;
     header.alignment = { vertical: 'middle' };

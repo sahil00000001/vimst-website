@@ -40,7 +40,7 @@ export default function PlacementPage() {
                 <p className="eyebrow mb-5">Placement Cell</p>
                 <h2 className="text-[length:var(--text-3xl)]">
                   Preparing students for the{' '}
-                  <em className="not-italic text-crimson">industry</em>
+                  <em className="not-italic text-brand">industry</em>
                 </h2>
                 <div className="prose-mg mt-6">
                   <p>
@@ -66,7 +66,7 @@ export default function PlacementPage() {
                     { v: 'Alumni', l: 'Industry mentor network' },
                   ].map((s) => (
                     <div key={s.l} className="rounded-xl border border-rule bg-shell p-4 lg:p-6">
-                      <p className="font-display text-[length:var(--text-3xl)] leading-none text-crimson">
+                      <p className="font-display text-[length:var(--text-3xl)] leading-none text-brand">
                         {s.v}
                       </p>
                       <p className="mt-1.5 text-[length:var(--text-2xs)] leading-snug text-slate lg:mt-2 lg:text-[length:var(--text-sm)]">{s.l}</p>
@@ -85,7 +85,7 @@ export default function PlacementPage() {
             <Reveal from="up" className="mb-12">
               <p className="eyebrow mb-5">Where our students go</p>
               <h2 className="max-w-2xl text-[length:var(--text-3xl)]">
-                Organisations that have <em className="not-italic text-crimson">recruited</em>{' '}
+                Organisations that have <em className="not-italic text-brand">recruited</em>{' '}
                 from VIMST
               </h2>
             </Reveal>
@@ -121,7 +121,7 @@ export default function PlacementPage() {
         <div className="mx-auto flex max-w-[1400px] flex-col items-start justify-between gap-8 px-5 py-16 sm:px-8 lg:flex-row lg:items-center">
           <Reveal from="right">
             <h2 className="max-w-xl text-[length:var(--text-3xl)]">
-              Start with the right <em className="not-italic text-crimson">programme</em>
+              Start with the right <em className="not-italic text-brand">programme</em>
             </h2>
             <p className="mt-4 max-w-lg text-[length:var(--text-base)] text-slate">
               Placement outcomes begin with the course you choose. Browse the full
@@ -131,7 +131,7 @@ export default function PlacementPage() {
           <Reveal from="left" delay={0.08} className="flex shrink-0 flex-wrap gap-3">
             <Link
               href="/courses"
-              className="rounded-full bg-ink px-7 py-3.5 text-[length:var(--text-sm)] font-medium text-paper transition-colors hover:bg-crimson"
+              className="rounded-full bg-ink px-7 py-3.5 text-[length:var(--text-sm)] font-medium text-paper transition-colors hover:bg-brand"
             >
               Browse courses
             </Link>

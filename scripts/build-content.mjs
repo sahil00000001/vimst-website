@@ -284,20 +284,20 @@ const homeSection = (re) =>
   home.blocks.find((b) => b.type === 'section' && b.heading && re.test(b.heading));
 
 /**
- * Hero carousel.
+ * Hero image.
  *
- * The institute's own photograph of the entrance leads, because it is the only
- * one here that is both sharp and unmistakably this place. The rest came from
- * the old site at 722px and are noticeably soft at this size — replace them as
- * real photography arrives, newest first.
+ * One photograph, the institute's own picture of the entrance. It is the only
+ * image here that is both sharp and unmistakably this place; the five that used
+ * to rotate behind it came from the old site at 722px and were noticeably soft
+ * blown up to hero size.
+ *
+ * Add more entries and the hero becomes a carousel again, with its dots and
+ * arrows back — but only put a photograph here that is at least 1600px wide.
  */
 const carousel = [
   // Supplied photograph, 1536x1024, lives in public/media so it needs no
   // lookup through the asset map.
   '/media/hero/campus-gate.jpg',
-  ...['images/Picsart_24-06-17_14-15-14-124.jpg', 'banner-4.jpg', 'banner-5.jpg', 'banner-6.jpg', 'banner-7.jpg']
-    .map(asset)
-    .filter(Boolean),
 ];
 
 const discoverKeys = [

@@ -73,10 +73,10 @@ export function AdminShell({
             alt="VIMST"
             width={1200}
             height={416}
-            className="h-8 w-auto"
+            className="h-11 w-auto"
           />
         </Link>
-        <p className="mt-3 text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.18em] text-crimson">
+        <p className="mt-3 text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.18em] text-brand">
           Admin portal
         </p>
       </div>
@@ -90,13 +90,13 @@ export function AdminShell({
               href={item.href}
               aria-current={active ? 'page' : undefined}
               className={`group relative flex items-center gap-3 rounded-lg px-3.5 py-2.5 text-[length:var(--text-sm)] font-medium transition-colors duration-200 ${
-                active ? 'text-crimson' : 'text-graphite hover:bg-linen hover:text-ink'
+                active ? 'text-brand' : 'text-graphite hover:bg-linen hover:text-ink'
               }`}
             >
               {active && (
                 <motion.span
                   layoutId="admin-nav-active"
-                  className="absolute inset-0 rounded-lg bg-crimson-soft"
+                  className="absolute inset-0 rounded-lg bg-brand-soft"
                   transition={{ duration: 0.35, ease: EASE }}
                 />
               )}
@@ -147,7 +147,7 @@ export function AdminShell({
             type="button"
             onClick={signOut}
             disabled={signingOut}
-            className="rounded-lg bg-ink px-3.5 py-2 text-[length:var(--text-xs)] font-medium text-paper transition-colors hover:bg-crimson disabled:opacity-60"
+            className="rounded-lg bg-ink px-3.5 py-2 text-[length:var(--text-xs)] font-medium text-paper transition-colors hover:bg-brand disabled:opacity-60"
           >
             {signingOut ? 'Signing out…' : 'Sign out'}
           </button>
@@ -195,7 +195,7 @@ export function AdminShell({
             type="button"
             onClick={() => setOpen(true)}
             aria-label="Open admin menu"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-rule text-ink transition-colors hover:border-crimson hover:text-crimson"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-rule text-ink transition-colors hover:border-brand hover:text-brand"
           >
             <svg width="18" height="12" viewBox="0 0 18 12" fill="none" aria-hidden>
               <path d="M0 1h18M0 6h18M0 11h12" stroke="currentColor" strokeWidth="1.4" />

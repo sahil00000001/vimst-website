@@ -11,16 +11,16 @@ export function NewsTicker({ items }: { items: string[] }) {
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-rule bg-paper">
       <div className="flex items-center justify-between gap-3 border-b border-rule bg-linen px-6 py-4">
-        <h2 className="flex items-center gap-2.5 text-[length:var(--text-xs)] font-semibold uppercase tracking-[0.16em] text-crimson">
+        <h2 className="flex items-center gap-2.5 text-[length:var(--text-xs)] font-semibold uppercase tracking-[0.16em] text-brand">
           <span className="relative flex h-2 w-2" aria-hidden>
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-crimson opacity-60" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-crimson" />
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-60" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-brand" />
           </span>
           News &amp; Events
         </h2>
         <Link
           href="/contact"
-          className="-my-2 inline-flex min-h-11 items-center px-1 text-[length:var(--text-xs)] text-slate transition-colors hover:text-crimson"
+          className="-my-2 inline-flex min-h-11 items-center px-1 text-[length:var(--text-xs)] text-slate transition-colors hover:text-brand"
         >
           Enquire
         </Link>

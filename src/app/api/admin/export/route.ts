@@ -47,7 +47,7 @@ export async function GET(request: Request) {
     const styleHeader = (sheet: ExcelJS.Worksheet) => {
       const header = sheet.getRow(1);
       header.font = { bold: true, color: { argb: 'FFFFFFFF' } };
-      header.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFB01029' } };
+      header.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF072151' } };
       header.height = 22;
       header.alignment = { vertical: 'middle' };
       sheet.views = [{ state: 'frozen', ySplit: 1 }];

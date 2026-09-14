@@ -67,7 +67,7 @@ export function buildNav(): NavItem[] {
       columns: [
         {
           heading: 'The Institute',
-          accent: 'crimson',
+          accent: 'brand',
           links: [
             { label: 'About Us', href: '/about' },
             { label: 'Vision', href: '/vision' },
@@ -87,7 +87,7 @@ export function buildNav(): NavItem[] {
         ...departmentColumns(),
         {
           heading: 'More',
-          accent: 'crimson',
+          accent: 'brand',
           links: [
             { label: 'Specializations', href: '/specializations' },
             { label: 'All Courses', href: '/courses' },
@@ -107,7 +107,7 @@ export function buildNav(): NavItem[] {
       columns: [
         {
           heading: 'Admission',
-          accent: 'crimson',
+          accent: 'brand',
           links: [
             { label: 'Fee Structure', href: '/fee-structure' },
             { label: 'Payment Modes', href: '/payment-modes' },

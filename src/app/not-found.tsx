@@ -16,7 +16,7 @@ export default function NotFound() {
         <div className="mx-auto flex min-h-[60vh] max-w-2xl flex-col items-center justify-center px-5 py-24 text-center sm:px-8">
           <p className="eyebrow mb-6">Error 404</p>
           <h1 className="text-[length:var(--text-4xl)]">
-            This page has <em className="not-italic text-crimson">moved on</em>
+            This page has <em className="not-italic text-brand">moved on</em>
           </h1>
           <p className="mt-5 max-w-md text-[length:var(--text-lg)] leading-relaxed text-slate">
             The page you were looking for is not here. It may have been renamed when the
@@ -25,7 +25,7 @@ export default function NotFound() {
           <div className="mt-9 flex flex-wrap justify-center gap-3">
             <Link
               href="/"
-              className="rounded-full bg-ink px-7 py-3.5 text-[length:var(--text-sm)] font-medium text-paper transition-colors hover:bg-crimson"
+              className="rounded-full bg-ink px-7 py-3.5 text-[length:var(--text-sm)] font-medium text-paper transition-colors hover:bg-brand"
             >
               Back to home
             </Link>
