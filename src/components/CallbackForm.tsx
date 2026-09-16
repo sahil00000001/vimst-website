@@ -8,11 +8,16 @@ const ENQUIRY_ADDRESS = 'info@vimst.org';
 
 type Status = 'idle' | 'sending' | 'sent' | 'handoff' | 'error';
 
+/**
+ * A mobile number is how a callback actually happens, so it is required rather
+ * than optional. "Course of interest" is gone: it asked the visitor to name the
+ * very thing they came here to be advised about, and whatever they are weighing
+ * up fits in the query box below anyway.
+ */
 const FIELDS = [
   { name: 'name', label: 'Full name', type: 'text', required: true, autoComplete: 'name' },
   { name: 'email', label: 'Email address', type: 'email', required: true, autoComplete: 'email' },
-  { name: 'phone', label: 'Phone number', type: 'tel', required: false, autoComplete: 'tel' },
-  { name: 'course', label: 'Course of interest', type: 'text', required: false, autoComplete: 'off' },
+  { name: 'phone', label: 'Mobile number', type: 'tel', required: true, autoComplete: 'tel' },
 ] as const;
 
 /** Opens the visitor's mail client with the enquiry pre-composed. */
@@ -20,15 +25,14 @@ function mailtoHandoff(data: Record<string, string>) {
   const body = [
     `Name: ${data.name}`,
     `Email: ${data.email}`,
-    data.phone ? `Phone: ${data.phone}` : null,
-    data.course ? `Course of interest: ${data.course}` : null,
+    `Mobile: ${data.phone}`,
     '',
     data.message,
   ]
     .filter(Boolean)
     .join('\n');
 
-  const subject = `Website enquiry · ${data.name}${data.course ? ` (${data.course})` : ''}`;
+  const subject = `Website enquiry · ${data.name}`;
   window.location.href = `mailto:${ENQUIRY_ADDRESS}?subject=${encodeURIComponent(
     subject
   )}&body=${encodeURIComponent(body)}`;
@@ -221,15 +225,6 @@ export function CallbackForm({ compact }: { compact?: boolean }) {
               )}
             </button>
 
-            <p className="mt-4 text-center text-[length:var(--text-xs)] text-mist">
-              Or email us at{' '}
-              <a
-                href={`mailto:${ENQUIRY_ADDRESS}`}
-                className="-my-3 inline-block py-3 text-slate underline underline-offset-2 transition-colors hover:text-brand"
-              >
-                {ENQUIRY_ADDRESS}
-              </a>
-            </p>
           </motion.form>
         )}
       </AnimatePresence>

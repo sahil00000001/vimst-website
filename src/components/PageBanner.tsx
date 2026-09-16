@@ -47,7 +47,10 @@ export function PageBanner({
     <section className="relative">
       <div
         ref={plateRef}
-        className="relative h-[36vh] min-h-[240px] w-full overflow-hidden bg-linen sm:h-[46vh] sm:min-h-[340px]"
+        /* 240px of banner on an 844px phone is nearly a third of the screen spent
+           before the page has said anything. Two thirds of that still reads as a
+           banner, and the card below it starts above the fold. */
+        className="relative h-[24vh] min-h-[160px] w-full overflow-hidden bg-linen sm:h-[40vh] sm:min-h-[300px]"
       >
         {image ? (
           <motion.div

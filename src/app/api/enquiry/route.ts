@@ -18,12 +18,15 @@ import { NextResponse } from 'next/server';
 export type Enquiry = {
   name: string;
   email: string;
-  phone?: string;
-  course?: string;
+  /** Required: a callback needs a number to call. */
+  phone: string;
   message: string;
 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+/* Deliberately loose: spaces, dashes, brackets and a country code all appear in
+   numbers people actually type. It only has to hold enough digits to be dialled. */
+const PHONE_DIGITS_RE = /\d/g;
 
 function validate(body: unknown): { ok: true; data: Enquiry } | { ok: false; error: string } {
   if (typeof body !== 'object' || body === null) return { ok: false, error: 'Invalid payload.' };
@@ -32,10 +35,14 @@ function validate(body: unknown): { ok: true; data: Enquiry } | { ok: false; err
   const str = (v: unknown) => (typeof v === 'string' ? v.trim() : '');
   const name = str(b.name);
   const email = str(b.email);
+  const phone = str(b.phone);
   const message = str(b.message);
 
   if (name.length < 2) return { ok: false, error: 'Please enter your name.' };
   if (!EMAIL_RE.test(email)) return { ok: false, error: 'Please enter a valid email address.' };
+  if ((phone.match(PHONE_DIGITS_RE) ?? []).length < 8) {
+    return { ok: false, error: 'Please enter a mobile number we can call you back on.' };
+  }
   if (message.length < 5) return { ok: false, error: 'Please tell us a little more.' };
 
   return {
@@ -43,8 +50,7 @@ function validate(body: unknown): { ok: true; data: Enquiry } | { ok: false; err
     data: {
       name: name.slice(0, 120),
       email: email.slice(0, 160),
-      phone: str(b.phone).slice(0, 40) || undefined,
-      course: str(b.course).slice(0, 160) || undefined,
+      phone: phone.slice(0, 40),
       message: message.slice(0, 4000),
     },
   };
@@ -72,15 +78,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, configured: false }, { status: 200 });
   }
 
-  const { name, email, phone, course, message } = result.data;
-  const lines = [
-    `Name: ${name}`,
-    `Email: ${email}`,
-    phone ? `Phone: ${phone}` : null,
-    course ? `Course of interest: ${course}` : null,
-    '',
-    message,
-  ].filter(Boolean);
+  const { name, email, phone, message } = result.data;
+  const lines = [`Name: ${name}`, `Email: ${email}`, `Mobile: ${phone}`, '', message];
 
   try {
     const res = await fetch('https://api.resend.com/emails', {
@@ -93,7 +92,7 @@ export async function POST(request: Request) {
         from,
         to: [to],
         reply_to: email,
-        subject: `Website enquiry · ${name}${course ? ` (${course})` : ''}`,
+        subject: `Website enquiry · ${name}`,
         text: lines.join('\n'),
       }),
     });

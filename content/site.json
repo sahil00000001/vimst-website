@@ -16441,48 +16441,6 @@
       ],
       "images": []
     },
-    "paymentModes": {
-      "title": "Payment Modes",
-      "intro": null,
-      "banner": "/media/art/admission.jpg",
-      "blocks": [
-        {
-          "type": "section",
-          "heading": "Our Payment Modes",
-          "lines": []
-        }
-      ],
-      "images": [
-        {
-          "src": "/media/images/payment/card.jpg",
-          "alt": "logo"
-        },
-        {
-          "src": "/media/images/payment/cash.jpg",
-          "alt": "logo"
-        },
-        {
-          "src": "/media/images/payment/cha.jpg",
-          "alt": "logo"
-        },
-        {
-          "src": "/media/images/payment/draft.jpg",
-          "alt": "logo"
-        }
-      ]
-    },
-    "feeStructure": {
-      "title": "Fee Structure",
-      "intro": null,
-      "banner": "/media/art/admission.jpg",
-      "blocks": [],
-      "images": [
-        {
-          "src": "/media/images/pdfresizer-com-pdf-crop-page-0001.jpg",
-          "alt": ""
-        }
-      ]
-    },
     "contact": {
       "title": "Contact Us",
       "intro": null,

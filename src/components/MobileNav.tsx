@@ -260,12 +260,14 @@ export function MobileNav({
                     />
                   </svg>
                 </Link>
+                {/* Results have their own item in the list above now, so the
+                    second button goes to the other thing people arrive for. */}
                 <Link
-                  href="/enrollment-verification"
+                  href="/courses"
                   onClick={onClose}
                   className="flex items-center justify-center rounded-full border border-rule px-6 py-3.5 text-[length:var(--text-sm)] font-medium text-ink transition-colors hover:border-ink"
                 >
-                  Check your result
+                  Explore programmes
                 </Link>
               </div>
 

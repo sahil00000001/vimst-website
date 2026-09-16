@@ -29,8 +29,6 @@ const ROUTES = [
   '/specializations',
   '/placement',
   '/photo-gallery',
-  '/fee-structure',
-  '/payment-modes',
   '/enrollment-verification',
   '/contact',
   '/admin/login',

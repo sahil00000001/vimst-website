@@ -1,17 +1,13 @@
 'use client';
 
-import Link from 'next/link';
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Counter, EASE, Magnetic } from './Motion';
+import { EASE } from './Motion';
 import { Media } from './Media';
 import { VideoFeature } from './VideoFeature';
 import type { VideoSlot } from '@/lib/media';
 
 const INTERVAL = 6400;
-const HEADLINE = ['Learning', 'that travels', 'with you.'];
-
-export type HeroStat = { value: number; suffix?: string; label: string; static?: string };
 
 export function Arrow({ className = '' }: { className?: string }) {
   return (
@@ -28,13 +24,25 @@ export function Arrow({ className = '' }: { className?: string }) {
   );
 }
 
+/**
+ * The opening band of the home page.
+ *
+ * It used to run an eyebrow, a three-line display headline, a paragraph, two
+ * buttons and a strip of statistics down the left of a full-height image. On a
+ * phone that stack alone was two and a half screens before a visitor reached
+ * anything about the institute, and the same two calls to action appear again
+ * in the header, the drawer and the enquiry section further down the page.
+ *
+ * What is left is what an institution's front door is actually for: its name,
+ * one line saying what it teaches and how, and a picture of the place. The
+ * heading is the institute's own name rather than a slogan, which is also the
+ * `h1` a search engine should find here.
+ */
 export function Hero({
   slides,
-  stats,
   video = null,
 }: {
   slides: string[];
-  stats: HeroStat[];
   /** When a film exists it replaces the carousel: it says more than six stills. */
   video?: VideoSlot | null;
 }) {
@@ -43,16 +51,14 @@ export function Hero({
   const count = slides.length;
   const ref = useRef<HTMLElement>(null);
 
-  /* Copy and image plate drift apart as the hero scrolls away. */
+  /* The picture drifts a little against the frame as the band scrolls away.
+     The copy no longer moves with it: at this height there is not enough travel
+     for the effect to read as anything but a wobble. */
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start start', 'end start'],
   });
-  const copyY = useTransform(scrollYProgress, [0, 1], ['0%', '32%']);
-  const plateY = useTransform(scrollYProgress, [0, 1], ['0%', '-12%']);
-  const imageY = useTransform(scrollYProgress, [0, 1], ['0%', '18%']);
-  const washY = useTransform(scrollYProgress, [0, 1], ['0%', '22%']);
-  const fade = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
+  const imageY = useTransform(scrollYProgress, [0, 1], ['0%', '14%']);
 
   const go = useCallback(
     (next: number) => setIndex(((next % count) + count) % count),
@@ -68,118 +74,29 @@ export function Hero({
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden bg-shell"
+      className="relative overflow-hidden bg-paper"
       /* A single still is not a carousel, and announcing it as one sends a
          screen reader looking for controls that are not there. */
       aria-roledescription={count > 1 ? 'carousel' : undefined}
       aria-label="Campus highlights"
     >
-      {/* Ambient wash behind everything, drifting slowly. */}
-      <motion.div
-        aria-hidden
-        style={{ y: washY }}
-        className="pointer-events-none absolute -top-1/4 left-1/2 h-[110%] w-[130%] -translate-x-1/2 bg-[radial-gradient(60%_50%_at_30%_25%,rgba(7,33,81,0.06),transparent_70%),radial-gradient(45%_40%_at_80%_15%,rgba(208,158,49,0.1),transparent_70%)]"
-      />
-
-      <div className="shell relative grid gap-0 pb-8 pt-8 sm:pt-12 lg:grid-cols-12 lg:gap-10 lg:pb-20 lg:pt-16">
-        {/* Copy */}
+      <div className="shell grid gap-6 pb-7 pt-5 sm:gap-8 sm:pb-10 sm:pt-7 lg:grid-cols-12 lg:items-center lg:gap-12 lg:pb-14 lg:pt-10">
+        {/* Imagery. First on a phone -- a photograph of the place says where you
+            have arrived faster than a line of type does, and it puts something
+            recognisable above the fold at any screen height. */}
         <motion.div
-          style={{ y: copyY, opacity: fade }}
-          className="relative z-10 flex flex-col justify-center lg:col-span-5"
-        >
-          <motion.p
-            className="eyebrow mb-5 sm:mb-7"
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: EASE }}
-          >
-            Admissions Open · New Session
-          </motion.p>
-
-          <h1 className="font-display text-[length:var(--text-5xl)] leading-[1.04] tracking-[-0.03em]">
-            {HEADLINE.map((line, i) => (
-              <span key={i} className="block overflow-hidden pb-[0.06em]">
-                <motion.span
-                  className="block"
-                  initial={{ y: '108%' }}
-                  animate={{ y: '0%' }}
-                  transition={{ duration: 0.95, delay: 0.1 + i * 0.1, ease: EASE }}
-                >
-                  {i === 2 ? <em className="not-italic text-brand">{line}</em> : line}
-                </motion.span>
-              </span>
-            ))}
-          </h1>
-
-          <motion.p
-            className="mt-6 max-w-[38ch] text-[length:var(--text-lg)] leading-relaxed text-slate"
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.85, delay: 0.45, ease: EASE }}
-          >
-            Engineering, management, science and commerce programmes delivered through
-            distance learning, so a degree fits around the work you are already doing.
-          </motion.p>
-
-          <motion.div
-            className="mt-8 flex flex-col items-stretch gap-3 sm:mt-10 sm:flex-row sm:flex-wrap sm:items-center"
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.85, delay: 0.58, ease: EASE }}
-          >
-            <Magnetic className="w-full sm:w-auto">
-              <Link
-                href="/courses"
-                className="group inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-brand px-6 py-4 text-[length:var(--text-sm)] font-medium text-paper transition-colors duration-300 hover:bg-brand-deep sm:w-auto sm:px-7 sm:py-3.5"
-              >
-                Explore Programmes
-                <Arrow className="transition-transform duration-300 group-hover:translate-x-1" />
-              </Link>
-            </Magnetic>
-            <Magnetic strength={0.18} className="w-full sm:w-auto">
-              <Link
-                href="/contact"
-                className="inline-flex w-full items-center justify-center rounded-full border border-rule bg-paper px-6 py-4 text-[length:var(--text-sm)] font-medium text-ink transition-colors duration-300 hover:border-ink sm:w-auto sm:px-7 sm:py-3.5"
-              >
-                Request a Callback
-              </Link>
-            </Magnetic>
-          </motion.div>
-
-          <motion.dl
-            className="mt-10 grid max-w-md grid-cols-3 gap-4 border-t border-rule pt-6 sm:mt-14 sm:gap-6 sm:pt-7"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.9, delay: 0.75 }}
-          >
-            {stats.map((s) => (
-              <div key={s.label}>
-                <dt className="font-display text-[length:var(--text-2xl)] leading-none text-brand">
-                  {s.static ?? <Counter value={s.value} suffix={s.suffix} />}
-                </dt>
-                <dd className="mt-1.5 text-[length:var(--text-2xs)] uppercase tracking-[0.12em] text-mist">
-                  {s.label}
-                </dd>
-              </div>
-            ))}
-          </motion.dl>
-        </motion.div>
-
-        {/* Imagery */}
-        <motion.div
-          style={{ y: plateY }}
-          className="relative mt-9 lg:col-span-7 lg:mt-0"
+          className="order-1 lg:order-2 lg:col-span-7"
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
         >
           <motion.div
-            className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-rule bg-linen shadow-lift sm:aspect-[16/10]"
-            initial={{ opacity: 0, y: 34, scale: 0.98 }}
+            className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-rule bg-linen shadow-lift sm:aspect-[16/9]"
+            initial={{ opacity: 0, y: 24, scale: 0.985 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 1.05, delay: 0.2, ease: EASE }}
+            transition={{ duration: 0.95, delay: 0.1, ease: EASE }}
           >
             {/* Over-sized so the parallax shift never exposes an edge. */}
-            <motion.div style={{ y: imageY }} className="absolute -inset-y-[12%] inset-x-0">
+            <motion.div style={{ y: imageY }} className="absolute -inset-y-[10%] inset-x-0">
               {video ? (
                 <VideoFeature
                   video={video}
@@ -193,7 +110,7 @@ export function Hero({
                   <motion.div
                     key={index}
                     className="absolute inset-0"
-                    initial={{ opacity: 0, scale: 1.08 }}
+                    initial={{ opacity: 0, scale: 1.06 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 1.2, ease: EASE }}
@@ -210,11 +127,11 @@ export function Hero({
               )}
             </motion.div>
 
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/35 via-transparent to-transparent" />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/30 via-transparent to-transparent" />
 
             {/* Controls, only meaningful when there is more than one still */}
             <div
-              className={`absolute inset-x-0 bottom-0 flex items-center justify-between gap-4 p-3.5 sm:p-5 ${
+              className={`absolute inset-x-0 bottom-0 flex items-center justify-between gap-4 p-3 sm:p-4 ${
                 video || count < 2 ? 'hidden' : ''
               }`}
             >
@@ -274,6 +191,29 @@ export function Hero({
             </div>
           </motion.div>
         </motion.div>
+
+        {/* Name and one line. Nothing else. */}
+        <div className="order-2 lg:order-1 lg:col-span-5">
+          <motion.h1
+            className="text-[length:var(--text-4xl)] leading-[1.1]"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.16, ease: EASE }}
+          >
+            Vivekananda Institute of Management Science and Technology
+          </motion.h1>
+
+          <motion.p
+            className="mt-3.5 max-w-[46ch] text-[length:var(--text-base)] leading-relaxed text-slate sm:mt-5 sm:text-[length:var(--text-lg)]"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: EASE }}
+          >
+            Engineering, management, science and commerce, taught by distance learning
+            in Andhra Pradesh since 1998 &mdash; so a degree fits around the work you
+            are already doing.
+          </motion.p>
+        </div>
       </div>
     </section>
   );

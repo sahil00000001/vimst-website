@@ -92,7 +92,7 @@ export function CourseCard({ course, compact }: { course: Course; compact?: bool
           )}
 
           <h3
-            className={`font-display text-[length:var(--text-xl)] leading-snug text-ink transition-colors duration-300 ${accent.hoverText}`}
+            className={`font-display text-[length:var(--text-xl)] leading-snug transition-colors duration-300 ${accent.hoverText}`}
           >
             {course.title}
           </h3>

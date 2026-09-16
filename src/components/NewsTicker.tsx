@@ -26,7 +26,14 @@ export function NewsTicker({ items }: { items: string[] }) {
         </Link>
       </div>
 
-      <div className="relative min-h-[280px] flex-1 overflow-hidden">
+      {/* The minimum height is there so the marquee has something to scroll
+          through. With one notice nothing scrolls, and reserving 280px for it
+          just leaves a blank panel under the text on a phone. */}
+      <div
+        className={`relative flex-1 overflow-hidden ${
+          items.length > 1 ? 'min-h-[280px]' : ''
+        }`}
+      >
         <div className={`absolute inset-x-0 top-0 ${items.length > 1 ? 'mg-marquee' : ''}`}>
           {(items.length > 1 ? [0, 1] : [0]).map((copy) => (
             <ul key={copy} aria-hidden={copy === 1 ? true : undefined}>

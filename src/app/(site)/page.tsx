@@ -1,55 +1,125 @@
 import Link from 'next/link';
 import { CallbackForm } from '@/components/CallbackForm';
-import { Expandable } from '@/components/Expandable';
 import { Hero, Arrow } from '@/components/Hero';
-import { Media } from '@/components/Media';
-import { Parallax, ParallaxPlate, Reveal, Stagger, StaggerItem } from '@/components/Motion';
+import { isPlate, Media } from '@/components/Media';
+import { Reveal, Stagger, StaggerItem } from '@/components/Motion';
 import { NewsTicker } from '@/components/NewsTicker';
 import { VideoFeature } from '@/components/VideoFeature';
-import { courses, departments, home } from '@/lib/content';
+import { courses, coursesByStream, excerpt, home } from '@/lib/content';
 import { CAMPUS_VIDEO, HERO_VIDEO } from '@/lib/media';
 
+/**
+ * The six pages that used to sit behind an "About Us" menu.
+ *
+ * They are introduced here instead: a picture, the heading, the two lines that
+ * actually say what the page is about, and a way in. The pages themselves are
+ * unchanged and still have their own URLs -- they are simply reached from the
+ * home page rather than from a menu of six near-identical labels, so a visitor
+ * meets the institute by reading down the page instead of by guessing.
+ *
+ * The blurbs are written short on purpose. A card that reproduces half the page
+ * gives nobody a reason to open it.
+ */
+const INSTITUTE = [
+  {
+    title: 'About Us',
+    href: '/about',
+    image: '/media/images/photogallery/img-20240617-wa0016.jpg',
+    body: 'A leading institute for engineering and management education in Andhra Pradesh, teaching undergraduate and postgraduate programmes since 1998.',
+  },
+  {
+    title: 'Our Vision',
+    href: '/vision',
+    image: '/media/images/photogallery/img-20240617-wa0019.jpg',
+    body: 'To prepare students for a working world that is more connected than any before it, and where technology keeps changing how business is done.',
+  },
+  {
+    title: 'Our Mission',
+    href: '/mission',
+    image: '/media/images/photogallery/img-20240617-wa0020.jpg',
+    body: 'Education that meets global standards, built on a strong foundation of Indian values and traditions.',
+  },
+  {
+    title: "Director's Message",
+    href: '/director-message',
+    image: '/media/director-img.jpg',
+    body: '“We shape minds and shape lives.” What our students need is knowledge that is genuinely up to date, and teaching that puts it across clearly.',
+  },
+  {
+    title: 'Quality Policy',
+    href: '/quality-policy',
+    image: '/media/images/awards.jpg',
+    body: 'Weekend classes for students who work during the week, and teaching we review against the standards our certifications set.',
+  },
+  {
+    title: 'Career',
+    href: '/career',
+    image: '/media/images/picsart-24-06-17-14-15-14-124.jpg',
+    body: 'Consultants who work with people at every stage of a career, from professional staff through to senior management.',
+  },
+];
+
+/**
+ * The picture beside a card.
+ *
+ * Square-ish artwork -- the IKS seal, a poster, a contact sheet -- sits whole on
+ * a soft plate rather than being cropped to fill the frame, which was slicing
+ * the seal's own wording off three sides.
+ */
+function CardImage({
+  src,
+  alt = '',
+  sizes,
+  fit,
+}: {
+  src: string;
+  alt?: string;
+  sizes: string;
+  /** Overrides the shape test where the caller already knows what it is passing. */
+  fit?: 'cover' | 'plate';
+}) {
+  const plate = fit ? fit === 'plate' : isPlate(src);
+  return (
+    <div className={`absolute inset-0 ${plate ? 'bg-linen p-2.5 sm:p-3' : ''}`}>
+      <div className="relative h-full w-full">
+        <Media
+          src={src}
+          alt={alt}
+          fill
+          sizes={sizes}
+          className={
+            plate
+              ? 'object-contain'
+              : 'object-cover transition-transform duration-[1100ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06]'
+          }
+        />
+      </div>
+    </div>
+  );
+}
+
 export default function HomePage() {
+  const streams = coursesByStream();
+
+  /* The Placement Cell has a tile of its own further down that goes to the real
+     placement page, so the descriptive card here would be the second time the
+     same subject appears between one screen and the next. */
+  const discover = home.discover.filter((d) => !/^placement$/i.test(d.title));
+
   return (
     <>
-      <Hero
-        slides={home.carousel}
-        video={HERO_VIDEO}
-        stats={[
-          { value: courses.length, suffix: '', label: 'Programmes' },
-          { value: departments().length, suffix: '', label: 'Departments' },
-          { value: 0, static: 'ISO', label: '9001:2008' },
-        ]}
-      />
+      <Hero slides={home.carousel} video={HERO_VIDEO} />
 
       {/* Welcome + notices */}
       <section className="relative border-t border-rule bg-paper">
-        <div className="shell section-y grid gap-10 lg:grid-cols-12 lg:gap-14">
+        <div className="shell section-y grid gap-8 lg:grid-cols-12 lg:gap-14">
           <div className="lg:col-span-7">
             <Reveal from="up">
-              <p className="eyebrow mb-5">Welcome</p>
-              <h2 className="max-w-[18ch] text-[length:var(--text-3xl)]">
-                Vivekananda Institute of{' '}
-                <em className="not-italic text-brand">Management Science and Technology</em>
-              </h2>
+              <p className="eyebrow mb-4">Welcome</p>
+              <h2 className="text-[length:var(--text-3xl)]">About the college</h2>
             </Reveal>
-            <Reveal from="up" delay={0.12} className="prose-mg mt-7">
+            <Reveal from="up" delay={0.12} className="prose-mg mt-5">
               <p>{home.about.body}</p>
-            </Reveal>
-            <Reveal from="up" delay={0.2} className="mt-8 flex flex-wrap gap-3">
-              <Link
-                href="/about"
-                className="group inline-flex items-center gap-2 rounded-full border border-rule bg-paper px-6 py-3 text-[length:var(--text-sm)] font-medium text-ink transition-colors duration-300 hover:border-ink"
-              >
-                About the college
-                <Arrow className="transition-transform duration-300 group-hover:translate-x-1" />
-              </Link>
-              <Link
-                href="/quality-policy"
-                className="inline-flex items-center rounded-full px-6 py-3 text-[length:var(--text-sm)] font-medium text-slate transition-colors hover:text-brand"
-              >
-                Quality policy
-              </Link>
             </Reveal>
           </div>
 
@@ -59,100 +129,103 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Director — image plate parallaxes behind the quote */}
-      <section className="relative border-t border-rule bg-shell">
+      {/* The institute */}
+      <section className="border-t border-rule bg-shell">
         <div className="shell section-y">
-          <Reveal from="up">
-            <div className="grid overflow-hidden rounded-2xl border border-rule bg-paper lg:grid-cols-12">
-              {home.director.image && (
-                <div className="relative aspect-[4/3] overflow-hidden lg:col-span-4 lg:aspect-auto">
-                  <ParallaxPlate speed={0.12}>
-                    <Media
-                      src={home.director.image}
-                      alt="Director of VIMST"
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 34vw"
-                      className="object-cover object-top"
-                    />
-                  </ParallaxPlate>
-                </div>
-              )}
-              <div className="flex flex-col justify-center p-7 sm:p-10 lg:col-span-8 lg:p-14">
-                <p className="eyebrow mb-5">From the desk</p>
-                <h2 className="text-[length:var(--text-3xl)]">
-                  Director&rsquo;s <em className="not-italic text-brand">Message</em>
-                </h2>
-                <blockquote className="mt-6 border-l-2 border-brand pl-5 font-display text-[length:var(--text-xl)] italic leading-relaxed text-graphite">
-                  &ldquo;We shape minds and shape lives.&rdquo;
-                </blockquote>
-                <div className="prose-mg mt-6">
-                  <p>
-                    {home.director.body.replace(
-                      /^"We shape minds and shape lives"\.?\s*/i,
-                      ''
-                    )}
-                  </p>
-                </div>
-                <Link
-                  href="/director-message"
-                  className="group mt-7 inline-flex min-h-11 w-fit items-center gap-2 border-b border-ink pb-1 text-[length:var(--text-sm)] font-medium text-ink transition-colors hover:border-brand hover:text-brand"
-                >
-                  Read the full message
-                  <Arrow className="transition-transform duration-300 group-hover:translate-x-1" />
-                </Link>
-              </div>
-            </div>
+          <Reveal from="up" className="mb-6 sm:mb-9">
+            <p className="eyebrow mb-4">Explore</p>
+            <h2 className="text-[length:var(--text-3xl)]">The institute</h2>
           </Reveal>
+
+          <Stagger className="grid gap-3 sm:gap-4 lg:grid-cols-2 lg:gap-5">
+            {INSTITUTE.map((item) => (
+              <StaggerItem key={item.href}>
+                <Link
+                  href={item.href}
+                  className="group flex h-full overflow-hidden rounded-xl border border-rule bg-paper transition-all duration-500 hover:border-parchment hover:shadow-lift"
+                >
+                  <div className="relative w-[36%] max-w-[9.5rem] shrink-0 overflow-hidden sm:w-[32%] sm:max-w-none">
+                    <CardImage
+                      src={item.image}
+                      sizes="(max-width: 1024px) 40vw, 18vw"
+                      fit="cover"
+                    />
+                  </div>
+                  <div className="flex min-w-0 flex-1 flex-col justify-center p-4 sm:p-5">
+                    <h3 className="text-[length:var(--text-lg)]">{item.title}</h3>
+                    <p className="mt-1.5 text-[length:var(--text-xs)] leading-relaxed text-slate sm:mt-2 sm:text-[length:var(--text-sm)]">
+                      {item.body}
+                    </p>
+                    <span className="mt-2.5 inline-flex items-center gap-1.5 text-[length:var(--text-xs)] font-medium text-brand sm:mt-3 sm:text-[length:var(--text-sm)]">
+                      Read more
+                      <Arrow className="transition-transform duration-300 group-hover:translate-x-1" />
+                    </span>
+                  </div>
+                </Link>
+              </StaggerItem>
+            ))}
+          </Stagger>
         </div>
       </section>
 
-      {/* Discover more */}
+      {/* Programmes */}
       <section className="border-t border-rule bg-paper">
         <div className="shell section-y">
-          <Reveal from="up" className="mb-10 sm:mb-12">
-            <p className="eyebrow mb-5">Beyond the classroom</p>
-            <h2 className="text-[length:var(--text-3xl)]">
-              Discover <em className="not-italic text-brand">more</em>
-            </h2>
+          <Reveal from="up" className="mb-6 sm:mb-9">
+            <p className="eyebrow mb-4">What we teach</p>
+            <h2 className="text-[length:var(--text-3xl)]">Programmes</h2>
+            <p className="mt-3 max-w-[54ch] text-[length:var(--text-base)] leading-relaxed text-slate">
+              {courses.length} programmes across six streams, at diploma, bachelor,
+              post-graduate diploma and master&rsquo;s level.
+            </p>
           </Reveal>
 
-          <div className="grid gap-5 sm:gap-6 lg:grid-cols-2">
-            {home.discover.map((d, i) => (
-              <Reveal key={d.title} from={i % 2 === 0 ? 'right' : 'left'} delay={(i % 2) * 0.08}>
-                <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-rule bg-paper transition-all duration-500 hover:border-parchment hover:shadow-lift sm:flex-row">
-                  {d.image && (
-                    <div className="relative aspect-[16/10] shrink-0 overflow-hidden sm:aspect-auto sm:w-[42%]">
-                      <Media
-                        src={d.image}
-                        fill
-                        sizes="(max-width: 640px) 100vw, 40vw"
-                        className="object-cover transition-transform duration-[1100ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.07]"
-                      />
-                    </div>
-                  )}
-                  <div className="flex flex-1 flex-col justify-center p-6 sm:p-7">
-                    <h3 className="font-display text-[length:var(--text-xl)] text-ink">
-                      {d.title}
-                    </h3>
-                    <p className="mt-3 text-[length:var(--text-sm)] leading-relaxed text-slate">
-                      {d.body}
-                    </p>
-                  </div>
-                </article>
-              </Reveal>
+          <Stagger className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-6">
+            {streams.map((s) => (
+              <StaggerItem key={s.stream}>
+                <Link
+                  href="/courses"
+                  className="group flex h-full flex-col justify-between gap-2 rounded-xl border border-rule bg-shell p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand hover:bg-paper"
+                >
+                  <span className="font-display text-[length:var(--text-base)] leading-snug text-brand">
+                    {s.stream}
+                  </span>
+                  <span className="text-[length:var(--text-2xs)] uppercase tracking-[0.12em] text-mist">
+                    {s.courses.length} programme{s.courses.length === 1 ? '' : 's'}
+                  </span>
+                </Link>
+              </StaggerItem>
             ))}
-          </div>
+          </Stagger>
+
+          <Reveal
+            from="up"
+            delay={0.1}
+            className="mt-5 flex flex-col gap-2.5 sm:mt-6 sm:flex-row sm:flex-wrap sm:gap-3"
+          >
+            <Link
+              href="/courses"
+              className="group inline-flex items-center justify-center gap-2.5 rounded-full bg-brand px-6 py-3.5 text-[length:var(--text-sm)] font-medium text-paper transition-colors duration-300 hover:bg-brand-deep"
+            >
+              Explore all programmes
+              <Arrow className="transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
+            <Link
+              href="/specializations"
+              className="inline-flex items-center justify-center rounded-full border border-rule px-6 py-3.5 text-[length:var(--text-sm)] font-medium text-ink transition-colors duration-300 hover:border-ink"
+            >
+              Specializations
+            </Link>
+          </Reveal>
         </div>
       </section>
 
       {CAMPUS_VIDEO && (
         <section className="border-t border-rule bg-paper">
           <div className="shell section-y">
-            <Reveal from="up" className="mb-8 max-w-xl">
+            <Reveal from="up" className="mb-6 max-w-xl">
               <p className="eyebrow mb-4">Take a look</p>
-              <h2 className="text-[length:var(--text-3xl)]">
-                Inside <em className="not-italic text-brand">the campus</em>
-              </h2>
+              <h2 className="text-[length:var(--text-3xl)]">Inside the campus</h2>
             </Reveal>
             <Reveal from="up" delay={0.08}>
               <VideoFeature video={CAMPUS_VIDEO} aspect="aspect-[16/10] sm:aspect-[21/9]" />
@@ -161,38 +234,59 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* Campus life — each tile's image parallaxes inside its frame */}
+      {/* Discover more */}
       <section className="border-t border-rule bg-shell">
         <div className="shell section-y">
-          <Reveal from="up" className="mb-10 sm:mb-12">
-            <p className="eyebrow mb-5">On campus</p>
-            <h2 className="text-[length:var(--text-3xl)]">
-              Campus <em className="not-italic text-brand">life</em>
-            </h2>
+          <Reveal from="up" className="mb-6 sm:mb-9">
+            <p className="eyebrow mb-4">Beyond the classroom</p>
+            <h2 className="text-[length:var(--text-3xl)]">Discover more</h2>
           </Reveal>
 
-          <Stagger className="grid gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+          <Stagger className="grid gap-3 sm:gap-4 lg:grid-cols-3 lg:gap-5">
+            {discover.map((d) => (
+              <StaggerItem key={d.title}>
+                <article className="group flex h-full overflow-hidden rounded-xl border border-rule bg-paper lg:flex-col">
+                  {d.image && (
+                    <div className="relative w-[36%] max-w-[9.5rem] shrink-0 overflow-hidden sm:w-[32%] sm:max-w-none lg:aspect-[16/10] lg:w-full lg:max-w-none">
+                      <CardImage src={d.image} sizes="(max-width: 1024px) 40vw, 30vw" />
+                    </div>
+                  )}
+                  <div className="flex min-w-0 flex-1 flex-col justify-center p-4 sm:p-5">
+                    <h3 className="text-[length:var(--text-lg)]">{d.title}</h3>
+                    <p className="mt-1.5 text-[length:var(--text-xs)] leading-relaxed text-slate sm:mt-2 sm:text-[length:var(--text-sm)]">
+                      {excerpt(d.body, 24)}
+                    </p>
+                  </div>
+                </article>
+              </StaggerItem>
+            ))}
+          </Stagger>
+        </div>
+      </section>
+
+      {/* Campus life */}
+      <section className="border-t border-rule bg-paper">
+        <div className="shell section-y">
+          <Reveal from="up" className="mb-6 sm:mb-9">
+            <p className="eyebrow mb-4">On campus</p>
+            <h2 className="text-[length:var(--text-3xl)]">Campus life</h2>
+          </Reveal>
+
+          <Stagger className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 lg:gap-5">
             {home.campusLife.map((c) => (
               <StaggerItem key={c.title}>
                 <Link
                   href={c.href}
-                  className="group block overflow-hidden rounded-xl border border-rule bg-paper transition-all duration-500 hover:-translate-y-1.5 hover:shadow-lift"
+                  className="group block h-full overflow-hidden rounded-xl border border-rule bg-paper transition-all duration-500 hover:-translate-y-1 hover:shadow-lift"
                 >
-                  <div className="relative aspect-[4/3] overflow-hidden bg-linen">
-                    <ParallaxPlate speed={0.1}>
-                      <Media
-                        src={c.image}
-                        fill
-                        sizes="(max-width: 640px) 100vw, 33vw"
-                        className="object-cover transition-transform duration-[1100ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06]"
-                      />
-                    </ParallaxPlate>
+                  <div className="relative aspect-[16/10] overflow-hidden bg-linen">
+                    <CardImage src={c.image} sizes="(max-width: 1024px) 50vw, 33vw" />
                   </div>
-                  <div className="flex items-center justify-between gap-4 p-5 sm:p-6">
-                    <h3 className="font-display text-[length:var(--text-lg)] text-ink transition-colors group-hover:text-brand">
+                  <div className="flex items-center justify-between gap-2 p-3.5 sm:p-5">
+                    <h3 className="text-[length:var(--text-sm)] leading-snug transition-colors group-hover:text-brand sm:text-[length:var(--text-lg)]">
                       {c.title}
                     </h3>
-                    <span className="text-slate">
+                    <span className="hidden text-slate sm:block">
                       <Arrow className="transition-transform duration-300 group-hover:translate-x-1" />
                     </span>
                   </div>
@@ -204,34 +298,33 @@ export default function HomePage() {
       </section>
 
       {/* Enquiry */}
-      <section className="relative overflow-hidden border-t border-rule bg-paper">
-        <Parallax speed={0.12} className="pointer-events-none absolute -right-24 top-0 h-full w-1/2 opacity-[0.05]">
-          <div className="h-full w-full bg-[radial-gradient(circle_at_60%_40%,var(--color-brand),transparent_65%)]" />
-        </Parallax>
-
-        <div className="shell section-y grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-14">
+      <section className="border-t border-rule bg-shell">
+        <div className="shell section-y grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-14">
           <Reveal from="right">
-            <p className="eyebrow mb-5">Get in touch</p>
-            <h2 className="max-w-[15ch] text-[length:var(--text-3xl)]">
-              Not sure which programme <em className="not-italic text-brand">fits</em>?
+            <p className="eyebrow mb-4">Get in touch</p>
+            <h2 className="max-w-[18ch] text-[length:var(--text-3xl)]">
+              Not sure which programme fits?
             </h2>
-            <p className="mt-6 max-w-[46ch] text-[length:var(--text-lg)] leading-relaxed text-slate">
+            <p className="mt-4 max-w-[46ch] text-[length:var(--text-base)] leading-relaxed text-slate sm:text-[length:var(--text-lg)]">
               Leave your details and one of our counsellors will talk you through the
               options, eligibility and the enrollment process for the new session.
             </p>
 
-            <dl className="mt-9 grid gap-x-8 gap-y-5 sm:grid-cols-2">
+            {/* Two columns from the narrowest screen up. Four single-line entries
+                down the left edge of a phone leave the right half of it empty and
+                push the form a long way down. */}
+            <dl className="mt-7 grid grid-cols-2 gap-x-5 gap-y-4 sm:gap-x-8">
               {[
                 { t: 'General enquiries', v: 'info@vimst.org' },
                 { t: 'Verification', v: 'verification@vimst.org' },
                 { t: 'Administration', v: 'admin@vimst.org' },
                 { t: 'Location', v: 'Andhra Pradesh, India' },
               ].map((x) => (
-                <div key={x.t} className="border-t border-rule pt-4">
-                  <dt className="text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.14em] text-mist">
+                <div key={x.t} className="min-w-0 border-t border-rule pt-3">
+                  <dt className="text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.12em] text-mist">
                     {x.t}
                   </dt>
-                  <dd className="mt-1.5 break-words text-[length:var(--text-base)] text-graphite">
+                  <dd className="mt-1 break-words text-[length:var(--text-sm)] text-graphite sm:text-[length:var(--text-base)]">
                     {x.v.includes('@') ? (
                       <a
                         href={`mailto:${x.v}`}

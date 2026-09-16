@@ -47,17 +47,22 @@
 
   /* Fluid type scale. Each step interpolates between a comfortable phone size
      and its desktop size across the 380px-1400px range, so nothing needs a
-     breakpoint to stay readable. */
-  --text-2xs: clamp(0.72rem, 0.69rem + 0.13vw, 0.78rem);
-  --text-xs: clamp(0.75rem, 0.72rem + 0.14vw, 0.82rem);
-  --text-sm: clamp(0.84rem, 0.81rem + 0.16vw, 0.92rem);
-  --text-base: clamp(0.95rem, 0.91rem + 0.2vw, 1.05rem);
-  --text-lg: clamp(1.05rem, 0.99rem + 0.28vw, 1.19rem);
-  --text-xl: clamp(1.16rem, 1.06rem + 0.44vw, 1.4rem);
-  --text-2xl: clamp(1.35rem, 1.16rem + 0.82vw, 1.8rem);
-  --text-3xl: clamp(1.6rem, 1.28rem + 1.4vw, 2.4rem);
-  --text-4xl: clamp(1.95rem, 1.42rem + 2.3vw, 3.2rem);
-  --text-5xl: clamp(2.3rem, 1.4rem + 3.9vw, 4.4rem);
+     breakpoint to stay readable.
+
+     The phone end is deliberately well below the desktop end. Sizes that look
+     measured on a 1400px page read as oversized on a 390px one, where the same
+     heading has a quarter of the width to sit in and turns into four stacked
+     lines. The desktop end is unchanged; only the phone end came down. */
+  --text-2xs: clamp(0.7rem, 0.67rem + 0.13vw, 0.78rem);
+  --text-xs: clamp(0.73rem, 0.696rem + 0.14vw, 0.82rem);
+  --text-sm: clamp(0.8rem, 0.755rem + 0.19vw, 0.92rem);
+  --text-base: clamp(0.925rem, 0.878rem + 0.2vw, 1.05rem);
+  --text-lg: clamp(0.98rem, 0.902rem + 0.33vw, 1.19rem);
+  --text-xl: clamp(1.06rem, 0.933rem + 0.53vw, 1.4rem);
+  --text-2xl: clamp(1.2rem, 0.976rem + 0.94vw, 1.8rem);
+  --text-3xl: clamp(1.38rem, 1rem + 1.6vw, 2.4rem);
+  --text-4xl: clamp(1.62rem, 1.031rem + 2.48vw, 3.2rem);
+  --text-5xl: clamp(1.85rem, 0.9rem + 4vw, 4.4rem);
 
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -96,6 +101,12 @@
     overflow-x: clip;
   }
 
+  /* Every heading is the institute navy. The page used to mix near-black
+     headings with a navy phrase inside them, which read as two different
+     systems rather than one; a single colour is what makes a heading look
+     deliberate. `em` inherits so the existing two-tone markup collapses into
+     one colour wherever it appears rather than having to be unpicked page by
+     page -- the emphasis still lives in the wording. */
   h1,
   h2,
   h3,
@@ -104,8 +115,15 @@
     font-weight: 500;
     letter-spacing: -0.018em;
     line-height: 1.12;
-    color: var(--color-ink);
+    color: var(--color-brand);
     text-wrap: balance;
+  }
+
+  h1 em,
+  h2 em,
+  h3 em,
+  h4 em {
+    color: inherit;
   }
 
   h1 {
@@ -163,15 +181,19 @@
   /* Long-form editorial copy, held to a comfortable measure. */
   .prose-mg p {
     color: var(--color-graphite);
-    margin-bottom: 1.05em;
-    font-size: var(--text-lg);
-    line-height: 1.62;
+    margin-bottom: 1em;
+    /* Body size on a phone. The larger step is a desktop luxury: at 390px it
+       costs three or four extra lines per paragraph and pushes everything
+       below it off the screen. */
+    font-size: var(--text-base);
+    line-height: 1.6;
     max-width: 68ch;
   }
 
   @media (min-width: 640px) {
     .prose-mg p {
       margin-bottom: 1.15em;
+      font-size: var(--text-lg);
       line-height: 1.78;
     }
   }
@@ -187,8 +209,12 @@
     padding-inline: clamp(1.15rem, 3.2vw, 2.5rem);
   }
 
+  /* Vertical rhythm between bands. 44px of padding top and bottom put 88px of
+     nothing between every section on a phone, roughly a tenth of the screen
+     each time; 32px still separates them clearly. The desktop end came down a
+     step too, from 112px to 88px. */
   .section-y {
-    padding-block: clamp(2.75rem, 7vw, 7rem);
+    padding-block: clamp(2rem, 5.2vw, 5.5rem);
   }
 }
 

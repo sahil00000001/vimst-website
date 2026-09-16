@@ -38,10 +38,10 @@ const CONTACTS = [
 ];
 
 const QUICK = [
-  { label: 'Fee structure', href: '/fee-structure' },
-  { label: 'Payment modes', href: '/payment-modes' },
   { label: 'Check your result', href: '/enrollment-verification' },
   { label: 'All courses', href: '/courses' },
+  { label: 'Specializations', href: '/specializations' },
+  { label: 'Placements', href: '/placement' },
 ];
 
 export default function ContactPage() {

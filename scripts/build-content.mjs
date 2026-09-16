@@ -272,8 +272,6 @@ const pages = {
   placement: simplePage('our-placement.html', { title: 'Our Placements', art: 'placement' }),
   photoGallery: simplePage('photogallery.html', { title: 'Photo Gallery', art: 'gallery' }),
   specializations: simplePage('specializations.html', { title: 'Specializations', art: 'specializations' }),
-  paymentModes: simplePage('payment-modes.html', { title: 'Payment Modes', art: 'admission' }),
-  feeStructure: simplePage('fee-structure.html', { title: 'Fee Structure', art: 'admission' }),
   contact: simplePage('contact-us.html', { title: 'Contact Us', art: 'contact' }),
 };
 

@@ -22,7 +22,6 @@ const PAGES = [
   { route: '/enrollment-verification', name: 'result', frames: 2 },
   { route: '/placement', name: 'placement', frames: 3 },
   { route: '/photo-gallery', name: 'gallery', frames: 2 },
-  { route: '/fee-structure', name: 'fees', frames: 2 },
   { route: '/admin/login', name: 'adminlogin', frames: 1 },
 ];
 

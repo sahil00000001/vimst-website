@@ -58,27 +58,20 @@ function programmeColumns(): NavColumn[] {
   return [...engineering, ...others];
 }
 
+/**
+ * The primary nav.
+ *
+ * There is deliberately no About Us menu. The six pages behind it -- about,
+ * vision, mission, career, the director's message, the quality policy -- are
+ * introduced on the home page instead, each as a card with a picture, a
+ * heading, a couple of lines and a "Read more" into the full page. A visitor
+ * meets the institute while scrolling rather than having to guess which of six
+ * near-identical menu items holds what they are after, and the pages themselves
+ * stay reachable, just not listed twice.
+ */
 export function buildNav(): NavItem[] {
   return [
     { label: 'Home', href: '/' },
-    {
-      label: 'About Us',
-      href: '/about',
-      columns: [
-        {
-          heading: 'The Institute',
-          accent: 'brand',
-          links: [
-            { label: 'About Us', href: '/about' },
-            { label: 'Vision', href: '/vision' },
-            { label: 'Mission', href: '/mission' },
-            { label: 'Career', href: '/career' },
-            { label: "Director's Message", href: '/director-message' },
-            { label: 'Quality Policy', href: '/quality-policy' },
-          ],
-        },
-      ],
-    },
     {
       label: 'Departments',
       href: '/courses',
@@ -101,21 +94,9 @@ export function buildNav(): NavItem[] {
       wide: true,
       columns: programmeColumns(),
     },
-    {
-      label: 'Admission',
-      href: '/fee-structure',
-      columns: [
-        {
-          heading: 'Admission',
-          accent: 'brand',
-          links: [
-            { label: 'Fee Structure', href: '/fee-structure' },
-            { label: 'Payment Modes', href: '/payment-modes' },
-            { label: 'Check Your Result', href: '/enrollment-verification' },
-          ],
-        },
-      ],
-    },
+    /* Was an "Admission" menu of three. Two of them are gone, and a dropdown
+       holding one link is just a link with an extra click in front of it. */
+    { label: 'Check Your Result', href: '/enrollment-verification' },
     { label: 'Placements', href: '/placement' },
     { label: 'Gallery', href: '/photo-gallery' },
     { label: 'Contact', href: '/contact' },

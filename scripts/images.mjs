@@ -69,15 +69,25 @@ for (const abs of files) {
   }
 
   // 16px-wide blur placeholder, inlined as a data URI.
-  const blurBuf = await sharp(source, { failOn: 'none' })
-    .resize(16, null, { fit: 'inside' })
-    .jpeg({ quality: 40 })
-    .toBuffer();
+  //
+  // Only for images that fill their frame. A transparent PNG -- the logo, a
+  // crest -- has no background of its own, and a JPEG placeholder cannot carry
+  // an alpha channel, so the transparent pixels flatten to whatever is behind
+  // the artwork. For the navy wordmark that is a solid navy slab sitting behind
+  // the mark on every first paint. Those images simply load without one.
+  const blurDataURL = info.hasAlpha
+    ? null
+    : `data:image/jpeg;base64,${(
+        await sharp(source, { failOn: 'none' })
+          .resize(16, null, { fit: 'inside' })
+          .jpeg({ quality: 40 })
+          .toBuffer()
+      ).toString('base64')}`;
 
   meta[rel] = {
     width: info.width,
     height: info.height,
-    blurDataURL: `data:image/jpeg;base64,${blurBuf.toString('base64')}`,
+    ...(blurDataURL ? { blurDataURL } : {}),
   };
 }
 
