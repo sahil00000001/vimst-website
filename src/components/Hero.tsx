@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { EASE } from './Motion';
 import { Media } from './Media';
 import { VideoFeature } from './VideoFeature';
@@ -25,26 +25,33 @@ export function Arrow({ className = '' }: { className?: string }) {
 }
 
 /**
- * The opening band of the home page.
+ * The opening band of the home page: the campus on the left, the notice board
+ * on the right.
  *
- * It used to run an eyebrow, a three-line display headline, a paragraph, two
- * buttons and a strip of statistics down the left of a full-height image. On a
- * phone that stack alone was two and a half screens before a visitor reached
- * anything about the institute, and the same two calls to action appear again
- * in the header, the drawer and the enquiry section further down the page.
+ * It used to run an eyebrow, a display headline, a paragraph, two buttons and a
+ * strip of statistics down the left of a full-height image -- two and a half
+ * phone screens before a visitor reached anything about the institute. All of
+ * that is gone. What replaces it is the thing people come back to a college
+ * site for: what has been announced. The notice board used to sit a screen
+ * further down, where a returning applicant had to go looking for it.
  *
- * What is left is what an institution's front door is actually for: its name,
- * one line saying what it teaches and how, and a picture of the place. The
- * heading is the institute's own name rather than a slogan, which is also the
- * `h1` a search engine should find here.
+ * No visible heading, so the `h1` is carried by a screen-reader-only element.
+ * A page still needs one for search engines and for anyone navigating by
+ * headings; it just does not need to be set in type here.
+ *
+ * `children` is the notice board, passed in rather than imported so it stays a
+ * server component and out of this file's client bundle.
  */
 export function Hero({
   slides,
   video = null,
+  children,
 }: {
   slides: string[];
   /** When a film exists it replaces the carousel: it says more than six stills. */
   video?: VideoSlot | null;
+  /** Rendered in the right-hand column beside the picture. */
+  children?: ReactNode;
 }) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -80,17 +87,24 @@ export function Hero({
       aria-roledescription={count > 1 ? 'carousel' : undefined}
       aria-label="Campus highlights"
     >
-      <div className="shell grid gap-6 pb-7 pt-5 sm:gap-8 sm:pb-10 sm:pt-7 lg:grid-cols-12 lg:items-center lg:gap-12 lg:pb-14 lg:pt-10">
-        {/* Imagery. First on a phone -- a photograph of the place says where you
-            have arrived faster than a line of type does, and it puts something
-            recognisable above the fold at any screen height. */}
+      <h1 className="sr-only">
+        Vivekananda Institute of Management Science and Technology
+      </h1>
+
+      <div className="shell grid gap-4 pb-7 pt-5 sm:gap-6 sm:pb-10 sm:pt-7 lg:grid-cols-12 lg:items-stretch lg:gap-8 lg:pb-14 lg:pt-10">
+        {/* Imagery. First on a phone too -- a photograph of the place says where
+            you have arrived faster than any line of type does, and it puts
+            something recognisable above the fold at any screen height. */}
         <motion.div
-          className="order-1 lg:order-2 lg:col-span-7"
+          className="lg:col-span-7"
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
         >
           <motion.div
-            className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-rule bg-linen shadow-lift sm:aspect-[16/9]"
+            /* Wider as the screen gets wider, so the picture and the notice
+               board beside it finish at roughly the same line instead of the
+               board trailing a few hundred pixels of blank paper. */
+            className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-rule bg-linen shadow-lift sm:aspect-[16/9] lg:aspect-[2/1]"
             initial={{ opacity: 0, y: 24, scale: 0.985 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.95, delay: 0.1, ease: EASE }}
@@ -192,28 +206,15 @@ export function Hero({
           </motion.div>
         </motion.div>
 
-        {/* Name and one line. Nothing else. */}
-        <div className="order-2 lg:order-1 lg:col-span-5">
-          <motion.h1
-            className="text-[length:var(--text-4xl)] leading-[1.1]"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.16, ease: EASE }}
-          >
-            Vivekananda Institute of Management Science and Technology
-          </motion.h1>
-
-          <motion.p
-            className="mt-3.5 max-w-[46ch] text-[length:var(--text-base)] leading-relaxed text-slate sm:mt-5 sm:text-[length:var(--text-lg)]"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: EASE }}
-          >
-            Engineering, management, science and commerce, taught by distance learning
-            in Andhra Pradesh since 1998 &mdash; so a degree fits around the work you
-            are already doing.
-          </motion.p>
-        </div>
+        {/* The notice board. */}
+        <motion.div
+          className="lg:col-span-5"
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.85, delay: 0.24, ease: EASE }}
+        >
+          {children}
+        </motion.div>
       </div>
     </section>
   );

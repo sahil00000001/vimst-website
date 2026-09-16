@@ -44,7 +44,10 @@ export function Figure({
 export function LeadFigure({ figure }: { figure: FigureData }) {
   return (
     <Reveal from="up" as="figure" className="mb-10">
-      <div className="relative aspect-[21/9] overflow-hidden rounded-2xl border border-rule bg-linen">
+      {/* 3:2, not the letterbox this used to be. A lead picture on these pages
+          is a photograph of a person or a place, and a 21:9 crop takes the top
+          of a head off to gain width nothing needed. */}
+      <div className="relative aspect-[3/2] overflow-hidden rounded-2xl border border-rule bg-linen">
         <Media
           src={figure.src}
           alt={figure.alt}

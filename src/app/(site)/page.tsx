@@ -42,8 +42,8 @@ const INSTITUTE = [
   {
     title: "Director's Message",
     href: '/director-message',
-    image: '/media/director-img.jpg',
-    body: '“We shape minds and shape lives.” What our students need is knowledge that is genuinely up to date, and teaching that puts it across clearly.',
+    image: '/media/director.jpg',
+    body: 'Education is not merely the acquisition of knowledge, but a continuous process of developing competence, character, confidence and a strong sense of responsibility.',
   },
   {
     title: 'Quality Policy',
@@ -108,23 +108,22 @@ export default function HomePage() {
 
   return (
     <>
-      <Hero slides={home.carousel} video={HERO_VIDEO} />
+      <Hero slides={home.carousel} video={HERO_VIDEO}>
+        <NewsTicker items={home.news} />
+      </Hero>
 
-      {/* Welcome + notices */}
+      {/* Welcome. The heading sits in its own column on a wide screen so the
+          paragraph keeps a readable measure without leaving half the page
+          empty beside it. */}
       <section className="relative border-t border-rule bg-paper">
-        <div className="shell section-y grid gap-8 lg:grid-cols-12 lg:gap-14">
-          <div className="lg:col-span-7">
-            <Reveal from="up">
-              <p className="eyebrow mb-4">Welcome</p>
-              <h2 className="text-[length:var(--text-3xl)]">About the college</h2>
-            </Reveal>
-            <Reveal from="up" delay={0.12} className="prose-mg mt-5">
-              <p>{home.about.body}</p>
-            </Reveal>
-          </div>
+        <div className="shell section-y grid gap-5 lg:grid-cols-12 lg:gap-14">
+          <Reveal from="up" className="lg:col-span-4">
+            <p className="eyebrow mb-4">Welcome</p>
+            <h2 className="text-[length:var(--text-3xl)]">About the college</h2>
+          </Reveal>
 
-          <Reveal className="lg:col-span-5" from="left" delay={0.14}>
-            <NewsTicker items={home.news} />
+          <Reveal from="up" delay={0.12} className="prose-mg lg:col-span-8">
+            <p>{home.about.body}</p>
           </Reveal>
         </div>
       </section>

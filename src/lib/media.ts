@@ -64,7 +64,10 @@ export const PAGE_LEAD_IMAGE: Record<string, Figure | null> = {
   vision: null,
   mission: null,
   career: null,
-  directorMessage: null,
+  directorMessage: {
+    src: '/media/director.jpg',
+    alt: 'The Director of VIMST at his desk',
+  },
   qualityPolicy: null,
 };
 

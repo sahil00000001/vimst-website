@@ -335,7 +335,7 @@ const siteHome = {
   director: {
     heading: "Director's Message",
     body: HOME_COPY.director,
-    image: asset('director-img.jpg'),
+    image: '/media/director.jpg',
   },
   discover,
   campusLife: [

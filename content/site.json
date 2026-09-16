@@ -14727,14 +14727,17 @@
       "blocks": [
         {
           "type": "section",
-          "heading": "Director's message",
+          "heading": null,
           "lines": [
-            "We shape minds and shape lives.",
-            "Welcome to Vivekananda Institute of Management Science and Technology.",
-            "The economy changes quickly and competition is real. What our students need is knowledge that is genuinely up to date, and that is put across clearly enough to reach people who would normally avoid the subject.",
-            "Knowledge that claims to be current has to account for how much has actually changed in the way we work. Attitudes formed to deal with yesterday are not wrong in themselves, they are simply less useful now. The people who do well are the ones who notice when conditions have moved on and adjust, rather than holding on to a view because it once served them.",
-            "Business education has changed with everything else. Modern businesses grow alongside the ideas around them, so our teaching is built to let students explore business models, innovation and creativity without being boxed in.",
-            "Our curriculum and the way we teach it are designed to stay useful across a whole working life, not just until the next examination. The aim is that our students remain people their employers cannot easily replace, because they keep learning and keep applying what they learn."
+            "It gives me immense pleasure to welcome you to Vivekananda Institute of Management Science and Technology (VIMST).",
+            "At VIMST, we believe that education is not merely the acquisition of knowledge, but a continuous process of developing competence, character, confidence, and a strong sense of responsibility. Our endeavour is to create an academic environment where students are encouraged to think independently, develop professional skills, embrace innovation, and prepare themselves to meet the evolving demands of the professional world.",
+            "Since our establishment, we have remained committed to promoting quality education, academic excellence, professional development, and ethical values. Our academic approach focuses on combining sound theoretical knowledge with practical exposure so that learners can confidently apply their knowledge in real-world situations.",
+            "We are committed to providing our students with a supportive and intellectually stimulating learning environment through dedicated faculty, structured academic programmes, professional guidance, and opportunities for overall development. We also encourage our students to cultivate leadership qualities, teamwork, communication skills, creativity, and a lifelong commitment to learning.",
+            "Inspired by the ideals and vision of Swami Vivekananda, VIMST strives to nurture individuals who are not only professionally capable but also socially responsible and value-driven. We believe that true education empowers individuals to discover their potential and contribute meaningfully to society.",
+            "I invite students, parents, academic professionals, and all stakeholders to become a part of the VIMST family and join us in our journey towards creating a future driven by knowledge, innovation, integrity, and excellence.",
+            "With best wishes for a bright and successful future.",
+            "Director",
+            "Vivekananda Institute of Management Science and Technology (VIMST)"
           ]
         }
       ],
@@ -16470,8 +16473,8 @@
       },
       "director": {
         "heading": "Director's Message",
-        "body": "The economy changes quickly and competition is real. What our students need is knowledge that is genuinely up to date, and teaching that puts it across clearly. The people who do well are the ones who notice when conditions have moved on and adjust, rather than holding on to a view because it once served them.",
-        "image": "/media/director-img.jpg"
+        "body": "It gives me immense pleasure to welcome you to Vivekananda Institute of Management Science and Technology (VIMST).",
+        "image": "/media/director.jpg"
       },
       "discover": [
         {
