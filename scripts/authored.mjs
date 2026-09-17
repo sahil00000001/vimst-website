@@ -32,7 +32,7 @@ export const AUTHORED = {
     blocks: [
       section('Master in Computer Engineering', [
         'Computer Engineering brings together the design of computing hardware and the software that runs on it. The masters programme builds on an undergraduate foundation and takes students deeper into systems architecture, distributed computing, data engineering and applied machine intelligence.',
-        'The curriculum is delivered through distance learning so that working professionals can continue in employment while they study, with faculty drawn from the same pool of Professors, Associate Professors and Assistant Professors that teaches the institute’s other engineering programmes.',
+        'The curriculum is offered in Regular and Part-Time modes so that working professionals can continue in employment while they study, with faculty drawn from the same pool of Professors, Associate Professors and Assistant Professors that teaches the institute’s other engineering programmes.',
       ]),
       section('Programme Objective', [
         'To develop an advanced understanding of computer architecture, operating systems and distributed system design.',

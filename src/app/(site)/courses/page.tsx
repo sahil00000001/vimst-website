@@ -20,7 +20,7 @@ export default function CoursesPage() {
       <PageBanner
         eyebrow="Academics"
         title="Courses Offered"
-        intro={`${courses.length} programmes across six streams, from diploma through to masters, all delivered with distance learning in mind.`}
+        intro={`${courses.length} programmes across six streams, from diploma through to masters, offered in Regular and Part-Time modes.`}
         image="/media/art/courses.jpg"
         crumbs={[{ label: 'Courses' }]}
         wide

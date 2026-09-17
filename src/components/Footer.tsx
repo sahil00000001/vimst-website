@@ -49,10 +49,11 @@ export function Footer() {
               className="h-16 w-auto sm:h-20"
             />
             <p className="mt-4 max-w-sm text-[length:var(--text-sm)] leading-relaxed text-slate">
-              Vivekananda Institute of Management Science and Technology has taught
-              engineering, management, science and commerce in Andhra Pradesh since
-              1998. Our programmes are delivered through distance learning, so you can
-              study for a recognised qualification while you keep working.
+              Established in 1997, Vivekananda Institute of Management Science and
+              Technology is committed to accessible, structured and career-oriented
+              education. Programmes are offered in Regular and Part-Time modes, so you
+              can study for a recognised qualification alongside your other
+              commitments.
             </p>
             {socials.length > 0 && (
               <div className="mt-6 flex items-center gap-2">
@@ -167,7 +168,7 @@ export function Footer() {
             © {new Date().getFullYear()} Vivekananda Institute of Management Science and
             Technology. All rights reserved.
           </p>
-          <p className="text-gold">ISO 9001:2008 Certified</p>
+          <p className="text-gold">ISO 9001:2015 Certified</p>
         </div>
       </div>
     </footer>

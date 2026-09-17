@@ -40,15 +40,20 @@ export type HomeContent = {
   campusLife: { title: string; image: string; href: string }[];
 };
 
+/** A quality, professional or accreditation framework the institute names. */
+export type Accreditation = { abbr: string; name: string };
+
 const data = site as unknown as {
   courses: Course[];
   pages: Record<string, EditorialPage> & { home: HomeContent };
+  accreditations: Accreditation[];
   logo: string | null;
 };
 
 export const courses: Course[] = data.courses;
 export const logo = data.logo;
 export const home = data.pages.home;
+export const accreditations: Accreditation[] = data.accreditations;
 
 export const page = (key: string): EditorialPage => {
   const p = data.pages[key];

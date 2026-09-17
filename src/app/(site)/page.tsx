@@ -5,7 +5,7 @@ import { isPlate, Media } from '@/components/Media';
 import { Reveal, Stagger, StaggerItem } from '@/components/Motion';
 import { NewsTicker } from '@/components/NewsTicker';
 import { VideoFeature } from '@/components/VideoFeature';
-import { courses, coursesByStream, excerpt, home } from '@/lib/content';
+import { accreditations, courses, coursesByStream, excerpt, home } from '@/lib/content';
 import { CAMPUS_VIDEO, HERO_VIDEO } from '@/lib/media';
 
 /**
@@ -25,19 +25,19 @@ const INSTITUTE = [
     title: 'About Us',
     href: '/about',
     image: '/media/images/photogallery/img-20240617-wa0016.jpg',
-    body: 'A leading institute for engineering and management education in Andhra Pradesh, teaching undergraduate and postgraduate programmes since 1998.',
+    body: 'Established in 1997, an institution committed to accessible, structured and career-oriented education, offered in Regular and Part-Time modes.',
   },
   {
     title: 'Our Vision',
     href: '/vision',
     image: '/media/images/photogallery/img-20240617-wa0019.jpg',
-    body: 'To prepare students for a working world that is more connected than any before it, and where technology keeps changing how business is done.',
+    body: 'To emerge as a progressive, quality-focused institution that develops knowledgeable, skilled, ethical and professionally competent individuals.',
   },
   {
     title: 'Our Mission',
     href: '/mission',
     image: '/media/images/photogallery/img-20240617-wa0020.jpg',
-    body: 'Education that meets global standards, built on a strong foundation of Indian values and traditions.',
+    body: 'Accessible, structured education for learners from every background, built on academic excellence and lifelong learning.',
   },
   {
     title: "Director's Message",
@@ -49,7 +49,7 @@ const INSTITUTE = [
     title: 'Quality Policy',
     href: '/quality-policy',
     image: '/media/images/awards.jpg',
-    body: 'Weekend classes for students who work during the week, and teaching we review against the standards our certifications set.',
+    body: 'A systematic, quality-oriented approach to education and institutional practice, reviewed against the standards our certifications set.',
   },
   {
     title: 'Career',
@@ -216,6 +216,43 @@ export default function HomePage() {
               Specializations
             </Link>
           </Reveal>
+        </div>
+      </section>
+
+      {/* Recognition. Twelve bodies is a lot of small print, and it is also the
+          most load-bearing thing on the page for someone deciding whether a
+          qualification from here will count for anything. Set as a grid of
+          short forms with the full name under each, it reads at a glance and
+          still says exactly what each one is. */}
+      <section className="border-t border-rule bg-shell">
+        <div className="shell section-y">
+          <Reveal from="up" className="mb-6 sm:mb-9">
+            <p className="eyebrow mb-4">Recognition</p>
+            <h2 className="text-[length:var(--text-3xl)]">
+              Quality and professional associations
+            </h2>
+            <p className="mt-3 max-w-[60ch] text-[length:var(--text-base)] leading-relaxed text-slate">
+              The institute is registered under an act of the Government of Andhra
+              Pradesh, India, and is associated with the following quality,
+              professional and accreditation frameworks, as applicable to the
+              respective programmes and certifications.
+            </p>
+          </Reveal>
+
+          <Stagger className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4">
+            {accreditations.map((a) => (
+              <StaggerItem key={a.abbr}>
+                <div className="flex h-full flex-col gap-1 rounded-xl border border-rule bg-paper p-3.5 sm:p-4">
+                  <p className="font-display text-[length:var(--text-base)] leading-snug text-brand">
+                    {a.abbr}
+                  </p>
+                  <p className="text-[length:var(--text-2xs)] leading-relaxed text-slate sm:text-[length:var(--text-xs)]">
+                    {a.name}
+                  </p>
+                </div>
+              </StaggerItem>
+            ))}
+          </Stagger>
         </div>
       </section>
 

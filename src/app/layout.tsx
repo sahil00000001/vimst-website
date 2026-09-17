@@ -33,11 +33,12 @@ export const metadata: Metadata = {
     template: `%s · VIMST`,
   },
   description:
-    'VIMST offers engineering, management, computer application, science, commerce and arts programmes through distance learning, at diploma, bachelor, PG diploma and masters level.',
+    'Established in 1997, VIMST offers engineering, management, computer application, science, commerce and arts programmes in Regular and Part-Time modes, at diploma, bachelor, PG diploma and masters level.',
   keywords: [
     'VIMST',
     'Vivekananda Institute',
-    'distance learning India',
+    'part time degree India',
+    'regular and part time education',
     'engineering diploma',
     'MBA',
     'BCA',
@@ -48,7 +49,7 @@ export const metadata: Metadata = {
     siteName: 'VIMST',
     title: `VIMST · ${NAME}`,
     description:
-      'Engineering, management, science and commerce programmes delivered through distance learning.',
+      'Engineering, management, science and commerce programmes offered in Regular and Part-Time modes. Established in 1997, ISO 9001:2015 certified.',
   },
   robots: { index: true, follow: true },
 };

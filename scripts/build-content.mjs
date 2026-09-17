@@ -2,7 +2,14 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { COURSES, BANNER_BY_DEPARTMENT } from './catalog.mjs';
 import { AUTHORED } from './authored.mjs';
-import { HOME_COPY, PAGE_COPY, SECTION_REWRITES, tidy, tidyHeading } from './copy.mjs';
+import {
+  ACCREDITATIONS,
+  HOME_COPY,
+  PAGE_COPY,
+  SECTION_REWRITES,
+  tidy,
+  tidyHeading,
+} from './copy.mjs';
 
 const raw = JSON.parse(fs.readFileSync('content/raw-pages.json', 'utf8'));
 const assets = JSON.parse(fs.readFileSync('content/asset-map.json', 'utf8'));
@@ -350,6 +357,9 @@ const siteHome = {
 const out = {
   courses,
   pages: { ...pages, home: siteHome },
+  /* Carried into the data so the home page renders the same list the prose
+     pages do, from the one definition in copy.mjs. */
+  accreditations: ACCREDITATIONS,
   logo: asset('croped.svg'),
 };
 

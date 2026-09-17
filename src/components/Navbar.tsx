@@ -72,7 +72,7 @@ export function Navbar({ nav }: { nav: NavItem[] }) {
       <div className="hidden border-b border-brand bg-brand text-paper lg:block">
         <div className="shell flex items-center justify-between gap-6 py-1 text-[length:var(--text-xs)]">
           <p className="tracking-wide text-paper/70">
-            Andhra Pradesh, India · ISO 9001:2008 Certified Institute
+            Andhra Pradesh, India · Established 1997 · ISO 9001:2015 Certified
           </p>
           <div className="flex items-center gap-5">
             <a

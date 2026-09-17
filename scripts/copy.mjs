@@ -25,6 +25,37 @@ import { COURSE_REWRITES } from './course-copy.mjs';
  * listed falls through to the original.
  */
 
+/**
+ * The quality, professional and accreditation frameworks the institute is
+ * associated with, as supplied in its own institutional profile.
+ *
+ * One list, used in three places: the recognition section of About, the
+ * quality policy page, and the strip on the home page. Kept as pairs rather
+ * than sentences so the home page can set the short form large and the full
+ * name beneath it, while the prose pages join them back into a line.
+ */
+export const ACCREDITATIONS = [
+  { abbr: 'ISO 9001:2015', name: 'Quality Management System' },
+  { abbr: 'AICTE', name: 'All India Council for Technical Education' },
+  { abbr: 'AIMS', name: 'Association of Indian Management Schools' },
+  { abbr: 'ATMA', name: 'AIMS Test for Management Admissions' },
+  { abbr: 'MHRD', name: 'Ministry of Human Resource Development, Government of India' },
+  { abbr: 'UKAS', name: 'United Kingdom Accreditation Service' },
+  { abbr: 'KVQA', name: 'KVQA Certification Services' },
+  { abbr: 'IIC', name: 'International Industrial Certificate' },
+  { abbr: 'DAC', name: 'Dubai Accreditation Centre' },
+  { abbr: 'IAF', name: 'International Accreditation Forum' },
+  { abbr: 'IMSV', name: 'Integrated Management System Verification' },
+  { abbr: 'JAS-ANZ', name: 'Joint Accreditation System of Australia and New Zealand' },
+];
+
+/** The same list as prose lines, for the pages built from PAGE_COPY. */
+const accreditationLines = [
+  'The Institute is registered under an act of the Government of Andhra Pradesh, India.',
+  ...ACCREDITATIONS.map((a) => `${a.abbr}, ${a.name}.`),
+  'And other relevant educational, professional, quality, and accreditation frameworks, as applicable to the respective programmes and certifications.',
+];
+
 /* ------------------------------------------------------------------
    Editorial pages
    ------------------------------------------------------------------ */
@@ -34,8 +65,10 @@ export const PAGE_COPY = {
     {
       heading: 'About the institute',
       lines: [
-        'Vivekananda Institute of Management Science and Technology is a leading institute for engineering and management education in Andhra Pradesh. We were founded in 1998 and we teach undergraduate and postgraduate programmes across engineering, management, computer applications, science, commerce and arts.',
-        'Our programmes are delivered through distance learning. That means you can study for a recognised qualification while you continue to work, and you can fit your study around the job you already have.',
+        'Established in 1997, Vivekananda Institute of Management Science and Technology is an educational institution committed to promoting accessible, structured, and career-oriented education. The Institute aims to provide learners with opportunities to develop academic knowledge, professional competencies, practical understanding, and skills relevant to the evolving requirements of higher education and the professional world.',
+        'The Institute offers a range of educational programmes through Regular and Part-Time modes, providing flexibility to students and working professionals who wish to pursue their academic and professional development alongside their other commitments.',
+        'With an emphasis on quality-oriented education, continuous learning, professional development, and practical exposure, the Institute strives to create a learning environment that encourages academic growth, discipline, confidence, and responsible professional conduct.',
+        "The Institute's profile includes associations, certifications, quality frameworks, and references to various educational, management, quality-assurance, and accreditation organisations, as applicable to the respective programmes and certifications.",
       ],
     },
     {
@@ -46,11 +79,19 @@ export const PAGE_COPY = {
       ],
     },
     {
-      heading: 'Recognition and approvals',
+      heading: 'Quality and professional associations',
+      lines: accreditationLines,
+    },
+    {
+      heading: 'Why choose this institute',
       lines: [
-        'The institute is registered under an act of the Government of Andhra Pradesh, India.',
-        'We hold ISO 9001:2008 certification through EQFS, which is accredited to the Norway Accreditations Board, known as NAB. We are also accredited by the United Kingdom Accreditation Services, known as UKAS, and by Kvalitet Veritas Quality Assurance, known as KVQA.',
-        'Our certification is recognised in India and overseas. The institute is approved by AICTE second body parts AIMS ATMA with M.HRD, and is accredited with the International Industrial Certificate, known as IIC, and the Integrated Management System, known as IMS.',
+        'Established educational legacy. With an institutional journey dating back to 1997, the Institute represents a long-standing commitment to education and professional development.',
+        'Flexible learning options. Regular and Part-Time programmes provide learners with greater flexibility to pursue their educational goals.',
+        'Career-oriented education. Our programmes aim to develop knowledge and competencies that can support learners in their academic and professional journeys.',
+        'Quality-focused approach. The Institute follows a structured approach towards quality, continuous improvement, and systematic educational processes.',
+        'Professional development. We focus on developing not only academic knowledge but also practical understanding, professional skills, and personal confidence.',
+        'Learner-centric environment. We aim to create an environment that supports the individual learning and development needs of students and working professionals.',
+        'Commitment to continuous growth. Our objective is to continuously improve our academic and institutional practices in response to the changing needs of learners and the professional world.',
       ],
     },
     {
@@ -68,23 +109,36 @@ export const PAGE_COPY = {
         'Our Career Counselling and Placement Cell helps graduating students find work, and brings employers on to campus to recruit.',
       ],
     },
+    {
+      heading: 'Our commitment',
+      lines: [
+        'At Vivekananda Institute of Management Science and Technology, we believe that education plays a vital role in shaping individuals and contributing to the development of society.',
+        'Our commitment is to provide an environment that encourages learning, professional development, discipline, innovation, integrity, and continuous improvement.',
+        'We aspire to empower learners with the knowledge, skills, confidence, and values required to pursue their academic and professional aspirations and become responsible contributors to society.',
+      ],
+    },
   ],
 
   vision: [
     {
       heading: 'Our vision',
       lines: [
-        'The world our students will work in is more connected than any before it. Goods, money, data and people move across borders constantly, and technology keeps changing how businesses are run. Satellites, computers, telecommunications and biotechnology have all reshaped ordinary working life within a single generation.',
-        'That makes business harder to predict. A plan made at the start of a year is rarely the plan that finishes it, because the business and its goals keep changing each other as they go. A straight line from where you are to where you want to be no longer exists.',
-        'Working well in that environment takes more than technical knowledge. It takes clear judgement, and the ability to hold several moving parts in mind at once.',
+        'To emerge as a progressive and quality-focused educational institution that contributes to the development of knowledgeable, skilled, ethical, and professionally competent individuals.',
+        'We envision an educational ecosystem where learners are encouraged to pursue excellence, develop practical competencies, embrace continuous learning, and contribute positively to society and the professional world.',
       ],
     },
+    /* Values sit with the vision rather than on About. They are what the vision
+       is made of, and a visitor who has just read one wants the other. */
     {
-      heading: 'What we are trying to build',
+      heading: 'Our core values',
       lines: [
-        'A classroom on its own cannot teach all of this. Much of what matters comes from experience, and from understanding people whose background and history differ from your own.',
-        'So our aim is to develop managers who think, plan and act as one, and who can hold their own in a complex organisation.',
-        'We want our students to grow as people as well as professionals. That means an education which is modern and scientific, and which is also built on moral and spiritual values, so that our graduates lead purposeful lives.',
+        'Academic excellence. We strive to encourage high standards of learning, knowledge development, and academic growth.',
+        'Integrity. We believe in ethical conduct, transparency, accountability, and responsible educational practices.',
+        'Student-centric learning. Our learners remain at the centre of our educational approach, with emphasis on their academic and professional development.',
+        'Continuous improvement. We believe that education is an evolving process, and we continuously encourage improvement in teaching, learning, systems, and practices.',
+        'Professional development. We aim to equip learners with knowledge and competencies that support their academic and professional aspirations.',
+        'Accessibility and flexibility. Through Regular and Part-Time programmes, we seek to make educational opportunities more flexible and accessible.',
+        'Social responsibility. We encourage learners to develop a responsible attitude towards society, professional life, and the wider community.',
       ],
     },
   ],
@@ -93,24 +147,31 @@ export const PAGE_COPY = {
     {
       heading: 'Our mission',
       lines: [
-        'Our mission is to give working professionals a quality education that meets global standards, built on a strong foundation of Indian values and traditions.',
-        'We teach what is current in management, science, technology and commerce, and we teach it with a commitment to social progress, peace, harmony and national integration.',
+        'Provide accessible and structured educational opportunities to learners from diverse backgrounds.',
+        'Promote academic excellence through systematic and learner-centric education.',
+        'Develop practical knowledge and professional skills relevant to contemporary requirements.',
+        'Encourage innovation, critical thinking, discipline, and lifelong learning.',
+        'Provide flexible Regular and Part-Time learning opportunities for students and working professionals.',
+        'Foster an environment that supports personal, academic, and professional development.',
+        'Maintain a strong commitment towards quality, transparency, and continuous improvement.',
       ],
     },
     {
-      heading: 'Where we started',
+      heading: 'Our educational approach',
       lines: [
-        'The institute was founded in 1998 with a clear purpose. Higher education should be within reach of people who are tied to a place or short of time, and it should act as a catalyst for them. We have done both.',
-        'From the beginning, our founding purpose has been a belief that education is the main pillar of equal opportunity in Indian society, and that a student succeeding is the point of everything we do.',
+        'We believe that meaningful education goes beyond classroom learning. Our educational approach seeks to integrate knowledge, practical understanding, professional skills, discipline, and continuous development.',
+        'Through our Regular and Part-Time programmes, learners are provided with flexible pathways for pursuing education according to their individual academic and professional requirements.',
       ],
     },
     {
-      heading: 'Where we are going',
+      heading: 'What we encourage learners to develop',
       lines: [
-        'We now teach students at every level, and we expect that number to keep growing as the region and the state change around us.',
-        'Growth of that kind has to be planned. It needs a clear idea of what we want to be in the coming years, and a way of meeting those expectations with the resources we actually have. We want a culture of excellence that serves both the campus and the communities around it.',
-        'We will stay loyal to the purpose that has guided us since 1998 while responding to a world that has not stood still. Technology has changed. Students arrive from a wider range of backgrounds. There are new ways of working across countries, real pressures around energy and the environment, and a much better understanding of how people actually learn. Service learning, civic engagement and activity outside the timetable are now understood to be part of an education, not an extra.',
-        'Above all, the institute exists to develop creative people with strong technical skills, who go on to add to what is known and put it to use for the good of society.',
+        'Strong conceptual knowledge.',
+        'Practical and professional skills.',
+        'Analytical and critical-thinking abilities.',
+        'Communication and interpersonal skills.',
+        'Confidence and leadership qualities.',
+        'A commitment to continuous learning.',
       ],
     },
   ],
@@ -119,10 +180,29 @@ export const PAGE_COPY = {
     {
       heading: 'Our quality policy',
       lines: [
-        'The institute runs weekend classes for its management students at the centre, so that the people who are working during the week still get taught properly rather than left to study alone.',
-        'We review our teaching, our course material and our student services regularly, and we hold them to the standards our certifications require of us.',
-        'Our ISO 9001:2008 certification is held through EQFS and is accredited to the Norway Accreditations Board. We are also accredited by the United Kingdom Accreditation Services and by Kvalitet Veritas Quality Assurance.',
-        'The purpose of all of it is simple. A qualification from this institute should be worth the same to an employer as the effort a student put into earning it.',
+        'Vivekananda Institute of Management Science and Technology is committed to maintaining a systematic and quality-oriented approach towards education and institutional practices.',
+      ],
+    },
+    {
+      heading: 'What we commit to',
+      lines: [
+        'Maintaining consistent standards in educational delivery.',
+        'Supporting effective and learner-focused academic processes.',
+        'Encouraging continuous improvement in institutional systems.',
+        'Promoting professional and practical learning.',
+        'Developing a culture of discipline, responsibility, and accountability.',
+        'Responding to the changing needs of learners and the professional environment.',
+        'Striving for continual improvement in the effectiveness of the Quality Management System.',
+      ],
+    },
+    {
+      heading: 'Quality and professional associations',
+      lines: accreditationLines,
+    },
+    {
+      heading: 'An ongoing commitment',
+      lines: [
+        'The Institute aims to build a culture where quality is treated as an ongoing commitment rather than a one-time objective.',
       ],
     },
   ],
@@ -177,7 +257,7 @@ export const PAGE_COPY = {
 
 export const HOME_COPY = {
   about:
-    'Vivekananda Institute of Management Science and Technology is a leading institute for engineering and management education, founded in 1998 in Andhra Pradesh. We teach undergraduate and postgraduate programmes across engineering, management, science, commerce and arts, all through distance learning, so you can study while you work. Our faculty come from the pool of Professors, Associate Professors and Assistant Professors under the Department of Technical Education.',
+    'Established in 1997, Vivekananda Institute of Management Science and Technology is an educational institution committed to promoting accessible, structured, and career-oriented education. Programmes are offered through Regular and Part-Time modes, giving students and working professionals the flexibility to pursue their academic and professional development alongside their other commitments. Our faculty come from the pool of Professors, Associate Professors and Assistant Professors under the Department of Technical Education.',
 
   director:
     'It gives me immense pleasure to welcome you to Vivekananda Institute of Management Science and Technology (VIMST).',
