@@ -206,9 +206,12 @@ export function Hero({
           </motion.div>
         </motion.div>
 
-        {/* The notice board. */}
+        {/* The notice board, beside the picture from the small breakpoint up.
+            On a phone it is not here at all: the home page renders it after
+            the Director's Message, where it follows something worth reading
+            rather than pushing the whole institute a screen further down. */}
         <motion.div
-          className="lg:col-span-5"
+          className="hidden sm:block lg:col-span-5"
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.85, delay: 0.24, ease: EASE }}

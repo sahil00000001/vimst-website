@@ -255,7 +255,12 @@ export function Navbar({ nav }: { nav: NavItem[] }) {
               transition={{ duration: 0.3, ease: EASE }}
               onMouseEnter={cancelClose}
               onMouseLeave={scheduleClose}
-              className="absolute inset-x-0 top-full hidden border-y border-rule bg-paper shadow-[0_28px_60px_-30px_rgba(22,21,26,0.28)] xl:block"
+              /* The merged programmes menu is taller than a laptop screen, so
+                 the panel scrolls rather than running off the bottom of it.
+                 The 11rem allows for the masthead above it at its tallest --
+                 the utility strip plus the unscrolled header -- so the last
+                 row of the menu is never left under the fold. */
+              className="mg-scroll absolute inset-x-0 top-full hidden max-h-[calc(100vh-11rem)] overflow-y-auto overscroll-contain border-y border-rule bg-paper shadow-[0_28px_60px_-30px_rgba(22,21,26,0.28)] xl:block"
             >
               <div className={`shell py-8 ${activeItem.wide ? '' : 'max-w-[460px]'}`}>
                 <div

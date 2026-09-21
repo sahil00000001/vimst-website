@@ -3,13 +3,12 @@ import { Reveal } from './Motion';
 import { Media } from './Media';
 import { activeSocialLinks } from '@/lib/social';
 
+/* Two links, not six. The vision, the mission, the quality policy and the
+   rest are all sections of the About Us page now, so listing them here sent
+   a reader to four thin pages that say what one page already says. */
 const USEFUL = [
   { label: 'About Us', href: '/about' },
-  { label: 'Vision', href: '/vision' },
-  { label: 'Mission', href: '/mission' },
   { label: "Director's Message", href: '/director-message' },
-  { label: 'Quality Policy', href: '/quality-policy' },
-  { label: 'Career', href: '/career' },
 ];
 
 /** The four ways in, each labelled so the right one is obvious at a glance. */

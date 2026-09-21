@@ -1,5 +1,5 @@
 import { accentForLevel, accentForStream, type AccentName } from './accents';
-import { coursesByStream, departments, engineeringByLevel } from './content';
+import { coursesByStream, departments } from './content';
 
 export type NavLink = { label: string; href: string };
 
@@ -22,25 +22,25 @@ export type NavItem = {
 };
 
 /**
- * Department menu: one column per engineering department, each listing the
- * levels it is offered at. The level links carry the level's own accent.
+ * The one programmes menu.
+ *
+ * It used to be two. "Departments" listed a column per engineering
+ * department with the levels each is taught at; "Programmes" listed
+ * engineering by level and then the other streams. Both were views of the
+ * same 52 courses, so whichever a visitor opened first, the other was the one
+ * that would have answered them, and the same course appeared under both.
+ *
+ * Merged, it is a single list with nothing in it twice: the engineering
+ * departments, each with its levels, then the non-engineering streams, then
+ * the two ways into the full catalogue. It is long -- that is what a
+ * catalogue of this size is -- so the panel that holds it scrolls.
  */
-function departmentColumns(): NavColumn[] {
-  return departments().map(({ department, courses }) => ({
+function programmeColumns(): NavColumn[] {
+  const engineering = departments().map(({ department, courses }) => ({
     heading: department,
     accent: accentForLevel(courses[0]?.level ?? 'Bachelor'),
     note: `${courses.length} level${courses.length === 1 ? '' : 's'}`,
     links: courses.map((c) => ({ label: c.level, href: `/courses/${c.slug}` })),
-  }));
-}
-
-/** Programme menu: engineering by level, then the non-engineering streams. */
-function programmeColumns(): NavColumn[] {
-  const engineering = engineeringByLevel().map(({ level, courses }) => ({
-    heading: `Engineering · ${level}`,
-    accent: accentForLevel(level),
-    note: `${courses.length} departments`,
-    links: courses.map((c) => ({ label: c.department, href: `/courses/${c.slug}` })),
   }));
 
   const others = coursesByStream()
@@ -55,7 +55,18 @@ function programmeColumns(): NavColumn[] {
       })),
     }));
 
-  return [...engineering, ...others];
+  return [
+    ...engineering,
+    ...others,
+    {
+      heading: 'More',
+      accent: 'brand' as const,
+      links: [
+        { label: 'All Courses', href: '/courses' },
+        { label: 'Specializations', href: '/specializations' },
+      ],
+    },
+  ];
 }
 
 /**
@@ -72,22 +83,6 @@ function programmeColumns(): NavColumn[] {
 export function buildNav(): NavItem[] {
   return [
     { label: 'Home', href: '/' },
-    {
-      label: 'Departments',
-      href: '/courses',
-      wide: true,
-      columns: [
-        ...departmentColumns(),
-        {
-          heading: 'More',
-          accent: 'brand',
-          links: [
-            { label: 'Specializations', href: '/specializations' },
-            { label: 'All Courses', href: '/courses' },
-          ],
-        },
-      ],
-    },
     {
       label: 'Programmes',
       href: '/courses',

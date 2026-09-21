@@ -5,59 +5,27 @@ import { isPlate, Media } from '@/components/Media';
 import { Reveal, Stagger, StaggerItem } from '@/components/Motion';
 import { NewsTicker } from '@/components/NewsTicker';
 import { VideoFeature } from '@/components/VideoFeature';
-import { accreditations, courses, coursesByStream, excerpt, home } from '@/lib/content';
+import { accreditations, courses, coursesByStream, home } from '@/lib/content';
 import { CAMPUS_VIDEO, HERO_VIDEO } from '@/lib/media';
 
 /**
- * The six pages that used to sit behind an "About Us" menu.
+ * The Director's Message, introduced on the home page.
  *
- * They are introduced here instead: a picture, the heading, the two lines that
- * actually say what the page is about, and a way in. The pages themselves are
- * unchanged and still have their own URLs -- they are simply reached from the
- * home page rather than from a menu of six near-identical labels, so a visitor
- * meets the institute by reading down the page instead of by guessing.
+ * This band used to carry six near-identical cards -- About Us, Vision,
+ * Mission, Quality Policy, Career and this one -- under an "Explore / The
+ * institute" label. Five of them are sections of the About Us page now,
+ * reached from the link under the summary above, so repeating them here sent
+ * a visitor to four thin pages that say what one page already says.
  *
- * The blurbs are written short on purpose. A card that reproduces half the page
- * gives nobody a reason to open it.
+ * What is left is the one thing none of those pages carries: the person
+ * running the institute, and his photograph.
  */
-const INSTITUTE = [
-  {
-    title: 'About Us',
-    href: '/about',
-    image: '/media/images/photogallery/img-20240617-wa0016.jpg',
-    body: 'Established in 1997, an institution committed to accessible, structured and career-oriented education, offered in Regular and Part-Time modes.',
-  },
-  {
-    title: 'Our Vision',
-    href: '/vision',
-    image: '/media/images/photogallery/img-20240617-wa0019.jpg',
-    body: 'To emerge as a progressive, quality-focused institution that develops knowledgeable, skilled, ethical and professionally competent individuals.',
-  },
-  {
-    title: 'Our Mission',
-    href: '/mission',
-    image: '/media/images/photogallery/img-20240617-wa0020.jpg',
-    body: 'Accessible, structured education for learners from every background, built on academic excellence and lifelong learning.',
-  },
-  {
-    title: "Director's Message",
-    href: '/director-message',
-    image: '/media/director.jpg',
-    body: 'Education is not merely the acquisition of knowledge, but a continuous process of developing competence, character, confidence and a strong sense of responsibility.',
-  },
-  {
-    title: 'Quality Policy',
-    href: '/quality-policy',
-    image: '/media/images/awards.jpg',
-    body: 'A systematic, quality-oriented approach to education and institutional practice, reviewed against the standards our certifications set.',
-  },
-  {
-    title: 'Career',
-    href: '/career',
-    image: '/media/images/picsart-24-06-17-14-15-14-124.jpg',
-    body: 'Consultants who work with people at every stage of a career, from professional staff through to senior management.',
-  },
-];
+const DIRECTOR = {
+  title: "Director's Message",
+  href: '/director-message',
+  image: '/media/director.jpg',
+  body: 'Education is not merely the acquisition of knowledge, but a continuous process of developing competence, character, confidence and a strong sense of responsibility.',
+};
 
 /**
  * The picture beside a card.
@@ -101,69 +69,108 @@ function CardImage({
 export default function HomePage() {
   const streams = coursesByStream();
 
-  /* The Placement Cell has a tile of its own further down that goes to the real
-     placement page, so the descriptive card here would be the second time the
-     same subject appears between one screen and the next. */
-  const discover = home.discover.filter((d) => !/^placement$/i.test(d.title));
-
   return (
     <>
+      {/* On a phone the page opens straight onto a photograph with nothing
+          naming the place, so this band sits between the masthead and that
+          picture and says where you have arrived.
+
+          It is built from the two marks the rest of the site is built from --
+          the gold hairline label and the display serif -- on the warm
+          off-white the other bands use, rather than as a second heading in
+          navy on white directly under a navy wordmark, which read as
+          something left over rather than part of the page. "Welcome to" takes
+          the label, the name takes the serif, so the two are not competing at
+          the same weight.
+
+          Not repeated on a wider screen, where the masthead carries the name
+          in full, and hidden from screen readers because the hero's h1
+          already says it. */}
+      <div aria-hidden className="border-b border-rule bg-linen sm:hidden">
+        <div className="shell py-3.5 text-center">
+          <p className="inline-flex items-center gap-2.5 text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.2em] text-gold-deep">
+            <span className="h-px w-5 bg-gold" />
+            Welcome to
+            <span className="h-px w-5 bg-gold" />
+          </p>
+          <p className="mt-1.5 font-display text-[length:var(--text-sm)] leading-snug text-brand">
+            Vivekananda Institute of Management Science and Technology
+          </p>
+        </div>
+      </div>
+
       <Hero slides={home.carousel} video={HERO_VIDEO}>
         <NewsTicker items={home.news} />
       </Hero>
 
-      {/* Welcome. The heading sits in its own column on a wide screen so the
-          paragraph keeps a readable measure without leaving half the page
-          empty beside it. */}
+      {/* The college and its director, in one band and side by side from the
+          large breakpoint up. They used to be two bands, which put a heading,
+          a paragraph and a whole screen of scrolling between a claim about
+          the institute and the face of the person making it.
+
+          The photograph runs at its own 3:2 shape rather than being cropped
+          to a strip, so nothing is cut off it. */}
       <section className="relative border-t border-rule bg-paper">
-        <div className="shell section-y grid gap-5 lg:grid-cols-12 lg:gap-14">
-          <Reveal from="up" className="lg:col-span-4">
+        <div className="shell section-y grid gap-8 lg:grid-cols-12 lg:items-center lg:gap-14">
+          {/* Centred against the card rather than pinned to the top of the
+              row: the text column is the shorter of the two, and hung from
+              the top edge it read as having slipped upwards with a block of
+              empty paper under it. */}
+          <Reveal from="up" className="lg:col-span-6">
             <p className="eyebrow mb-4">Welcome</p>
             <h2 className="text-[length:var(--text-3xl)]">About the college</h2>
+            <div className="prose-mg mt-4 sm:mt-5">
+              <p>{home.about.body}</p>
+            </div>
+            {/* The rest of the institute's profile -- vision, mission, values,
+                quality policy, why it is here -- lives on one page, and this
+                is where a visitor who has just read the summary is ready to
+                ask for it. */}
+            <Link
+              href="/about"
+              className="group mt-4 inline-flex items-center gap-2 text-[length:var(--text-sm)] font-medium text-brand sm:mt-5"
+            >
+              Read more about the institute
+              <Arrow className="transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
           </Reveal>
 
-          <Reveal from="up" delay={0.12} className="prose-mg lg:col-span-8">
-            <p>{home.about.body}</p>
+          <Reveal from="up" delay={0.12} className="lg:col-span-6">
+            <Link
+              href={DIRECTOR.href}
+              className="group block overflow-hidden rounded-xl border border-rule bg-shell transition-all duration-500 hover:border-parchment hover:shadow-lift"
+            >
+              <div className="relative aspect-[3/2] w-full overflow-hidden">
+                <CardImage
+                  src={DIRECTOR.image}
+                  sizes="(max-width: 1024px) 100vw, 44vw"
+                  fit="cover"
+                />
+              </div>
+              <div className="p-4 sm:p-6">
+                <h2 className="text-[length:var(--text-xl)]">{DIRECTOR.title}</h2>
+                <p className="mt-1.5 text-[length:var(--text-xs)] leading-relaxed text-slate sm:mt-2.5 sm:text-[length:var(--text-sm)]">
+                  {DIRECTOR.body}
+                </p>
+                <span className="mt-2.5 inline-flex items-center gap-1.5 text-[length:var(--text-xs)] font-medium text-brand sm:mt-4 sm:text-[length:var(--text-sm)]">
+                  Read more
+                  <Arrow className="transition-transform duration-300 group-hover:translate-x-1" />
+                </span>
+              </div>
+            </Link>
           </Reveal>
         </div>
       </section>
 
-      {/* The institute */}
-      <section className="border-t border-rule bg-shell">
+      {/* News & Events, phone only. Beside the picture it needs a column of
+          its own, which a phone does not have; here it follows the
+          Director's Message, and the picture at the top of the page is no
+          longer trailed by a panel of small print before anything has been
+          said. The copy beside the hero is the same board, hidden below this
+          breakpoint. */}
+      <section className="border-t border-rule bg-paper sm:hidden">
         <div className="shell section-y">
-          <Reveal from="up" className="mb-6 sm:mb-9">
-            <p className="eyebrow mb-4">Explore</p>
-            <h2 className="text-[length:var(--text-3xl)]">The institute</h2>
-          </Reveal>
-
-          <Stagger className="grid gap-3 sm:gap-4 lg:grid-cols-2 lg:gap-5">
-            {INSTITUTE.map((item) => (
-              <StaggerItem key={item.href}>
-                <Link
-                  href={item.href}
-                  className="group flex h-full overflow-hidden rounded-xl border border-rule bg-paper transition-all duration-500 hover:border-parchment hover:shadow-lift"
-                >
-                  <div className="relative w-[36%] max-w-[9.5rem] shrink-0 overflow-hidden sm:w-[32%] sm:max-w-none">
-                    <CardImage
-                      src={item.image}
-                      sizes="(max-width: 1024px) 40vw, 18vw"
-                      fit="cover"
-                    />
-                  </div>
-                  <div className="flex min-w-0 flex-1 flex-col justify-center p-4 sm:p-5">
-                    <h3 className="text-[length:var(--text-lg)]">{item.title}</h3>
-                    <p className="mt-1.5 text-[length:var(--text-xs)] leading-relaxed text-slate sm:mt-2 sm:text-[length:var(--text-sm)]">
-                      {item.body}
-                    </p>
-                    <span className="mt-2.5 inline-flex items-center gap-1.5 text-[length:var(--text-xs)] font-medium text-brand sm:mt-3 sm:text-[length:var(--text-sm)]">
-                      Read more
-                      <Arrow className="transition-transform duration-300 group-hover:translate-x-1" />
-                    </span>
-                  </div>
-                </Link>
-              </StaggerItem>
-            ))}
-          </Stagger>
+          <NewsTicker items={home.news} />
         </div>
       </section>
 
@@ -269,36 +276,6 @@ export default function HomePage() {
           </div>
         </section>
       )}
-
-      {/* Discover more */}
-      <section className="border-t border-rule bg-shell">
-        <div className="shell section-y">
-          <Reveal from="up" className="mb-6 sm:mb-9">
-            <p className="eyebrow mb-4">Beyond the classroom</p>
-            <h2 className="text-[length:var(--text-3xl)]">Discover more</h2>
-          </Reveal>
-
-          <Stagger className="grid gap-3 sm:gap-4 lg:grid-cols-3 lg:gap-5">
-            {discover.map((d) => (
-              <StaggerItem key={d.title}>
-                <article className="group flex h-full overflow-hidden rounded-xl border border-rule bg-paper lg:flex-col">
-                  {d.image && (
-                    <div className="relative w-[36%] max-w-[9.5rem] shrink-0 overflow-hidden sm:w-[32%] sm:max-w-none lg:aspect-[16/10] lg:w-full lg:max-w-none">
-                      <CardImage src={d.image} sizes="(max-width: 1024px) 40vw, 30vw" />
-                    </div>
-                  )}
-                  <div className="flex min-w-0 flex-1 flex-col justify-center p-4 sm:p-5">
-                    <h3 className="text-[length:var(--text-lg)]">{d.title}</h3>
-                    <p className="mt-1.5 text-[length:var(--text-xs)] leading-relaxed text-slate sm:mt-2 sm:text-[length:var(--text-sm)]">
-                      {excerpt(d.body, 24)}
-                    </p>
-                  </div>
-                </article>
-              </StaggerItem>
-            ))}
-          </Stagger>
-        </div>
-      </section>
 
       {/* Campus life */}
       <section className="border-t border-rule bg-paper">

@@ -82,9 +82,15 @@ export function CallbackForm({ compact }: { compact?: boolean }) {
   const done = status === 'sent' || status === 'handoff';
 
   return (
+    /* Kept deliberately small at both ends. On a phone the card is held to a
+       narrower measure and given less of everything -- padding, gaps, field
+       height -- so the whole enquiry sits in about one screen instead of two.
+       On a wide screen it is still a four-field form rather than a page: at
+       the old padding and field height it stood two thirds of a screen tall
+       beside a three-line paragraph. */
     <div
-      className={`relative overflow-hidden rounded-2xl border border-rule bg-paper ${
-        compact ? 'p-6 sm:p-7' : 'p-7 sm:p-9'
+      className={`relative mx-auto w-full max-w-[21rem] overflow-hidden rounded-2xl border border-rule bg-paper sm:max-w-[30rem] ${
+        compact ? 'p-4 sm:p-5' : 'p-5 sm:p-6'
       }`}
     >
       <AnimatePresence mode="wait">
@@ -95,13 +101,13 @@ export function CallbackForm({ compact }: { compact?: boolean }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5, ease: EASE }}
-            className="py-6 text-center"
+            className="py-4 text-center sm:py-5"
           >
             <motion.span
               initial={{ scale: 0.6, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.08, ease: EASE }}
-              className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-brand-soft text-brand"
+              className="mx-auto mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-brand-soft text-brand sm:h-12 sm:w-12"
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
                 <motion.path
@@ -120,7 +126,7 @@ export function CallbackForm({ compact }: { compact?: boolean }) {
             <h3 className="text-[length:var(--text-2xl)]">
               {status === 'sent' ? 'Enquiry received' : 'Almost there'}
             </h3>
-            <p className="mx-auto mt-3 max-w-sm text-[length:var(--text-base)] leading-relaxed text-slate">
+            <p className="mx-auto mt-2.5 max-w-sm text-[length:var(--text-sm)] leading-relaxed text-slate sm:mt-3 sm:text-[length:var(--text-base)]">
               {status === 'sent'
                 ? 'Thank you. One of our counsellors will be in touch with you shortly.'
                 : `We have opened your email app with the enquiry ready to send to ${ENQUIRY_ADDRESS}. Send it and a counsellor will reply shortly.`}
@@ -128,7 +134,7 @@ export function CallbackForm({ compact }: { compact?: boolean }) {
             <button
               type="button"
               onClick={() => setStatus('idle')}
-              className="mt-6 text-[length:var(--text-sm)] font-medium text-ink underline decoration-rule underline-offset-4 transition-colors hover:text-brand"
+              className="mt-5 text-[length:var(--text-sm)] font-medium text-ink sm:mt-6 underline decoration-rule underline-offset-4 transition-colors hover:text-brand"
             >
               Send another enquiry
             </button>
@@ -143,18 +149,20 @@ export function CallbackForm({ compact }: { compact?: boolean }) {
             transition={{ duration: 0.35 }}
             noValidate
           >
-            <p className="eyebrow mb-3">Admissions</p>
-            <h3 className="mb-2 text-[clamp(1.3rem,2.2vw,1.6rem)]">Request a callback</h3>
-            <p className="mb-7 text-[length:var(--text-base)] leading-relaxed text-slate">
+            <p className="eyebrow mb-2 sm:mb-2.5">Admissions</p>
+            <h3 className="mb-1.5 text-[length:var(--text-xl)] sm:mb-2 sm:text-[clamp(1.2rem,1.7vw,1.4rem)]">
+              Request a callback
+            </h3>
+            <p className="mb-4 text-[length:var(--text-sm)] leading-relaxed text-slate sm:mb-5 sm:text-[length:var(--text-base)]">
               Tell us what you are considering and a counsellor will get back to you.
             </p>
 
-            <div className="grid gap-5 sm:grid-cols-2">
+            <div className="grid gap-3 sm:grid-cols-2 sm:gap-3.5">
               {FIELDS.map((f) => (
                 <div key={f.name} className={f.name === 'name' ? 'sm:col-span-2' : ''}>
                   <label
                     htmlFor={f.name}
-                    className="mb-2 block text-[length:var(--text-xs)] font-medium uppercase tracking-[0.1em] text-slate"
+                    className="mb-1.5 block text-[length:var(--text-2xs)] font-medium uppercase tracking-[0.1em] text-slate sm:text-[length:var(--text-xs)]"
                   >
                     {f.label}
                     {f.required && <span className="ml-1 text-brand">*</span>}
@@ -165,7 +173,7 @@ export function CallbackForm({ compact }: { compact?: boolean }) {
                     type={f.type}
                     required={f.required}
                     autoComplete={f.autoComplete}
-                    className="w-full rounded-lg border border-rule bg-shell px-4 py-3 text-[length:var(--text-base)] text-ink transition-all duration-300 placeholder:text-mist focus:border-brand focus:bg-paper focus:outline-none"
+                    className="w-full rounded-lg border border-rule bg-shell px-3 py-2.5 text-[length:var(--text-sm)] text-ink transition-all duration-300 placeholder:text-mist focus:border-brand focus:bg-paper focus:outline-none sm:px-3.5 sm:py-2 sm:text-[length:var(--text-base)]"
                   />
                 </div>
               ))}
@@ -173,16 +181,18 @@ export function CallbackForm({ compact }: { compact?: boolean }) {
               <div className="sm:col-span-2">
                 <label
                   htmlFor="message"
-                  className="mb-2 block text-[length:var(--text-xs)] font-medium uppercase tracking-[0.1em] text-slate"
+                  className="mb-1.5 block text-[length:var(--text-2xs)] font-medium uppercase tracking-[0.1em] text-slate sm:text-[length:var(--text-xs)]"
                 >
                   Your query<span className="ml-1 text-brand">*</span>
                 </label>
                 <textarea
                   id="message"
                   name="message"
-                  rows={4}
+                  rows={3}
                   required
-                  className="w-full resize-y rounded-lg border border-rule bg-shell px-4 py-3 text-[length:var(--text-base)] text-ink transition-all duration-300 placeholder:text-mist focus:border-brand focus:bg-paper focus:outline-none"
+                  /* Three rows of an empty box is mostly air on a wide screen,
+                     and the field grows as it is typed into either way. */
+                  className="w-full resize-y rounded-lg border border-rule bg-shell px-3 py-2.5 text-[length:var(--text-sm)] text-ink transition-all duration-300 placeholder:text-mist focus:border-brand focus:bg-paper focus:outline-none sm:h-[4.75rem] sm:px-3.5 sm:py-2 sm:text-[length:var(--text-base)]"
                 />
               </div>
             </div>
@@ -192,7 +202,7 @@ export function CallbackForm({ compact }: { compact?: boolean }) {
                 initial={{ opacity: 0, y: -6 }}
                 animate={{ opacity: 1, y: 0 }}
                 role="alert"
-                className="mt-4 rounded-lg bg-brand-soft px-4 py-3 text-[length:var(--text-sm)] text-brand-deep"
+                className="mt-3.5 rounded-lg bg-brand-soft px-3.5 py-2.5 text-[length:var(--text-sm)] text-brand-deep sm:mt-4 sm:px-4 sm:py-3"
               >
                 {error}
               </motion.p>
@@ -201,7 +211,7 @@ export function CallbackForm({ compact }: { compact?: boolean }) {
             <button
               type="submit"
               disabled={status === 'sending'}
-              className="group mt-7 inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-brand px-8 py-4 text-[length:var(--text-sm)] font-medium text-paper transition-colors duration-300 hover:bg-brand-deep disabled:cursor-not-allowed disabled:opacity-60"
+              className="group mt-5 inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-brand px-6 py-3 text-[length:var(--text-sm)] font-medium text-paper sm:mt-5 sm:px-8 sm:py-3 transition-colors duration-300 hover:bg-brand-deep disabled:cursor-not-allowed disabled:opacity-60"
             >
               {status === 'sending' ? (
                 <>
