@@ -16590,11 +16590,6 @@
           "title": "Photo Gallery",
           "image": "/media/download-2.jpg",
           "href": "/photo-gallery"
-        },
-        {
-          "title": "Recognition & Awards",
-          "image": "/media/images/awards.jpg",
-          "href": "/about"
         }
       ]
     }

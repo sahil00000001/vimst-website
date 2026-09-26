@@ -5,7 +5,7 @@ import { isPlate, Media } from '@/components/Media';
 import { Reveal, Stagger, StaggerItem } from '@/components/Motion';
 import { NewsTicker } from '@/components/NewsTicker';
 import { VideoFeature } from '@/components/VideoFeature';
-import { accreditations, courses, coursesByStream, home } from '@/lib/content';
+import { courses, coursesByStream, home } from '@/lib/content';
 import { CAMPUS_VIDEO, HERO_VIDEO } from '@/lib/media';
 
 /**
@@ -93,8 +93,8 @@ export default function HomePage() {
             Welcome to
             <span className="h-px w-5 bg-gold" />
           </p>
-          <p className="mt-1.5 font-display text-[length:var(--text-sm)] leading-snug text-brand">
-            Vivekananda Institute of Management Science and Technology
+          <p className="mt-1 font-display text-[length:var(--text-2xl)] leading-none tracking-[0.06em] text-brand">
+            VIMST
           </p>
         </div>
       </div>
@@ -117,7 +117,6 @@ export default function HomePage() {
               the top edge it read as having slipped upwards with a block of
               empty paper under it. */}
           <Reveal from="up" className="lg:col-span-6">
-            <p className="eyebrow mb-4">Welcome</p>
             <h2 className="text-[length:var(--text-3xl)]">About the college</h2>
             <div className="prose-mg mt-4 sm:mt-5">
               <p>{home.about.body}</p>
@@ -135,29 +134,40 @@ export default function HomePage() {
             </Link>
           </Reveal>
 
+          {/* Below the large breakpoint the message is set the way the
+              summary above it is -- picture, heading, paragraph, link -- as
+              part of the page rather than as a boxed card, which on a phone
+              read as a second, lesser block wedged under the first. The card
+              frame only returns beside the summary on a wide screen. */}
           <Reveal from="up" delay={0.12} className="lg:col-span-6">
-            <Link
-              href={DIRECTOR.href}
-              className="group block overflow-hidden rounded-xl border border-rule bg-shell transition-all duration-500 hover:border-parchment hover:shadow-lift"
-            >
-              <div className="relative aspect-[3/2] w-full overflow-hidden">
+            <div className="group lg:overflow-hidden lg:rounded-xl lg:border lg:border-rule lg:bg-shell lg:transition-all lg:duration-500 lg:hover:border-parchment lg:hover:shadow-lift">
+              <Link
+                href={DIRECTOR.href}
+                aria-label={DIRECTOR.title}
+                className="relative block aspect-[3/2] w-full overflow-hidden rounded-xl lg:rounded-none"
+              >
                 <CardImage
                   src={DIRECTOR.image}
                   sizes="(max-width: 1024px) 100vw, 44vw"
                   fit="cover"
                 />
-              </div>
-              <div className="p-4 sm:p-6">
-                <h2 className="text-[length:var(--text-xl)]">{DIRECTOR.title}</h2>
-                <p className="mt-1.5 text-[length:var(--text-xs)] leading-relaxed text-slate sm:mt-2.5 sm:text-[length:var(--text-sm)]">
-                  {DIRECTOR.body}
-                </p>
-                <span className="mt-2.5 inline-flex items-center gap-1.5 text-[length:var(--text-xs)] font-medium text-brand sm:mt-4 sm:text-[length:var(--text-sm)]">
+              </Link>
+              <div className="pt-6 sm:pt-7 lg:p-6">
+                <h2 className="text-[length:var(--text-3xl)] lg:text-[length:var(--text-xl)]">
+                  {DIRECTOR.title}
+                </h2>
+                <div className="prose-mg mt-4 sm:mt-5 lg:mt-2.5">
+                  <p>{DIRECTOR.body}</p>
+                </div>
+                <Link
+                  href={DIRECTOR.href}
+                  className="group/link mt-4 inline-flex items-center gap-2 text-[length:var(--text-sm)] font-medium text-brand sm:mt-5 lg:mt-4"
+                >
                   Read more
-                  <Arrow className="transition-transform duration-300 group-hover:translate-x-1" />
-                </span>
+                  <Arrow className="transition-transform duration-300 group-hover/link:translate-x-1" />
+                </Link>
               </div>
-            </Link>
+            </div>
           </Reveal>
         </div>
       </section>
@@ -226,43 +236,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Recognition. Twelve bodies is a lot of small print, and it is also the
-          most load-bearing thing on the page for someone deciding whether a
-          qualification from here will count for anything. Set as a grid of
-          short forms with the full name under each, it reads at a glance and
-          still says exactly what each one is. */}
-      <section className="border-t border-rule bg-shell">
-        <div className="shell section-y">
-          <Reveal from="up" className="mb-6 sm:mb-9">
-            <p className="eyebrow mb-4">Recognition</p>
-            <h2 className="text-[length:var(--text-3xl)]">
-              Quality and professional associations
-            </h2>
-            <p className="mt-3 max-w-[60ch] text-[length:var(--text-base)] leading-relaxed text-slate">
-              The institute is registered under an act of the Government of Andhra
-              Pradesh, India, and is associated with the following quality,
-              professional and accreditation frameworks, as applicable to the
-              respective programmes and certifications.
-            </p>
-          </Reveal>
-
-          <Stagger className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4">
-            {accreditations.map((a) => (
-              <StaggerItem key={a.abbr}>
-                <div className="flex h-full flex-col gap-1 rounded-xl border border-rule bg-paper p-3.5 sm:p-4">
-                  <p className="font-display text-[length:var(--text-base)] leading-snug text-brand">
-                    {a.abbr}
-                  </p>
-                  <p className="text-[length:var(--text-2xs)] leading-relaxed text-slate sm:text-[length:var(--text-xs)]">
-                    {a.name}
-                  </p>
-                </div>
-              </StaggerItem>
-            ))}
-          </Stagger>
-        </div>
-      </section>
-
       {CAMPUS_VIDEO && (
         <section className="border-t border-rule bg-paper">
           <div className="shell section-y">
@@ -285,7 +258,7 @@ export default function HomePage() {
             <h2 className="text-[length:var(--text-3xl)]">Campus life</h2>
           </Reveal>
 
-          <Stagger className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 lg:gap-5">
+          <Stagger className="grid grid-cols-2 gap-3 sm:gap-4 lg:gap-5">
             {home.campusLife.map((c) => (
               <StaggerItem key={c.title}>
                 <Link

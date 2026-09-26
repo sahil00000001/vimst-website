@@ -61,10 +61,7 @@ function programmeColumns(): NavColumn[] {
     {
       heading: 'More',
       accent: 'brand' as const,
-      links: [
-        { label: 'All Courses', href: '/courses' },
-        { label: 'Specializations', href: '/specializations' },
-      ],
+      links: [{ label: 'View all courses', href: '/courses' }],
     },
   ];
 }
@@ -83,12 +80,14 @@ function programmeColumns(): NavColumn[] {
 export function buildNav(): NavItem[] {
   return [
     { label: 'Home', href: '/' },
+    { label: 'Affiliation & Aggregation', href: '/affiliation-aggregation' },
     {
-      label: 'Programmes',
+      label: 'All Courses',
       href: '/courses',
       wide: true,
       columns: programmeColumns(),
     },
+    { label: 'Specializations', href: '/specializations' },
     /* Was an "Admission" menu of three. Two of them are gone, and a dropdown
        holding one link is just a link with an extra click in front of it. */
     { label: 'Check Your Result', href: '/enrollment-verification' },

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Arrow } from '@/components/Hero';
 import { Reveal, Stagger, StaggerItem } from '@/components/Motion';
 import { PageBanner } from '@/components/PageBanner';
-import { accreditations, courses, page as getPage } from '@/lib/content';
+import { courses, page as getPage } from '@/lib/content';
 
 export const metadata: Metadata = {
   title: 'About Us',
@@ -196,42 +196,6 @@ export default function AboutPage() {
             {ABOUT.map((p) => (
               <p key={p}>{p}</p>
             ))}
-          </Reveal>
-        </div>
-      </section>
-
-      {/* Quality and professional associations. The twelve bodies are the same
-          list the home page carries, read from the content data rather than
-          typed out again, so the two can never drift apart. */}
-      <section className="border-t border-rule bg-paper">
-        <div className="shell section-y">
-          <Reveal from="up" className="mb-6 sm:mb-9">
-            <p className="eyebrow mb-4">Recognition</p>
-            <h2 className="text-[length:var(--text-3xl)]">
-              Quality &amp; professional associations
-            </h2>
-          </Reveal>
-
-          <Stagger className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4">
-            {accreditations.map((a) => (
-              <StaggerItem key={a.abbr}>
-                <div className="flex h-full flex-col gap-1 rounded-xl border border-rule bg-shell p-3.5 sm:p-4">
-                  <p className="font-display text-[length:var(--text-base)] leading-snug text-brand">
-                    {a.abbr}
-                  </p>
-                  <p className="text-[length:var(--text-2xs)] leading-relaxed text-slate sm:text-[length:var(--text-xs)]">
-                    {a.name}
-                  </p>
-                </div>
-              </StaggerItem>
-            ))}
-          </Stagger>
-
-          <Reveal from="up" delay={0.1}>
-            <p className="mt-5 max-w-[68ch] text-[length:var(--text-sm)] leading-relaxed text-slate">
-              And other relevant educational, professional, quality, and accreditation
-              frameworks, as applicable.
-            </p>
           </Reveal>
         </div>
       </section>

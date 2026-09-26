@@ -130,7 +130,7 @@ export function Navbar({ nav }: { nav: NavItem[] }) {
               className={`w-auto transition-all duration-500 ${
                 scrolled
                   ? 'h-14 sm:h-16 lg:h-20 xl:h-16 2xl:h-20'
-                  : 'h-[clamp(4.5rem,21vw,6.5rem)] sm:h-[6.5rem] lg:h-28 xl:h-[5.75rem] 2xl:h-28'
+                  : 'h-[clamp(4.5rem,21vw,6.5rem)] sm:h-[6.5rem] lg:h-28 xl:h-20 2xl:h-28'
               }`}
             />
           </Link>
@@ -155,9 +155,10 @@ export function Navbar({ nav }: { nav: NavItem[] }) {
                     aria-expanded={hasMenu ? showing : undefined}
                     /* Tighter horizontal padding at `xl` than at `2xl`: the
                        eight items and the button share the row with the mark,
-                       and 4px either side of each item is 64px given back to
-                       the logo at the one width where the row is tight. */
-                    className={`relative flex items-center gap-1.5 rounded-lg px-2 py-2 text-[length:var(--text-sm)] font-medium tracking-tight transition-colors duration-300 2xl:px-3 ${
+                       and the padding given up is room for the longer labels
+                       to stay on one line at the one width where the row is
+                       tight. */
+                    className={`relative flex items-center gap-1.5 whitespace-nowrap rounded-lg px-1.5 py-2 text-[length:var(--text-sm)] font-medium tracking-tight transition-colors duration-300 2xl:px-3 ${
                       active || showing ? 'text-brand' : 'text-graphite hover:text-ink'
                     }`}
                   >
@@ -202,7 +203,7 @@ export function Navbar({ nav }: { nav: NavItem[] }) {
 
             <Link
               href="/contact"
-              className="group relative ml-3 inline-flex items-center gap-2 overflow-hidden rounded-full bg-brand px-5 py-2.5 text-[length:var(--text-sm)] font-medium text-paper"
+              className="group relative ml-2 inline-flex items-center gap-2 overflow-hidden whitespace-nowrap rounded-full bg-brand px-5 py-2.5 2xl:ml-3 text-[length:var(--text-sm)] font-medium text-paper"
             >
               {/* The brand navy sweeps in from the left on hover. */}
               <span

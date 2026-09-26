@@ -348,7 +348,6 @@ const siteHome = {
   campusLife: [
     { title: 'Placement at VIMST', image: asset('images/placement.jpg'), href: '/placement' },
     { title: 'Photo Gallery', image: asset('download (2).jpg'), href: '/photo-gallery' },
-    { title: 'Recognition & Awards', image: asset('images/AWARDS.jpg'), href: '/about' },
   ].filter((c) => c.image),
 };
 

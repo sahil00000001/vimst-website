@@ -267,7 +267,7 @@ export function MobileNav({
                   onClick={onClose}
                   className="flex items-center justify-center rounded-full border border-rule px-6 py-3.5 text-[length:var(--text-sm)] font-medium text-ink transition-colors hover:border-ink"
                 >
-                  Explore programmes
+                  Explore all courses
                 </Link>
               </div>
 
