@@ -104,7 +104,7 @@ export function CourseExplorer({ courses }: { courses: Course[] }) {
 
   return (
     <div>
-      <div className="sticky top-[60px] z-30 -mx-5 mb-8 border-y border-rule bg-shell/95 px-5 py-3.5 backdrop-blur-md sm:top-[68px] sm:mb-10 sm:-mx-8 sm:px-8 sm:py-5">
+      <div className="sticky top-[60px] z-30 -mx-5 mb-8 border-y border-rule bg-shell/95 px-5 py-3.5 backdrop-blur-md sm:top-[68px] sm:mb-10 lg:mb-7 sm:-mx-8 sm:px-8 sm:py-5">
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-3.5">
             <FilterRow

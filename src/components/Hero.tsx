@@ -127,7 +127,7 @@ export function Hero({
         Vivekananda Institute of Management Science and Technology
       </h1>
 
-      <div className="shell grid gap-4 pb-7 pt-5 sm:gap-6 sm:pb-10 sm:pt-7 lg:grid-cols-12 lg:items-stretch lg:gap-8 lg:pb-14 lg:pt-10">
+      <div className="shell grid gap-4 pb-7 pt-5 sm:gap-6 sm:pb-10 sm:pt-7 lg:grid-cols-12 lg:items-stretch lg:gap-8 lg:pb-8 lg:pt-6">
         {/* Imagery. First on a phone too -- a photograph of the place says where
             you have arrived faster than any line of type does, and it puts
             something recognisable above the fold at any screen height. */}

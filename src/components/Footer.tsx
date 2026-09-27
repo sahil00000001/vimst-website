@@ -37,7 +37,7 @@ export function Footer() {
   return (
     <footer className="mt-auto border-t border-rule bg-paper">
       <div className="shell">
-        <div className="grid grid-cols-2 gap-x-6 gap-y-8 py-9 lg:grid-cols-12 lg:gap-10 lg:py-16">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-8 py-9 lg:grid-cols-12 lg:gap-10 lg:py-10">
           {/* Identity */}
           <Reveal className="col-span-2 lg:col-span-4" from="up">
             <Media
@@ -83,7 +83,7 @@ export function Footer() {
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="-mx-1 block rounded px-1 py-3 text-[length:var(--text-sm)] text-graphite transition-colors hover:text-brand"
+                    className="-mx-1 block rounded px-1 py-3 text-[length:var(--text-sm)] lg:py-1.5 text-graphite transition-colors hover:text-brand"
                   >
                     {l.label}
                   </Link>
@@ -101,7 +101,7 @@ export function Footer() {
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="-mx-1 block rounded px-1 py-3 text-[length:var(--text-sm)] text-graphite transition-colors hover:text-brand"
+                    className="-mx-1 block rounded px-1 py-3 text-[length:var(--text-sm)] lg:py-1.5 text-graphite transition-colors hover:text-brand"
                   >
                     {l.label}
                   </Link>
@@ -120,7 +120,7 @@ export function Footer() {
                 by side they read as one block and cost half the height. Each
                 address is labelled, so what to use each one for is legible
                 without opening the contact page. */}
-            <address className="grid grid-cols-2 gap-x-5 gap-y-4 not-italic text-[length:var(--text-sm)] text-graphite lg:grid-cols-1 lg:gap-y-0">
+            <address className="grid grid-cols-2 gap-x-5 gap-y-4 not-italic text-[length:var(--text-sm)] text-graphite lg:grid-cols-1 lg:gap-y-1.5">
               {CONTACT.map((c) => (
                 <div key={c.label} className="min-w-0">
                   <p className="text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.12em] text-mist">
@@ -129,12 +129,12 @@ export function Footer() {
                   {c.href ? (
                     <a
                       href={c.href}
-                      className="-mx-1 mt-0.5 block break-words rounded px-1 py-2 transition-colors hover:text-brand"
+                      className="-mx-1 mt-0.5 block break-words rounded px-1 py-2 transition-colors lg:py-1 hover:text-brand"
                     >
                       {c.value}
                     </a>
                   ) : (
-                    <p className="mt-0.5 py-2 text-slate">{c.value}</p>
+                    <p className="mt-0.5 py-2 text-slate lg:py-1">{c.value}</p>
                   )}
                 </div>
               ))}

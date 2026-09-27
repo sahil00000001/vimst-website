@@ -34,7 +34,7 @@ export default function PlacementPage() {
 
       <section className="bg-shell">
         <div className="shell pb-14 sm:pb-16">
-          <div className="rounded-b-2xl border border-t-0 border-rule bg-paper px-5 py-10 sm:px-10 sm:py-12 lg:px-14">
+          <div className="rounded-b-2xl border border-t-0 border-rule bg-paper px-5 py-10 sm:px-10 sm:py-12 lg:px-10 lg:py-8">
             <div className="grid gap-10 lg:grid-cols-12">
               <Reveal from="right" className="lg:col-span-7">
                 <p className="eyebrow mb-5">Placement Cell</p>
@@ -82,7 +82,7 @@ export default function PlacementPage() {
       {logos.length > 0 && (
         <section className="border-t border-rule bg-paper">
           <div className="shell section-y">
-            <Reveal from="up" className="mb-12">
+            <Reveal from="up" className="mb-12 lg:mb-8">
               <p className="eyebrow mb-5">Where our students go</p>
               <h2 className="max-w-2xl text-[length:var(--text-3xl)]">
                 Organisations that have <em className="not-italic text-brand">recruited</em>{' '}
@@ -118,7 +118,7 @@ export default function PlacementPage() {
       )}
 
       <section className="border-t border-rule bg-paper">
-        <div className="mx-auto flex max-w-[1400px] flex-col items-start justify-between gap-8 px-5 py-16 sm:px-8 lg:flex-row lg:items-center">
+        <div className="mx-auto flex max-w-[1400px] flex-col items-start justify-between gap-8 px-5 py-16 sm:px-8 lg:flex-row lg:py-10 lg:items-center">
           <Reveal from="right">
             <h2 className="max-w-xl text-[length:var(--text-3xl)]">
               Start with the right <em className="not-italic text-brand">programme</em>

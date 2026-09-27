@@ -43,7 +43,7 @@ export function Figure({
 /** A lead picture, set beside the opening of a page rather than within it. */
 export function LeadFigure({ figure }: { figure: FigureData }) {
   return (
-    <Reveal from="up" as="figure" className="mb-10">
+    <Reveal from="up" as="figure" className="mb-10 lg:mb-7">
       {/* 3:2, not the letterbox this used to be. A lead picture on these pages
           is a photograph of a person or a place, and a 21:9 crop takes the top
           of a head off to gain width nothing needed. */}

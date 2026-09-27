@@ -233,7 +233,7 @@ export function ContentBlocks({
   let sectionIndex = 0;
 
   return (
-    <div className="space-y-10 sm:space-y-14">
+    <div className="space-y-10 sm:space-y-14 lg:space-y-9">
       {list.map((block, i) => {
         if (block.type === 'table') {
           return <CurriculumTable key={i} caption={block.caption} rows={block.rows} />;

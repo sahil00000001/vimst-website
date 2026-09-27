@@ -216,6 +216,15 @@
   .section-y {
     padding-block: clamp(2rem, 5.2vw, 5.5rem);
   }
+
+  /* On a desktop the same padding left 75-88px above and below every band,
+     so a page read as islands in empty paper. Phones and tablets keep the
+     value above untouched. */
+  @media (min-width: 1024px) {
+    .section-y {
+      padding-block: 3rem;
+    }
+  }
 }
 
 /* ------------------------------------------------------------------

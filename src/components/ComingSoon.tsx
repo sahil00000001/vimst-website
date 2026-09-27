@@ -22,8 +22,8 @@ export function ComingSoon({
       <PageBanner eyebrow={eyebrow} title={title} image={image} crumbs={[{ label: title }]} wide />
 
       <section className="bg-shell">
-        <div className="shell pb-16 sm:pb-20 lg:pb-28">
-          <div className="rounded-b-2xl border border-t-0 border-rule bg-paper px-5 py-10 sm:px-10 sm:py-14 lg:px-14">
+        <div className="shell pb-16 sm:pb-20 lg:pb-12">
+          <div className="rounded-b-2xl border border-t-0 border-rule bg-paper px-5 py-10 sm:px-10 sm:py-14 lg:px-10 lg:py-9">
             <Reveal from="up" className="mx-auto max-w-xl text-center">
               <p className="eyebrow mb-4">Coming soon</p>
               <h2 className="text-[length:var(--text-3xl)]">We are working on it</h2>

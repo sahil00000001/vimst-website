@@ -25,9 +25,9 @@ export default function PhotoGalleryPage() {
       />
 
       <section className="bg-shell">
-        <div className="shell pb-16 sm:pb-20 lg:pb-28">
-          <div className="rounded-b-2xl border border-t-0 border-rule bg-paper px-3.5 py-8 sm:px-10 sm:py-12 lg:px-14">
-            <Reveal from="up" className="mb-6 flex items-baseline justify-between gap-4 px-1.5 sm:mb-10 sm:px-0">
+        <div className="shell pb-16 sm:pb-20 lg:pb-12">
+          <div className="rounded-b-2xl border border-t-0 border-rule bg-paper px-3.5 py-8 sm:px-10 sm:py-12 lg:px-10 lg:py-8">
+            <Reveal from="up" className="mb-6 flex items-baseline justify-between gap-4 px-1.5 sm:mb-10 sm:px-0 lg:mb-6">
               <p className="eyebrow">Gallery</p>
               <p className="text-[length:var(--text-sm)] tabular-nums text-mist">
                 {data.images.length} photographs

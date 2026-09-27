@@ -50,7 +50,7 @@ export function PageBanner({
         /* 240px of banner on an 844px phone is nearly a third of the screen spent
            before the page has said anything. Two thirds of that still reads as a
            banner, and the card below it starts above the fold. */
-        className="relative h-[24vh] min-h-[160px] w-full overflow-hidden bg-linen sm:h-[40vh] sm:min-h-[300px]"
+        className="relative h-[24vh] min-h-[160px] w-full overflow-hidden bg-linen sm:h-[40vh] sm:min-h-[300px] lg:h-[200px] lg:min-h-0"
       >
         {image ? (
           <motion.div
@@ -67,7 +67,7 @@ export function PageBanner({
         <div className="absolute inset-0 bg-gradient-to-r from-paper/60 to-transparent" />
       </div>
 
-      <div className="shell relative -mt-24 pb-2 sm:-mt-32">
+      <div className="shell relative -mt-24 pb-2 sm:-mt-32 lg:-mt-24">
         <div className={wide ? '' : 'grid lg:grid-cols-12 lg:gap-14'}>
           <motion.div
             className={wide ? '' : 'lg:col-span-8'}
@@ -76,12 +76,12 @@ export function PageBanner({
             transition={{ duration: 0.85, ease: EASE }}
           >
             <div
-              className={`border border-rule bg-paper px-5 pb-7 pt-7 shadow-[0_-24px_56px_-44px_rgba(22,21,26,0.45)] sm:px-10 sm:pb-8 sm:pt-10 ${
+              className={`border border-rule bg-paper px-5 pb-7 pt-7 shadow-[0_-24px_56px_-44px_rgba(22,21,26,0.45)] sm:px-10 sm:pb-8 sm:pt-10 lg:pb-6 lg:pt-7 ${
                 attached ? 'rounded-t-2xl border-b-0' : 'rounded-2xl'
               }`}
             >
               {crumbs.length > 0 && (
-                <nav aria-label="Breadcrumb" className="mb-4">
+                <nav aria-label="Breadcrumb" className="mb-4 lg:mb-3">
                   <ol className="-my-3 flex flex-wrap items-center gap-x-2 text-[length:var(--text-xs)] text-slate">
                     <li>
                       <Link href="/" className="inline-block py-3 transition-colors hover:text-brand">
@@ -114,7 +114,7 @@ export function PageBanner({
 
               {intro && (
                 <motion.p
-                  className="mt-5 max-w-[62ch] text-[length:var(--text-lg)] leading-relaxed text-slate"
+                  className="mt-5 max-w-[62ch] text-[length:var(--text-lg)] lg:mt-3 leading-relaxed text-slate"
                   initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.7, delay: 0.35, ease: EASE }}

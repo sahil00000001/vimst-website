@@ -51,10 +51,10 @@ export function EditorialPage({
       />
 
       <section className="bg-shell">
-        <div className="shell pb-16 sm:pb-20 lg:pb-28">
+        <div className="shell pb-16 sm:pb-20 lg:pb-12">
           <div className="grid gap-12 lg:grid-cols-12 lg:gap-14">
             <div className="lg:col-span-8">
-              <div className="rounded-b-2xl border border-t-0 border-rule bg-paper px-5 py-10 sm:px-10 sm:py-12 lg:px-12">
+              <div className="rounded-b-2xl border border-t-0 border-rule bg-paper px-5 py-10 sm:px-10 sm:py-12 lg:px-10 lg:py-8">
                 {lead && <LeadFigure figure={lead} />}
                 <ContentBlocks blocks={data.blocks} skipLeadHeading={heading} />
                 {figures.length > 0 && (

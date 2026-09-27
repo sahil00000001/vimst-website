@@ -64,11 +64,11 @@ export default async function CoursePage({ params }: Params) {
       />
 
       <section className="bg-shell">
-        <div className="shell pb-16 sm:pb-20 lg:pb-28">
+        <div className="shell pb-16 sm:pb-20 lg:pb-12">
           <div className="grid gap-12 lg:grid-cols-12 lg:gap-14">
             {/* Body */}
             <div className="lg:col-span-8">
-              <div className="rounded-b-2xl border border-t-0 border-rule bg-paper px-5 py-10 sm:px-10 sm:py-12 lg:px-12">
+              <div className="rounded-b-2xl border border-t-0 border-rule bg-paper px-5 py-10 sm:px-10 sm:py-12 lg:px-10 lg:py-8">
                 <ContentBlocks blocks={course.blocks} skipLeadHeading={course.title} />
               </div>
             </div>
@@ -147,7 +147,7 @@ export default async function CoursePage({ params }: Params) {
       {related.length > 0 && (
         <section className="border-t border-rule bg-paper">
           <div className="shell section-y">
-            <Reveal from="up" className="mb-10">
+            <Reveal from="up" className="mb-10 lg:mb-7">
               <p className="eyebrow mb-4">Also consider</p>
               <h2 className="text-[length:var(--text-3xl)]">Related programmes</h2>
             </Reveal>

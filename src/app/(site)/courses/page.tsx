@@ -28,7 +28,7 @@ export default function CoursesPage() {
       />
 
       <section className="bg-shell">
-        <div className="shell pb-16 pt-12 sm:pb-20 lg:pb-28">
+        <div className="shell pb-16 pt-12 sm:pb-20 lg:pb-12 lg:pt-8">
           <Suspense fallback={<div className="py-20 text-center text-slate">Loading…</div>}>
             <CourseExplorer courses={sorted} />
           </Suspense>

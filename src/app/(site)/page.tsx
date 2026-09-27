@@ -187,7 +187,7 @@ export default function HomePage() {
       {/* Programmes */}
       <section className="border-t border-rule bg-paper">
         <div className="shell section-y">
-          <Reveal from="up" className="mb-6 sm:mb-9">
+          <Reveal from="up" className="mb-6 sm:mb-9 lg:mb-6">
             <p className="eyebrow mb-4">What we teach</p>
             <h2 className="text-[length:var(--text-3xl)]">Programmes</h2>
             <p className="mt-3 max-w-[54ch] text-[length:var(--text-base)] leading-relaxed text-slate">
@@ -243,7 +243,7 @@ export default function HomePage() {
           still says exactly what each one is. */}
       <section className="border-t border-rule bg-shell">
         <div className="shell section-y">
-          <Reveal from="up" className="mb-6 sm:mb-9">
+          <Reveal from="up" className="mb-6 sm:mb-9 lg:mb-6">
             <p className="eyebrow mb-4">Recognition</p>
             <h2 className="text-[length:var(--text-3xl)]">
               Quality and professional associations
@@ -290,7 +290,7 @@ export default function HomePage() {
       {/* Campus life */}
       <section className="border-t border-rule bg-paper">
         <div className="shell section-y">
-          <Reveal from="up" className="mb-6 sm:mb-9">
+          <Reveal from="up" className="mb-6 sm:mb-9 lg:mb-6">
             <p className="eyebrow mb-4">On campus</p>
             <h2 className="text-[length:var(--text-3xl)]">Campus life</h2>
           </Reveal>

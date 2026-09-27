@@ -48,11 +48,11 @@ export default function SpecializationsPage() {
       />
 
       <section className="bg-shell">
-        <div className="shell pb-16 sm:pb-20 lg:pb-28">
-          <div className="rounded-b-2xl border border-t-0 border-rule bg-paper px-5 py-10 sm:px-10 sm:py-12 lg:px-14">
+        <div className="shell pb-16 sm:pb-20 lg:pb-12">
+          <div className="rounded-b-2xl border border-t-0 border-rule bg-paper px-5 py-10 sm:px-10 sm:py-12 lg:px-10 lg:py-8">
             <SpecializationList names={names} />
 
-            <Reveal from="up" className="mt-14 rounded-xl border border-rule bg-shell p-8">
+            <Reveal from="up" className="mt-14 rounded-xl border border-rule bg-shell p-8 lg:mt-8 lg:p-6">
               <h2 className="text-[length:var(--text-xl)]">Not sure which to pick?</h2>
               <p className="mt-3 max-w-xl text-[length:var(--text-base)] leading-relaxed text-slate">
                 Specializations sit alongside your main programme. Browse the course

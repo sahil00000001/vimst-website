@@ -22,8 +22,8 @@ export default function EnrollmentVerificationPage() {
       />
 
       <section className="bg-shell">
-        <div className="shell pb-16 sm:pb-20 lg:pb-28">
-          <div className="rounded-b-2xl border border-t-0 border-rule bg-paper px-5 py-10 sm:px-10 sm:py-12 lg:px-14">
+        <div className="shell pb-16 sm:pb-20 lg:pb-12">
+          <div className="rounded-b-2xl border border-t-0 border-rule bg-paper px-5 py-10 sm:px-10 sm:py-12 lg:px-10 lg:py-8">
             <EnrollmentVerification />
           </div>
         </div>

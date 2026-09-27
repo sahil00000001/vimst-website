@@ -205,7 +205,7 @@ export default function AboutPage() {
           the one the quality policy draws on. */}
       <section className="border-t border-rule bg-paper">
         <div className="shell section-y">
-          <Reveal from="up" className="mb-6 sm:mb-9">
+          <Reveal from="up" className="mb-6 sm:mb-9 lg:mb-6">
             <p className="eyebrow mb-4">Recognition</p>
             <h2 className="text-[length:var(--text-3xl)]">
               Quality &amp; professional associations
@@ -261,7 +261,7 @@ export default function AboutPage() {
       {/* Core values */}
       <section className="border-t border-rule bg-paper">
         <div className="shell section-y">
-          <Reveal from="up" className="mb-6 sm:mb-9">
+          <Reveal from="up" className="mb-6 sm:mb-9 lg:mb-6">
             <p className="eyebrow mb-4">What we hold to</p>
             <h2 className="text-[length:var(--text-3xl)]">Our core values</h2>
           </Reveal>
@@ -334,7 +334,7 @@ export default function AboutPage() {
           identical cards read as a list nobody counted. */}
       <section className="border-t border-rule bg-shell">
         <div className="shell section-y">
-          <Reveal from="up" className="mb-6 sm:mb-9">
+          <Reveal from="up" className="mb-6 sm:mb-9 lg:mb-6">
             <p className="eyebrow mb-4">Why here</p>
             <h2 className="max-w-[24ch] text-[length:var(--text-3xl)]">
               Why choose Vivekananda Institute of Management Science and Technology?
