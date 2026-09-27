@@ -31,8 +31,11 @@ export type EditorialPage = {
   images: { src: string; alt: string }[];
 };
 
+/** One picture in the home page carousel, with the label set over it. */
+export type HeroSlide = { src: string; label: string };
+
 export type HomeContent = {
-  carousel: string[];
+  carousel: HeroSlide[];
   news: string[];
   about: { heading: string; body: string; image: string | null };
   director: { heading: string; body: string; image: string | null };

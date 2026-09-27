@@ -5,9 +5,15 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { EASE } from './Motion';
 import { Media } from './Media';
 import { VideoFeature } from './VideoFeature';
+import type { HeroSlide } from '@/lib/content';
 import type { VideoSlot } from '@/lib/media';
 
-const INTERVAL = 6400;
+/** How long each photograph holds before the next one comes in. */
+const INTERVAL = 6000;
+/** The crossfade between two photographs, in seconds. */
+const FADE = 1.1;
+/** A horizontal drag longer than this, in px, turns the carousel on a phone. */
+const SWIPE = 40;
 
 export function Arrow({ className = '' }: { className?: string }) {
   return (
@@ -47,7 +53,7 @@ export function Hero({
   video = null,
   children,
 }: {
-  slides: string[];
+  slides: HeroSlide[];
   /** When a film exists it replaces the carousel: it says more than six stills. */
   video?: VideoSlot | null;
   /** Rendered in the right-hand column beside the picture. */
@@ -72,11 +78,41 @@ export function Hero({
     [count]
   );
 
+  /* Held while the tab is in the background, so nobody comes back to a
+     carousel that has raced on without them. */
+  const [hidden, setHidden] = useState(false);
   useEffect(() => {
-    if (paused || count < 2) return;
-    const id = setInterval(() => setIndex((i) => (i + 1) % count), INTERVAL);
-    return () => clearInterval(id);
-  }, [paused, count]);
+    const onVis = () => setHidden(document.hidden);
+    document.addEventListener('visibilitychange', onVis);
+    return () => document.removeEventListener('visibilitychange', onVis);
+  }, []);
+
+  /* A timeout per slide rather than one interval, so a tap on a bar, an
+     arrow or a swipe gives the new picture its full time instead of cutting
+     it short on the old schedule. */
+  const running = !paused && !hidden && count > 1 && !video;
+  useEffect(() => {
+    if (!running) return;
+    const id = setTimeout(() => setIndex((i) => (i + 1) % count), INTERVAL);
+    return () => clearTimeout(id);
+  }, [running, index, count]);
+
+  /* Swipe on a phone. Only a clearly horizontal drag counts, so a thumb
+     scrolling the page past the picture never turns it by accident. */
+  const touch = useRef<{ x: number; y: number } | null>(null);
+  const onTouchStart = (e: React.TouchEvent) => {
+    const t = e.touches[0];
+    touch.current = { x: t.clientX, y: t.clientY };
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    const start = touch.current;
+    touch.current = null;
+    if (!start || count < 2) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - start.x;
+    const dy = t.clientY - start.y;
+    if (Math.abs(dx) > SWIPE && Math.abs(dx) > Math.abs(dy) * 1.4) go(index + (dx < 0 ? 1 : -1));
+  };
 
   return (
     <section
@@ -96,9 +132,15 @@ export function Hero({
             you have arrived faster than any line of type does, and it puts
             something recognisable above the fold at any screen height. */}
         <motion.div
-          className="lg:col-span-7"
+          /* Sideways drags here belong to the carousel, not the browser:
+             without this a swipe to the right is also read as the browser's
+             own back gesture and leaves the page. Vertical scrolling is
+             untouched. */
+          className="touch-pan-y overscroll-x-contain lg:col-span-7"
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
         >
           <motion.div
             /* Wider as the screen gets wider, so the picture and the notice
@@ -120,89 +162,136 @@ export function Hero({
                   className="border-0"
                 />
               ) : (
-                <AnimatePresence mode="sync">
-                  <motion.div
-                    key={index}
-                    className="absolute inset-0"
-                    initial={{ opacity: 0, scale: 1.06 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 1.2, ease: EASE }}
-                  >
-                    <Media
-                      src={slides[index]}
-                      fill
-                      priority={index === 0}
-                      sizes="(max-width: 1024px) 100vw, 58vw"
-                      className="object-cover"
-                    />
-                  </motion.div>
-                </AnimatePresence>
+                /* Every photograph is mounted from the start and stacked, so
+                   the next one has already loaded by the time it is asked
+                   for and a crossfade never fades into an empty frame. The
+                   one showing drifts slowly closer while it holds; its zoom
+                   only resets once it has faded out, so the reset is never
+                   seen. */
+                slides.map((slide, i) => {
+                  const on = i === index;
+                  return (
+                    <motion.div
+                      key={slide.src}
+                      className="absolute inset-0"
+                      aria-hidden={!on}
+                      initial={false}
+                      animate={{
+                        opacity: on ? 1 : 0,
+                        scale: on ? 1.07 : 1,
+                        transition: {
+                          opacity: { duration: FADE, ease: EASE },
+                          scale: on
+                            ? { duration: INTERVAL / 1000 + FADE, ease: 'linear' }
+                            : { delay: FADE, duration: 0 },
+                        },
+                      }}
+                      style={{ zIndex: on ? 1 : 0 }}
+                    >
+                      <Media
+                        src={slide.src}
+                        alt={slide.label}
+                        fill
+                        priority={i === 0}
+                        loading={i === 0 ? undefined : 'eager'}
+                        sizes="(max-width: 1024px) 100vw, 58vw"
+                        className="object-cover"
+                      />
+                    </motion.div>
+                  );
+                })
               )}
             </motion.div>
 
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/30 via-transparent to-transparent" />
+            {/* Deeper at the foot, where the label and the controls sit, so
+                white type reads over a sky or a white lab coat alike. */}
+            <div className="pointer-events-none absolute inset-0 z-[2] bg-gradient-to-t from-ink/65 via-ink/10 via-45% to-transparent" />
 
-            {/* Controls, only meaningful when there is more than one still */}
-            <div
-              className={`absolute inset-x-0 bottom-0 flex items-center justify-between gap-4 p-3 sm:p-4 ${
-                video || count < 2 ? 'hidden' : ''
-              }`}
-            >
-              <div className="flex items-center gap-1.5" role="tablist" aria-label="Slides">
-                {slides.map((_, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    role="tab"
-                    aria-selected={i === index}
-                    aria-label={`Slide ${i + 1}`}
-                    onClick={() => go(i)}
-                    className="group flex h-11 items-center px-1.5"
-                  >
-                    <span
-                      className={`block h-[3px] overflow-hidden rounded-full transition-all duration-500 ${
-                        i === index ? 'w-9 bg-paper/40' : 'w-3 bg-paper/45 group-hover:bg-paper/80'
-                      }`}
+            {!video && count > 1 && (
+              <div className="absolute inset-x-0 bottom-0 z-[3] flex items-end justify-between gap-3 p-3.5 sm:p-5">
+                <div className="min-w-0">
+                  {/* The label for the picture showing, in the site's gold
+                      hairline style, brought in just after the picture. */}
+                  <div className="relative h-5 overflow-hidden sm:h-6">
+                    <AnimatePresence mode="wait" initial={false}>
+                      <motion.p
+                        key={index}
+                        className="flex items-center gap-2 whitespace-nowrap text-[length:var(--text-2xs)] font-semibold uppercase tracking-[0.18em] text-paper sm:text-[length:var(--text-xs)]"
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.25, ease: EASE } }}
+                        exit={{ opacity: 0, y: -8, transition: { duration: 0.3, ease: EASE } }}
+                      >
+                        <span className="h-px w-5 bg-gold" aria-hidden />
+                        {slides[index].label}
+                        <span className="font-normal tabular-nums tracking-[0.1em] text-paper/60">
+                          {String(index + 1).padStart(2, '0')} / {String(count).padStart(2, '0')}
+                        </span>
+                      </motion.p>
+                    </AnimatePresence>
+                  </div>
+
+                  {/* Progress: the bar for the picture showing fills over its
+                      time on screen, so the carousel says when it will move. */}
+                  <div className="-mb-3 -ml-1.5 mt-0.5 flex items-center" role="tablist" aria-label="Slides">
+                    {slides.map((slide, i) => (
+                      <button
+                        key={slide.src}
+                        type="button"
+                        role="tab"
+                        aria-selected={i === index}
+                        aria-label={`${slide.label}, slide ${i + 1} of ${count}`}
+                        onClick={() => go(i)}
+                        className="group flex h-9 items-center px-1.5 sm:h-11"
+                      >
+                        <span
+                          className={`block h-[3px] overflow-hidden rounded-full transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                            i === index ? 'w-10 bg-paper/35 sm:w-12' : 'w-4 bg-paper/50 group-hover:bg-paper/85'
+                          }`}
+                        >
+                          {i === index && (
+                            <motion.span
+                              key={`${index}-${running}`}
+                              className="block h-full origin-left rounded-full bg-paper"
+                              initial={{ scaleX: 0 }}
+                              animate={{ scaleX: running ? 1 : 0 }}
+                              transition={{ duration: running ? INTERVAL / 1000 : 0, ease: 'linear' }}
+                            />
+                          )}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Arrows from the small breakpoint up. On a phone the frame is
+                    too short to give two 44px buttons room without covering
+                    the picture, and a swipe does the same job there. */}
+                <div className="hidden shrink-0 items-center gap-2 sm:flex">
+                  {[
+                    { label: 'Previous slide', delta: -1, d: 'M8 1.5L3.5 6 8 10.5' },
+                    { label: 'Next slide', delta: 1, d: 'M4 1.5L8.5 6 4 10.5' },
+                  ].map((b) => (
+                    <button
+                      key={b.label}
+                      type="button"
+                      aria-label={b.label}
+                      onClick={() => go(index + b.delta)}
+                      className="flex h-11 w-11 items-center justify-center rounded-full border border-paper/30 bg-paper/15 text-paper backdrop-blur-md transition-all duration-300 hover:scale-105 hover:border-paper hover:bg-paper hover:text-brand"
                     >
-                      {i === index && (
-                        <motion.span
-                          key={`${index}-${paused}`}
-                          className="block h-full origin-left rounded-full bg-paper"
-                          initial={{ scaleX: 0 }}
-                          animate={{ scaleX: 1 }}
-                          transition={{ duration: INTERVAL / 1000, ease: 'linear' }}
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
+                        <path
+                          d={b.d}
+                          stroke="currentColor"
+                          strokeWidth="1.6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                         />
-                      )}
-                    </span>
-                  </button>
-                ))}
+                      </svg>
+                    </button>
+                  ))}
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                {[
-                  { label: 'Previous slide', delta: -1, d: 'M8 1.5L3.5 6 8 10.5' },
-                  { label: 'Next slide', delta: 1, d: 'M4 1.5L8.5 6 4 10.5' },
-                ].map((b) => (
-                  <button
-                    key={b.label}
-                    type="button"
-                    aria-label={b.label}
-                    onClick={() => go(index + b.delta)}
-                    className="flex h-11 w-11 items-center justify-center rounded-full bg-paper/85 text-ink backdrop-blur transition-all duration-300 hover:scale-105 hover:bg-paper hover:text-brand"
-                  >
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
-                      <path
-                        d={b.d}
-                        stroke="currentColor"
-                        strokeWidth="1.6"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </button>
-                ))}
-              </div>
-            </div>
+            )}
           </motion.div>
         </motion.div>
 

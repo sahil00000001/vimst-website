@@ -316,20 +316,18 @@ const homeSection = (re) =>
   home.blocks.find((b) => b.type === 'section' && b.heading && re.test(b.heading));
 
 /**
- * Hero image.
+ * Hero carousel.
  *
- * One photograph, the institute's own picture of the entrance. It is the only
- * image here that is both sharp and unmistakably this place; the five that used
- * to rotate behind it came from the old site at 722px and were noticeably soft
- * blown up to hero size.
- *
- * Add more entries and the hero becomes a carousel again, with its dots and
- * arrows back — but only put a photograph here that is at least 1600px wide.
+ * The institute's own photographs, the entrance first because it is the one
+ * that says where you have arrived. Each carries a short label, set over the
+ * picture as it comes in. Only put a photograph here that is at least 1400px
+ * wide: the frame runs the full width of a desktop column.
  */
 const carousel = [
-  // Supplied photograph, 1536x1024, lives in public/media so it needs no
-  // lookup through the asset map.
-  '/media/hero/campus-gate.jpg',
+  { src: '/media/hero/campus-gate.jpg', label: 'Campus entrance' },
+  { src: '/media/hero/campus-block.jpg', label: 'Academic block' },
+  { src: '/media/hero/engineering-lab.jpg', label: 'Engineering lab' },
+  { src: '/media/hero/biology-lab.jpg', label: 'Life sciences lab' },
 ];
 
 const discoverKeys = [

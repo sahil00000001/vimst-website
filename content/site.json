@@ -16507,7 +16507,22 @@
     },
     "home": {
       "carousel": [
-        "/media/hero/campus-gate.jpg"
+        {
+          "src": "/media/hero/campus-gate.jpg",
+          "label": "Campus entrance"
+        },
+        {
+          "src": "/media/hero/campus-block.jpg",
+          "label": "Academic block"
+        },
+        {
+          "src": "/media/hero/engineering-lab.jpg",
+          "label": "Engineering lab"
+        },
+        {
+          "src": "/media/hero/biology-lab.jpg",
+          "label": "Life sciences lab"
+        }
       ],
       "news": [
         "Admissions are open for the new session. Vivekananda Institute of Management Science and Technology offers a wide range of undergraduate and postgraduate courses in engineering and management. Fill in the enquiry form and one of our counsellors will contact you."
