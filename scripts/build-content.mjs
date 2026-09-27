@@ -269,6 +269,31 @@ function simplePage(file, { title, intro, art, copy }) {
   };
 }
 
+/* The gallery is the institute's own set of campus photographs, in
+   public/media/gallery, rather than the old site's WhatsApp uploads. The
+   order is deliberate: lectures, sports and stage shots are spread out so
+   no two of a kind sit side by side in the grid. */
+const GALLERY = [
+  { src: '/media/gallery/01-campus-entrance.jpg', alt: 'The main academic block and its entrance garden' },
+  { src: '/media/gallery/02-guest-lecture.jpg', alt: 'Guest lecture on innovation and technology in management' },
+  { src: '/media/gallery/03-annual-function-dance.jpg', alt: 'Classical dance performance at the annual function' },
+  { src: '/media/gallery/04-library-study.jpg', alt: 'Students studying together in the library' },
+  { src: '/media/gallery/05-sports-meet-football.jpg', alt: 'Football match at the annual sports meet' },
+  { src: '/media/gallery/06-farewell.jpg', alt: 'Students and faculty at the farewell' },
+  { src: '/media/gallery/07-classroom-marketing.jpg', alt: 'A marketing management class in progress' },
+  { src: '/media/gallery/08-basketball.jpg', alt: 'Basketball on the campus court' },
+  { src: '/media/gallery/09-stage-drama.jpg', alt: 'A stage play by students' },
+  { src: '/media/gallery/10-canteen.jpg', alt: 'Students at the campus canteen' },
+  { src: '/media/gallery/11-volleyball.jpg', alt: 'Volleyball match on campus' },
+  { src: '/media/gallery/12-music-performance.jpg', alt: 'Students performing music on stage' },
+  { src: '/media/gallery/13-lecture-hall.jpg', alt: 'A lecture in one of the classrooms' },
+  { src: '/media/gallery/14-tug-of-war.jpg', alt: 'Tug of war at the sports meet' },
+  { src: '/media/gallery/15-cultural-night.jpg', alt: 'Group dance at the cultural evening' },
+  { src: '/media/gallery/16-campus-garden.jpg', alt: 'Students in the campus garden' },
+  { src: '/media/gallery/17-football.jpg', alt: 'Students playing football on the ground' },
+  { src: '/media/gallery/18-presentation-class.jpg', alt: 'A presentation-led class' },
+];
+
 const pages = {
   about: simplePage('AboutUs.HTML', { title: 'About Us', art: 'about', copy: PAGE_COPY.about }),
   vision: simplePage('vision.html', { title: 'Our Vision', art: 'vision', copy: PAGE_COPY.vision }),
@@ -277,7 +302,7 @@ const pages = {
   directorMessage: simplePage('director-message.html', { title: "Director's Message", art: 'director-message', copy: PAGE_COPY.directorMessage }),
   qualityPolicy: simplePage('quality-policy.html', { title: 'Quality Policy', art: 'quality-policy', copy: PAGE_COPY.qualityPolicy }),
   placement: simplePage('our-placement.html', { title: 'Our Placements', art: 'placement' }),
-  photoGallery: simplePage('photogallery.html', { title: 'Photo Gallery', art: 'gallery' }),
+  photoGallery: { ...simplePage('photogallery.html', { title: 'Photo Gallery', art: 'gallery' }), images: GALLERY },
   specializations: simplePage('specializations.html', { title: 'Specializations', art: 'specializations' }),
   contact: simplePage('contact-us.html', { title: 'Contact Us', art: 'contact' }),
 };

@@ -42,15 +42,18 @@ export function Gallery({
     };
   }, [active, step]);
 
+  /* Two across from the narrowest phone up. One photograph per row turned
+     eighteen of them into seven screens of scrolling, and a tap opens any of
+     them full size in the viewer below. */
   const cols = {
     3: 'sm:grid-cols-2 lg:grid-cols-3',
     4: 'sm:grid-cols-3 lg:grid-cols-4',
-    5: 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-5',
+    5: 'sm:grid-cols-3 lg:grid-cols-5',
   }[columns];
 
   return (
     <>
-      <Stagger className={`grid grid-cols-1 gap-4 ${cols}`} gap={0.035}>
+      <Stagger className={`grid grid-cols-2 gap-2.5 sm:gap-4 ${cols}`} gap={0.035}>
         {images.map((img, i) => (
           <StaggerItem key={img.src + i}>
             <button
@@ -63,7 +66,7 @@ export function Gallery({
                 src={img.src}
                 alt={img.alt}
                 fill
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 45vw, 30vw"
+                sizes="(max-width: 1024px) 50vw, 30vw"
                 className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.07]"
               />
               <span className="absolute inset-0 bg-paper/0 transition-colors duration-500 group-hover:bg-paper/10" />
