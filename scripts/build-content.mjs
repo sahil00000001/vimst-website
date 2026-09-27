@@ -292,6 +292,8 @@ const GALLERY = [
   { src: '/media/gallery/16-campus-garden.jpg', alt: 'Students in the campus garden' },
   { src: '/media/gallery/17-football.jpg', alt: 'Students playing football on the ground' },
   { src: '/media/gallery/18-presentation-class.jpg', alt: 'A presentation-led class' },
+  { src: '/media/gallery/19-engineering-lab.jpg', alt: 'Students working on automation equipment in the engineering lab' },
+  { src: '/media/gallery/20-biology-lab.jpg', alt: 'Students at microscopes in the biology lab' },
 ];
 
 const pages = {
