@@ -1,3 +1,5 @@
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { MotionProvider } from '@/components/MotionProvider';
@@ -30,6 +32,12 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         <Footer />
         <ScrollToTop />
       </MotionProvider>
+
+      {/* Visitor counts and real-visitor load times for the public site,
+          read in the Vercel dashboard. Here rather than in the root layout
+          so staff working in the admin portal are not counted. */}
+      <Analytics />
+      <SpeedInsights />
     </>
   );
 }
