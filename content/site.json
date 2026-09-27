@@ -16583,12 +16583,12 @@
       "campusLife": [
         {
           "title": "Placement at VIMST",
-          "image": "/media/images/placement.jpg",
+          "image": "/media/home/placement.jpg",
           "href": "/placement"
         },
         {
           "title": "Photo Gallery",
-          "image": "/media/download-2.jpg",
+          "image": "/media/home/gallery.jpg",
           "href": "/photo-gallery"
         }
       ]

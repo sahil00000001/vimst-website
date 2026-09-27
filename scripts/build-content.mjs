@@ -346,8 +346,8 @@ const siteHome = {
   },
   discover,
   campusLife: [
-    { title: 'Placement at VIMST', image: asset('images/placement.jpg'), href: '/placement' },
-    { title: 'Photo Gallery', image: asset('download (2).jpg'), href: '/photo-gallery' },
+    { title: 'Placement at VIMST', image: '/media/home/placement.jpg', href: '/placement' },
+    { title: 'Photo Gallery', image: '/media/home/gallery.jpg', href: '/photo-gallery' },
   ].filter((c) => c.image),
 };
 
