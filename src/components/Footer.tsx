@@ -167,7 +167,6 @@ export function Footer() {
             © {new Date().getFullYear()} Vivekananda Institute of Management Science and
             Technology. All rights reserved.
           </p>
-          <p className="text-gold">ISO 9001:2015 Certified</p>
         </div>
       </div>
     </footer>
