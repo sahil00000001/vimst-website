@@ -2,13 +2,21 @@
 
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import { ACCENT_CLASS } from '@/lib/accents';
+import { useEffect } from 'react';
 import type { NavItem } from '@/lib/nav';
 import { Media } from './Media';
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
+/**
+ * The menu drawer below the desktop breakpoint.
+ *
+ * Every item is a plain link, All Courses included. On a desktop that item
+ * opens the full programmes menu; here the same list was a dropdown inside a
+ * drawer, two tiers deep and taller than the screen, and the courses page
+ * already lays every programme out with filters for stream and level. So a
+ * tap goes straight there.
+ */
 export function MobileNav({
   nav,
   open,
@@ -18,9 +26,6 @@ export function MobileNav({
   open: boolean;
   onClose: () => void;
 }) {
-  const [expanded, setExpanded] = useState<string | null>(null);
-  const [expandedCol, setExpandedCol] = useState<string | null>(null);
-
   /* Lock the page behind the drawer while it is showing. */
   useEffect(() => {
     if (!open) return;
@@ -29,13 +34,6 @@ export function MobileNav({
     return () => {
       document.body.style.overflow = previous;
     };
-  }, [open]);
-
-  useEffect(() => {
-    if (!open) {
-      setExpanded(null);
-      setExpandedCol(null);
-    }
   }, [open]);
 
   return (
@@ -84,163 +82,23 @@ export function MobileNav({
 
             <nav className="flex-1 px-5 py-3">
               <ul className="divide-y divide-rule-soft">
-                {nav.map((item, index) => {
-                  const hasMenu = Boolean(item.columns);
-                  const isOpen = expanded === item.label;
-                  return (
-                    <motion.li
-                      key={item.label}
-                      initial={{ opacity: 0, x: 18 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.4, delay: 0.06 + index * 0.035, ease: EASE }}
-                      className="py-0.5"
+                {nav.map((item, index) => (
+                  <motion.li
+                    key={item.label}
+                    initial={{ opacity: 0, x: 18 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.4, delay: 0.06 + index * 0.035, ease: EASE }}
+                    className="py-0.5"
+                  >
+                    <Link
+                      href={item.href}
+                      onClick={onClose}
+                      className="block py-3 font-display text-[length:var(--text-lg)] text-ink transition-colors hover:text-brand"
                     >
-                      <div className="flex items-center justify-between">
-                        <Link
-                          href={item.href}
-                          onClick={onClose}
-                          className="flex-1 py-3 font-display text-[length:var(--text-lg)] text-ink transition-colors hover:text-brand"
-                        >
-                          {item.label}
-                        </Link>
-                        {hasMenu && (
-                          <button
-                            type="button"
-                            aria-label={`${isOpen ? 'Collapse' : 'Expand'} ${item.label}`}
-                            aria-expanded={isOpen}
-                            onClick={() => {
-                              setExpanded(isOpen ? null : item.label);
-                              setExpandedCol(null);
-                            }}
-                            className="flex h-11 w-11 items-center justify-center rounded-full text-slate transition-colors hover:bg-linen hover:text-brand"
-                          >
-                            <motion.svg
-                              width="11"
-                              height="7"
-                              viewBox="0 0 9 6"
-                              fill="none"
-                              animate={{ rotate: isOpen ? 180 : 0 }}
-                              transition={{ duration: 0.3, ease: EASE }}
-                              aria-hidden
-                            >
-                              <path
-                                d="M1 1L4.5 4.5L8 1"
-                                stroke="currentColor"
-                                strokeWidth="1.4"
-                                strokeLinecap="round"
-                              />
-                            </motion.svg>
-                          </button>
-                        )}
-                      </div>
-
-                      <AnimatePresence initial={false}>
-                        {hasMenu && isOpen && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: 'auto', opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.35, ease: EASE }}
-                            className="overflow-hidden"
-                          >
-                            <ul className="mb-3 space-y-1">
-                              {item.columns!.map((col) => {
-                                const colKey = `${item.label}::${col.heading}`;
-                                const colOpen = expandedCol === colKey;
-                                const accent = ACCENT_CLASS[col.accent];
-                                /* A single-column menu is flat -- no second tier needed. */
-                                const flat = item.columns!.length === 1;
-
-                                if (flat) {
-                                  return col.links.map((link) => (
-                                    <li key={link.href + link.label}>
-                                      <Link
-                                        href={link.href}
-                                        onClick={onClose}
-                                        className={`block border-l-2 py-2 pl-3.5 text-[length:var(--text-base)] text-graphite transition-colors ${accent.border} ${accent.hoverText}`}
-                                      >
-                                        {link.label}
-                                      </Link>
-                                    </li>
-                                  ));
-                                }
-
-                                return (
-                                  <li key={colKey}>
-                                    <button
-                                      type="button"
-                                      aria-expanded={colOpen}
-                                      onClick={() => setExpandedCol(colOpen ? null : colKey)}
-                                      className={`flex w-full items-center justify-between gap-3 border-l-2 py-2.5 pl-3.5 text-left text-[length:var(--text-sm)] font-medium transition-colors ${accent.border} ${
-                                        colOpen ? accent.text : 'text-ink'
-                                      }`}
-                                    >
-                                      <span className="min-w-0">
-                                        <span className="block truncate">{col.heading}</span>
-                                        {col.note && (
-                                          <span className="mt-0.5 block text-[length:var(--text-2xs)] font-normal text-mist">
-                                            {col.note}
-                                          </span>
-                                        )}
-                                      </span>
-                                      <motion.span
-                                        animate={{ rotate: colOpen ? 45 : 0 }}
-                                        transition={{ duration: 0.25, ease: EASE }}
-                                        className="shrink-0 text-slate"
-                                      >
-                                        <svg
-                                          width="11"
-                                          height="11"
-                                          viewBox="0 0 11 11"
-                                          fill="none"
-                                          aria-hidden
-                                        >
-                                          <path
-                                            d="M5.5 0v11M0 5.5h11"
-                                            stroke="currentColor"
-                                            strokeWidth="1.3"
-                                          />
-                                        </svg>
-                                      </motion.span>
-                                    </button>
-
-                                    <AnimatePresence initial={false}>
-                                      {colOpen && (
-                                        <motion.ul
-                                          initial={{ height: 0, opacity: 0 }}
-                                          animate={{ height: 'auto', opacity: 1 }}
-                                          exit={{ height: 0, opacity: 0 }}
-                                          transition={{ duration: 0.3, ease: EASE }}
-                                          className="overflow-hidden pl-3.5"
-                                        >
-                                          {col.links.map((link) => (
-                                            <li key={link.href + link.label}>
-                                              <Link
-                                                href={link.href}
-                                                onClick={onClose}
-                                                className={`flex items-center gap-2 py-2 pl-3 text-[length:var(--text-sm)] text-slate transition-colors ${accent.hoverText}`}
-                                              >
-                                                <span
-                                                  aria-hidden
-                                                  className={`h-1 w-1 shrink-0 rounded-full ${accent.dot} opacity-50`}
-                                                />
-                                                {link.label}
-                                              </Link>
-                                            </li>
-                                          ))}
-                                        </motion.ul>
-                                      )}
-                                    </AnimatePresence>
-                                  </li>
-                                );
-                              })}
-                            </ul>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </motion.li>
-                  );
-                })}
+                      {item.label}
+                    </Link>
+                  </motion.li>
+                ))}
               </ul>
 
               <div className="mt-6 grid gap-2.5">
