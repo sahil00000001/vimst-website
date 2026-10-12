@@ -5,7 +5,7 @@ import { isPlate, Media } from '@/components/Media';
 import { Reveal, Stagger, StaggerItem } from '@/components/Motion';
 import { NewsTicker } from '@/components/NewsTicker';
 import { VideoFeature } from '@/components/VideoFeature';
-import { accreditations, courses, coursesByStream, home } from '@/lib/content';
+import { accreditations, courses, coursesByStream, home, page } from '@/lib/content';
 import { CAMPUS_VIDEO, HERO_VIDEO } from '@/lib/media';
 
 /**
@@ -19,12 +19,22 @@ import { CAMPUS_VIDEO, HERO_VIDEO } from '@/lib/media';
  *
  * What is left is the one thing none of those pages carries: the person
  * running the institute, and his photograph.
+ *
+ * The text is the opening of the message itself rather than a separate line
+ * written for this card, so the two can never drift apart. It is cut to about
+ * ten lines below, enough to hear the Director out before "Read more" takes a
+ * reader to the rest.
  */
+const directorOpening = page('directorMessage')
+  .blocks.flatMap((b) => (b.type === 'section' ? b.lines : []))
+  .slice(0, 3)
+  .join(' ');
+
 const DIRECTOR = {
   title: "Director's Message",
   href: '/director-message',
   image: '/media/director.jpg',
-  body: 'Education is not merely the acquisition of knowledge, but a continuous process of developing competence, character, confidence and a strong sense of responsibility.',
+  body: directorOpening,
 };
 
 /**
@@ -156,8 +166,12 @@ export default function HomePage() {
                 <h2 className="text-[length:var(--text-3xl)] lg:text-[length:var(--text-xl)]">
                   {DIRECTOR.title}
                 </h2>
+                {/* Ten lines on a phone, where the message has the width of
+                    the screen to itself; fewer beside the summary on a wide
+                    screen, where each line holds twice as much and the card
+                    has to sit level with the column next to it. */}
                 <div className="prose-mg mt-4 sm:mt-5 lg:mt-2.5">
-                  <p>{DIRECTOR.body}</p>
+                  <p className="line-clamp-10 sm:line-clamp-8 lg:line-clamp-6">{DIRECTOR.body}</p>
                 </div>
                 <Link
                   href={DIRECTOR.href}

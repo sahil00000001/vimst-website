@@ -1,5 +1,4 @@
 import { visibleBlocks, type Block, type Cell } from '@/lib/content';
-import { Expandable } from './Expandable';
 import { Reveal, Stagger, StaggerItem } from './Motion';
 
 /* ------------------------------------------------------------------
@@ -187,33 +186,34 @@ function ProseSection({
         </div>
       )}
 
-      <Expandable>
-        {asList ? (
-          <Stagger as="ul" className="space-y-0" gap={0.05}>
-            {lines.map((line, i) => (
-              <StaggerItem
-                as="li"
-                key={i}
-                className="group flex gap-4 border-b border-rule-soft py-3.5 last:border-0"
-              >
-                <span
-                  className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand/45 transition-colors group-hover:bg-brand"
-                  aria-hidden
-                />
-                <span className="text-[length:var(--text-base)] leading-relaxed text-graphite">
-                  {line}
-                </span>
-              </StaggerItem>
-            ))}
-          </Stagger>
-        ) : (
-          <div className="prose-mg">
-            {lines.map((line, i) => (
-              <p key={i}>{line}</p>
-            ))}
-          </div>
-        )}
-      </Expandable>
+      {/* Shown in full at every width. This is the page a "Read more"
+          elsewhere leads to, so cutting it short again behind a second one
+          sent a reader through the same door twice. */}
+      {asList ? (
+        <Stagger as="ul" className="space-y-0" gap={0.05}>
+          {lines.map((line, i) => (
+            <StaggerItem
+              as="li"
+              key={i}
+              className="group flex gap-4 border-b border-rule-soft py-3.5 last:border-0"
+            >
+              <span
+                className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand/45 transition-colors group-hover:bg-brand"
+                aria-hidden
+              />
+              <span className="text-[length:var(--text-base)] leading-relaxed text-graphite">
+                {line}
+              </span>
+            </StaggerItem>
+          ))}
+        </Stagger>
+      ) : (
+        <div className="prose-mg">
+          {lines.map((line, i) => (
+            <p key={i}>{line}</p>
+          ))}
+        </div>
+      )}
     </Reveal>
   );
 }
