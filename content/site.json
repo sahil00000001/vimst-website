@@ -16508,6 +16508,10 @@
     "home": {
       "carousel": [
         {
+          "src": "/media/hero/swami-vivekananda.jpg",
+          "label": "Swami Vivekananda"
+        },
+        {
           "src": "/media/hero/campus-gate.jpg",
           "label": "Campus entrance"
         },

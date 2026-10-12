@@ -318,12 +318,15 @@ const homeSection = (re) =>
 /**
  * Hero carousel.
  *
- * The institute's own photographs, the entrance first because it is the one
- * that says where you have arrived. Each carries a short label, set over the
- * picture as it comes in. Only put a photograph here that is at least 1400px
- * wide: the frame runs the full width of a desktop column.
+ * The institute's own photographs, opening on the man it is named after and
+ * then the entrance, the one that says where you have arrived. Each carries a
+ * short label, set over the picture as it comes in. Only put a landscape
+ * photograph here that is at least 1400px wide: the frame runs the full width
+ * of a desktop column. A portrait one is shown whole on a blurred backdrop of
+ * its own colours instead of being cropped, so it only needs to be tall.
  */
 const carousel = [
+  { src: '/media/hero/swami-vivekananda.jpg', label: 'Swami Vivekananda' },
   { src: '/media/hero/campus-gate.jpg', label: 'Campus entrance' },
   { src: '/media/hero/campus-block.jpg', label: 'Academic block' },
   { src: '/media/hero/engineering-lab.jpg', label: 'Engineering lab' },
