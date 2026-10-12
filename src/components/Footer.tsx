@@ -27,6 +27,7 @@ const ADMISSION = [
   { label: 'All Courses', href: '/courses' },
   { label: 'Specializations', href: '/specializations' },
   { label: 'Check Your Result', href: '/enrollment-verification' },
+  { label: 'Download Your Form', href: '/download-form' },
   { label: 'Placements', href: '/placement' },
 ];
 

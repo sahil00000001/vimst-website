@@ -168,6 +168,7 @@ are the only safe places for a file you add by hand:
 | `public/media/pages/` | page banners |
 | `public/media/video/` | video files |
 | `public/media/art/` | generated banners (`npm run artwork`) |
+| `public/media/documents/` | PDFs shown on the site, and their page images (`npm run documents`) |
 
 `logo-*.png` at the top of `public/media/` is protected too; those come from `npm run brand`.
 
@@ -175,8 +176,23 @@ A photograph dropped anywhere else under `public/media/` survives until the next
 and then disappears without a word. If you need another folder, add its name to `NOT_OURS` in
 [`scripts/assets.mjs`](scripts/assets.mjs) first.
 
-Files in `hero/` and `art/` are also left at the size and quality they arrive at, rather than being
-re-compressed on every run; see `skip` in [`scripts/images.mjs`](scripts/images.mjs).
+Files in `hero/`, `art/` and `documents/` are also left at the size and quality they arrive at,
+rather than being re-compressed on every run; see `skip` in [`scripts/images.mjs`](scripts/images.mjs).
+
+### PDFs
+
+The application form (Download Your Form) and the AICTE and UGC notices (Affiliation &
+Aggregation) are PDFs in `public/media/documents/`. Phones cannot be trusted to show a PDF inside a
+page, so the site shows a picture of each page instead, with buttons to download or open the PDF
+itself. After adding or replacing a PDF there, draw its pages again:
+
+```bash
+npm run documents
+```
+
+Keep the file name when replacing a PDF and nothing else needs to change. A new PDF also needs an
+entry in [`src/lib/documents.ts`](src/lib/documents.ts) with its title and description, and a page
+to show it on.
 
 Before publishing, check the result on a phone:
 

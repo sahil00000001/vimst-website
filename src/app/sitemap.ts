@@ -16,6 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/placement', priority: 0.7 },
     { path: '/contact', priority: 0.7 },
     { path: '/enrollment-verification', priority: 0.6 },
+    { path: '/download-form', priority: 0.6 },
     { path: '/photo-gallery', priority: 0.5 },
     { path: '/vision', priority: 0.5 },
     { path: '/mission', priority: 0.5 },

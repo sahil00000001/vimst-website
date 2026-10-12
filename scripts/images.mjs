@@ -48,7 +48,7 @@ for (const abs of files) {
   // Already tuned at the size and quality they are generated or chosen at.
   // Re-encoding them here only throws away detail, a little on every run.
   // The blur placeholder below is still produced for them.
-  const skip = /logo-wordmark|logo-crest|^\/media\/(art|hero)\//.test(rel);
+  const skip = /logo-wordmark|logo-crest|^\/media\/(art|hero|documents)\//.test(rel);
 
   if (!skip && (info.width > cap || before > 120_000)) {
     const pipeline = sharp(source, { failOn: 'none' }).resize({

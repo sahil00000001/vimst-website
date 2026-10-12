@@ -101,7 +101,7 @@ export function Navbar({ nav }: { nav: NavItem[] }) {
         onMouseLeave={scheduleClose}
       >
         <div
-          className={`shell flex items-center justify-between gap-5 transition-all duration-500 ${
+          className={`shell flex items-center justify-between gap-5 transition-all duration-500 xl:gap-3.5 ${
             scrolled ? 'py-2.5' : 'py-3.5 sm:py-4'
           }`}
         >
@@ -124,13 +124,15 @@ export function Navbar({ nav }: { nav: NavItem[] }) {
                  so a 390px phone gets 78px and a 430px one 86px rather than
                  every phone being held down to the narrowest one.
 
-                 The dip at `xl` is deliberate: that is where the eight nav
+                 The dip at `xl` is deliberate: that is where the nine nav
                  items and the button appear and start competing for the same
-                 row. It grows again at `2xl`. */
+                 row. It grows again at `2xl`, but only as far as the row
+                 still holds everything: at the old 112px the mark alone took
+                 a quarter of it and pushed Apply Now off the screen. */
               className={`w-auto transition-all duration-500 ${
                 scrolled
                   ? 'h-14 sm:h-16 lg:h-20 xl:h-16 2xl:h-20'
-                  : 'h-[clamp(4.5rem,21vw,6.5rem)] sm:h-[6.5rem] lg:h-28 xl:h-20 2xl:h-28'
+                  : 'h-[clamp(4.5rem,21vw,6.5rem)] sm:h-[6.5rem] lg:h-28 xl:h-[4.5rem] 2xl:h-[5.25rem]'
               }`}
             />
           </Link>
@@ -153,12 +155,12 @@ export function Navbar({ nav }: { nav: NavItem[] }) {
                     href={item.href}
                     onFocus={() => setOpen(hasMenu ? item.label : null)}
                     aria-expanded={hasMenu ? showing : undefined}
-                    /* Tighter horizontal padding at `xl` than at `2xl`: the
-                       eight items and the button share the row with the mark,
-                       and the padding given up is room for the longer labels
-                       to stay on one line at the one width where the row is
-                       tight. */
-                    className={`relative flex items-center gap-1.5 whitespace-nowrap rounded-lg px-1.5 py-2 text-[length:var(--text-sm)] font-medium tracking-tight transition-colors duration-300 2xl:px-3 ${
+                    /* Nine items and the button share the row with the mark,
+                       so the type is a touch under the body size and the
+                       padding is held close. Measured from 1280px to 1920px:
+                       any looser and the row runs past the edge of the page
+                       somewhere in that range. */
+                    className={`relative flex items-center gap-1.5 whitespace-nowrap rounded-lg px-1 py-2 text-[13px] font-medium tracking-tight transition-colors duration-300 2xl:px-1.5 2xl:text-[13.75px] ${
                       active || showing ? 'text-brand' : 'text-graphite hover:text-ink'
                     }`}
                   >
@@ -192,7 +194,7 @@ export function Navbar({ nav }: { nav: NavItem[] }) {
                     {active && (
                       <motion.span
                         layoutId="nav-active"
-                        className="absolute inset-x-3 -bottom-0.5 h-px bg-brand"
+                        className="absolute inset-x-1 -bottom-0.5 h-px bg-brand 2xl:inset-x-1.5"
                         transition={{ duration: 0.45, ease: EASE }}
                       />
                     )}
@@ -203,7 +205,7 @@ export function Navbar({ nav }: { nav: NavItem[] }) {
 
             <Link
               href="/contact"
-              className="group relative ml-2 inline-flex items-center gap-2 overflow-hidden whitespace-nowrap rounded-full bg-brand px-5 py-2.5 2xl:ml-3 text-[length:var(--text-sm)] font-medium text-paper"
+              className="group relative ml-2 inline-flex items-center gap-2 overflow-hidden whitespace-nowrap rounded-full bg-brand px-4 py-2.5 text-[13px] font-medium text-paper 2xl:ml-3 2xl:text-[13.75px]"
             >
               {/* The brand navy sweeps in from the left on hover. */}
               <span

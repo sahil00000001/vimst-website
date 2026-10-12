@@ -91,6 +91,7 @@ export function buildNav(): NavItem[] {
     /* Was an "Admission" menu of three. Two of them are gone, and a dropdown
        holding one link is just a link with an extra click in front of it. */
     { label: 'Check Your Result', href: '/enrollment-verification' },
+    { label: 'Download Your Form', href: '/download-form' },
     { label: 'Placements', href: '/placement' },
     { label: 'Gallery', href: '/photo-gallery' },
     { label: 'Contact', href: '/contact' },

@@ -1,0 +1,29 @@
+{
+  "aicte-public-notice": {
+    "pdf": "/media/documents/aicte-public-notice.pdf",
+    "bytes": 451824,
+    "pages": [
+      "/media/documents/aicte-public-notice/page-1.jpg",
+      "/media/documents/aicte-public-notice/page-2.jpg"
+    ]
+  },
+  "application-form": {
+    "pdf": "/media/documents/application-form.pdf",
+    "bytes": 370342,
+    "pages": [
+      "/media/documents/application-form/page-1.jpg",
+      "/media/documents/application-form/page-2.jpg"
+    ]
+  },
+  "ugc-notice": {
+    "pdf": "/media/documents/ugc-notice.pdf",
+    "bytes": 1068693,
+    "pages": [
+      "/media/documents/ugc-notice/page-1.jpg",
+      "/media/documents/ugc-notice/page-2.jpg",
+      "/media/documents/ugc-notice/page-3.jpg",
+      "/media/documents/ugc-notice/page-4.jpg",
+      "/media/documents/ugc-notice/page-5.jpg"
+    ]
+  }
+}
