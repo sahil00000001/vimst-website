@@ -262,8 +262,52 @@ export const HOME_COPY = {
   director:
     'It gives me immense pleasure to welcome you to Vivekananda Institute of Management Science and Technology (VIMST).',
 
+  /* The notice board. Each runs past in turn, so every one says what it is in
+     its tag and where to go next in its link. */
   news: [
-    'Admissions are open for the new session. Vivekananda Institute of Management Science and Technology offers a wide range of undergraduate and postgraduate courses in engineering and management. Fill in the enquiry form and one of our counsellors will contact you.',
+    {
+      tag: 'Admissions',
+      text: 'Admissions are open for the new session. Vivekananda Institute of Management Science and Technology offers a wide range of undergraduate and postgraduate courses in engineering and management. Fill in the enquiry form and one of our counsellors will contact you.',
+      href: '/contact',
+    },
+    {
+      tag: 'Application form',
+      text: 'The application form for the new session is available online. Read it page by page, or download the PDF to print and fill in.',
+      href: '/download-form',
+    },
+    {
+      tag: 'Results',
+      text: 'Semester results are published online. Enter your enrollment number and date of birth to view your result or download the statement of marks as a PDF.',
+      href: '/enrollment-verification',
+    },
+    {
+      tag: 'Notice',
+      text: 'The AICTE public notice and the UGC letter on the equivalence of degrees awarded through open and distance learning can now be read and downloaded.',
+      href: '/affiliation-aggregation',
+    },
+    {
+      tag: 'Programmes',
+      text: 'Programmes across six streams, from engineering and management to computer applications, science, commerce and arts, at diploma, bachelor, PG diploma and master’s level.',
+      href: '/courses',
+    },
+    {
+      tag: 'Study modes',
+      text: 'Programmes are offered through Regular and Part-Time modes, so working professionals can study for a recognised qualification alongside their other commitments.',
+      href: '/about',
+    },
+    {
+      tag: 'Placements',
+      text: 'The Placement Cell offers internships and job opportunities through the year, and prepares students for the process itself, from writing a CV to group discussions and interviews.',
+      href: '/placement',
+    },
+    {
+      tag: 'Library',
+      text: 'The college library runs on modern ICT infrastructure and gives students access to electronic resources as well as more than 101,000 books.',
+    },
+    {
+      tag: 'Indian Knowledge System',
+      text: 'The Centre for Indian Knowledge Systems supports research across every aspect of IKS, and works to spread the rich heritage and traditional knowledge of the country.',
+    },
   ],
 
   discover: {

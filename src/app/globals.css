@@ -253,7 +253,19 @@
 }
 
 .mg-marquee {
-  animation: mg-marquee 44s linear infinite;
+  animation: mg-marquee var(--marquee-duration, 44s) linear infinite;
+}
+
+/* Without the motion the board is an ordinary list that scrolls by hand, so
+   the notices below the fold are still there to be read. */
+@media (prefers-reduced-motion: reduce) {
+  .mg-marquee-frame {
+    overflow-y: auto;
+  }
+
+  .mg-marquee > [aria-hidden] {
+    display: none;
+  }
 }
 
 /* Horizontal marquee for the recruiter strip. */
