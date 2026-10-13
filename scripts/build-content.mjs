@@ -322,11 +322,16 @@ const homeSection = (re) =>
  * then the entrance, the one that says where you have arrived. Each carries a
  * short label, set over the picture as it comes in. Only put a landscape
  * photograph here that is at least 1400px wide: the frame runs the full width
- * of a desktop column. A portrait one is shown whole on a blurred backdrop of
- * its own colours instead of being cropped, so it only needs to be tall.
+ * of a desktop column.
+ *
+ * `whole` shows a picture entire on a blurred backdrop of its own colours
+ * instead of cropping it to the frame, which is wider than a 3:2 photograph
+ * on a desktop. The statue fills its photograph from the turban to the foot
+ * of the plinth, so cropped it lost one or the other. A portrait photograph
+ * is always shown this way.
  */
 const carousel = [
-  { src: '/media/hero/swami-vivekananda.jpg', label: 'Swami Vivekananda' },
+  { src: '/media/hero/vivekananda-statue.jpg', label: 'Swami Vivekananda', whole: true },
   { src: '/media/hero/campus-gate.jpg', label: 'Campus entrance' },
   { src: '/media/hero/campus-block.jpg', label: 'Academic block' },
   { src: '/media/hero/engineering-lab.jpg', label: 'Engineering lab' },

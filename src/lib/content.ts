@@ -32,7 +32,12 @@ export type EditorialPage = {
 };
 
 /** One picture in the home page carousel, with the label set over it. */
-export type HeroSlide = { src: string; label: string };
+export type HeroSlide = {
+  src: string;
+  label: string;
+  /** Shown whole instead of cropped to the frame. Always the case for a portrait. */
+  whole?: boolean;
+};
 
 /** One notice on the home page's News & Events board. */
 export type NewsItem = { tag: string; text: string; href?: string };

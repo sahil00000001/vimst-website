@@ -171,7 +171,7 @@ export function Hero({
                 slides.map((slide, i) => {
                   const on = i === index;
                   const meta = imageMeta(slide.src);
-                  const portrait = meta ? meta.height > meta.width : false;
+                  const whole = slide.whole || (meta ? meta.height > meta.width : false);
                   return (
                     <motion.div
                       key={slide.src}
@@ -190,22 +190,20 @@ export function Hero({
                       }}
                       style={{ zIndex: on ? 1 : 0 }}
                     >
-                      {portrait ? (
-                        /* A portrait photograph cropped to this landscape frame
-                           keeps a band across its middle and loses the head
-                           and the foot -- for the statue, the turban and the
-                           name on its plinth. So it is shown whole, over a
-                           wash of its own colours: the blur placeholder,
-                           sixteen pixels wide, stretched and softened to fill
-                           the frame at no cost in bytes.
+                      {whole ? (
+                        /* A picture whose subject runs to its edges, cropped
+                           to this frame, loses the head or the foot -- for the
+                           statue, the turban or the name on its plinth. So it
+                           is shown whole, over a wash of its own colours: the
+                           blur placeholder, sixteen pixels wide, stretched and
+                           softened to fill the frame at no cost in bytes.
 
                            The picture is held to the part of this oversized
                            layer the frame actually shows (it overhangs by a
-                           tenth of the frame top and bottom), less enough
-                           room for the slow zoom never to push it past the
-                           edge. It stands to the right, clear of the arrows,
-                           so the label comes in over the backdrop rather than
-                           across the statue's own nameplate. */
+                           tenth of the frame top and bottom), with room for
+                           the slow zoom. Its foot stops a little above the
+                           frame's, so the label comes in under the statue's
+                           nameplate rather than across it at every width. */
                         <>
                           <div
                             aria-hidden
@@ -213,15 +211,15 @@ export function Hero({
                             style={{ backgroundImage: meta?.blurDataURL ? `url(${meta.blurDataURL})` : undefined }}
                           />
                           <div aria-hidden className="absolute inset-0 bg-ink/15" />
-                          <div className="absolute inset-y-[11.5%] left-0 right-[3%] sm:right-[8.5rem]">
+                          <div className="absolute inset-x-0 top-[11.5%] bottom-[calc(8.333%+2.25rem)]">
                             <Media
                               src={slide.src}
                               alt={slide.label}
                               fill
                               priority={i === 0}
                               loading={i === 0 ? undefined : 'eager'}
-                              sizes="(max-width: 1024px) 45vw, 22vw"
-                              className="object-contain object-right drop-shadow-[0_14px_28px_rgba(22,21,26,0.35)]"
+                              sizes="(max-width: 1024px) 70vw, 36vw"
+                              className="object-contain drop-shadow-[0_14px_28px_rgba(22,21,26,0.35)]"
                             />
                           </div>
                         </>
@@ -262,10 +260,7 @@ export function Hero({
                       >
                         <span className="h-px w-5 bg-gold" aria-hidden />
                         {slides[index].label}
-                        {/* Not on a phone, where the bars below already say
-                            which picture this is, and the label needs the
-                            width to stay clear of a portrait beside it. */}
-                        <span className="hidden font-normal tabular-nums tracking-[0.1em] text-paper/60 sm:inline">
+                        <span className="font-normal tabular-nums tracking-[0.1em] text-paper/60">
                           {String(index + 1).padStart(2, '0')} / {String(count).padStart(2, '0')}
                         </span>
                       </motion.p>

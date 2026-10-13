@@ -16508,8 +16508,9 @@
     "home": {
       "carousel": [
         {
-          "src": "/media/hero/swami-vivekananda.jpg",
-          "label": "Swami Vivekananda"
+          "src": "/media/hero/vivekananda-statue.jpg",
+          "label": "Swami Vivekananda",
+          "whole": true
         },
         {
           "src": "/media/hero/campus-gate.jpg",
